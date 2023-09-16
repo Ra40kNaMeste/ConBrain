@@ -7,15 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="html\css\null.css" />
-    <Content Include="html\css\style.css" />
-    <Content Include="html\register.html" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="css\" />
     <Folder Include="js\" />
-    <Folder Include="wwwroot\" />
+    <Folder Include="html\" />
   </ItemGroup>
 
   <ItemGroup>

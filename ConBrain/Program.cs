@@ -1,6 +1,8 @@
 using ConBrain.Model;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace ConBrain
 {
@@ -9,19 +11,39 @@ namespace ConBrain
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            builder.Services.AddSingleton(new UserDbContext(builder.Configuration.GetSection("ConnectionStrings.sqliteUsers").Value!));
+            builder.Services.AddSingleton(new UserDbContext(builder.Configuration.GetConnectionString("sqliteUsers"))!);
             
-            var app = builder.Build();            
-
+            var app = builder.Build();
+            app.Use(async (context, next) =>
+            {
+                await next.Invoke();
+            });
             app.Map("/user", OnUserMap);
-
+            app.Map("/css", ReadCssFiles);
             app.Run();
         }
 
         private static void OnUserMap(IApplicationBuilder builder)
         {
-            builder.Map("/register", (IApplicationBuilder b) => SendHTMLFileMap(b, "register.html"));
+            builder.Map("/register", (IApplicationBuilder b) =>
+            {
+                SendHTMLFileMap(b, "html/register.html");
+                
+            });
+            builder.Map("/css", ReadCssFiles);
+        }
+        private static void ReadCssFiles(IApplicationBuilder builder)
+        {
+            builder.Run(async (HttpContext context) =>
+            {
 
+                var response = context.Response;
+                var request = context.Request;
+                var path = Directory.GetCurrentDirectory() + "\\html\\css\\" + request.Path;
+                await context.Response.SendFileAsync(path);
+            });
+
+                
         }
         private static void OnRegisterUserMap(IApplicationBuilder builder)
         {

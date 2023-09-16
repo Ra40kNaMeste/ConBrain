@@ -14,7 +14,8 @@ namespace ConBrain.Model
             Database.EnsureCreated();
         }
 
-        public DbSet<Person> People { get; set; }
+        public DbSet<Person> People { get; set; } = null!;
+        public DbSet<Message> Messages { get; set; } = null!;
         private readonly string _connect;
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -26,6 +27,9 @@ namespace ConBrain.Model
             base.OnModelCreating(builder);
             builder.Entity<Person>().Property(i => i.Nick).IsRequired().IsUnicode();
             builder.Entity<Person>().Property(i=>i.Phone).IsRequired().IsUnicode();
+            builder.Entity<Message>().HasKey(i => i.Id);
+            builder.Entity<Message>().HasOne(i => i.Sender).WithMany(i => i.SendedMessages);
+            builder.Entity<Message>().HasOne(i => i.Target).WithMany(i => i.Messages);
         }
     }
 
@@ -37,15 +41,17 @@ namespace ConBrain.Model
         public string Family { get; set; } = "";
         public string? LastName { get; set; }
         public string Phone { get; set; } = "";
-        public IEnumerable<Person>? Friends { get; set; }
-        public IEnumerable<Message>? Messages { get; set; }
+        public List<Person> Friends { get; set; } = null!;
+        public List<Message> SendedMessages { get; set; } = null!;
+        public List<Message> Messages { get; set; } = null!;
     }
 
     public class Message
     {
-        public Person Target { get; set; }
-        public Person Sender { get; set; }
-        public string Content { get; set; }
+        public int Id { get; set; }
+        public Person? Target { get; set; }
+        public Person? Sender { get; set; }
+        public string Content { get; set; } = "";
     }
 
 }
