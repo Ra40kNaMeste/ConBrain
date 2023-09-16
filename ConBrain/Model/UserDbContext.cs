@@ -41,6 +41,7 @@ namespace ConBrain.Model
         public string Family { get; set; } = "";
         public string? LastName { get; set; }
         public string Phone { get; set; } = "";
+        public string Password { get; set; } = "";
         public List<Person> Friends { get; set; } = null!;
         public List<Message> SendedMessages { get; set; } = null!;
         public List<Message> Messages { get; set; } = null!;
