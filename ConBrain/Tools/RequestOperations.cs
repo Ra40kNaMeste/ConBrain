@@ -4,13 +4,13 @@ namespace ConBrain.Tools
 {
     public static class RequestOperations
     {
-        public static string getFormValue(IFormCollection form, string nameProperty, ILogger? logger = null)
+        public static string? getFormValue(IFormCollection form, string nameProperty, ILogger? logger = null)
         {
             var values = form[nameProperty];
             if (values.Count == 0)
             {
                 logger?.LogWarning(string.Format(Properties.Resources.FormNotFindValueWarning, nameProperty));
-                return "";
+                return null;
             }
             if (values.Count > 0)
                 logger?.LogWarning(string.Format(Properties.Resources.FormFoundServialValuesWarning, nameProperty));
@@ -22,12 +22,12 @@ namespace ConBrain.Tools
         {
             return new Person()
             {
-                Name = getFormValue(form, "name", logger),
-                Family = getFormValue(form, "family", logger),
+                Name = getFormValue(form, "name", logger) ?? "",
+                Family = getFormValue(form, "family", logger) ?? "",
                 LastName = getFormValue(form, "secondName", logger),
-                Nick = getFormValue(form, "nick", logger),
-                Phone = getFormValue(form, "tel", logger),
-                Password = getFormValue(form, "pass", logger)
+                Nick = getFormValue(form, "nick", logger) ?? "",
+                Phone = getFormValue(form, "tel", logger) ?? "",
+                Password = getFormValue(form, "pass", logger) ?? ""
             };
         }
     }

@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddPersonError" xml:space="preserve">
+    <value>Person add error: not validation {0}</value>
+  </data>
+  <data name="AddPersonSuccesfully" xml:space="preserve">
+    <value>Person id={0} add succesfully</value>
+  </data>
   <data name="FormFoundServialValuesWarning" xml:space="preserve">
     <value>Found servial values by name property {0}</value>
   </data>

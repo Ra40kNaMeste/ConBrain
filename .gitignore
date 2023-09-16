@@ -8,6 +8,8 @@
 
 #database
 *.db
+*.db-shm
+*.db-wal
 
 # Build results
 

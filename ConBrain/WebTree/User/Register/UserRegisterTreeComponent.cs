@@ -6,7 +6,11 @@ namespace ConBrain
     {
         public static void UserRegisterMap(IApplicationBuilder builder)
         {
-            ResponseOperations.SendHTMLFileMap(builder, "html/register.html");
+            builder.Run(async context =>
+            {
+                await ResponseOperations.SendHTMLFileMapByPath(context, "html/register.html");
+            });
+            
         }
     }
 }

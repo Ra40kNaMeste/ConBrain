@@ -61,6 +61,24 @@ namespace ConBrain.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Person add error: not validation {0}.
+        /// </summary>
+        internal static string AddPersonError {
+            get {
+                return ResourceManager.GetString("AddPersonError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Person id={0} add succesfully.
+        /// </summary>
+        internal static string AddPersonSuccesfully {
+            get {
+                return ResourceManager.GetString("AddPersonSuccesfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Found servial values by name property {0}.
         /// </summary>
         internal static string FormFoundServialValuesWarning {

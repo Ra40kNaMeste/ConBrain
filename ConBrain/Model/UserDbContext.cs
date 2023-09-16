@@ -25,8 +25,17 @@ namespace ConBrain.Model
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            builder.Entity<Person>().Property(i => i.Nick).IsRequired().IsUnicode();
-            builder.Entity<Person>().Property(i=>i.Phone).IsRequired().IsUnicode();
+            builder.Entity<Person>().Property(i => i.Nick).IsRequired().HasMaxLength(100);
+            builder.Entity<Person>().HasIndex(i => i.Nick).IsUnique();
+
+            builder.Entity<Person>().Property(i => i.Name).HasMaxLength(100);
+            builder.Entity<Person>().Property(i => i.Family).HasMaxLength(100);
+            builder.Entity<Person>().Property(i => i.LastName).HasMaxLength(100);
+
+            builder.Entity<Person>().Property(i=>i.Phone).IsRequired();
+            builder.Entity<Person>().HasIndex(i => i.Phone).IsUnique();
+
+
             builder.Entity<Message>().HasKey(i => i.Id);
             builder.Entity<Message>().HasOne(i => i.Sender).WithMany(i => i.SendedMessages);
             builder.Entity<Message>().HasOne(i => i.Target).WithMany(i => i.Messages);
