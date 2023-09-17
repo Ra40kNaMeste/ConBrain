@@ -5,7 +5,7 @@
         public static void OnUserMap(IApplicationBuilder builder)
         {
             builder.Map("/register", UserRegisterTreeComponent.UserRegisterMap);
-            builder.Map("/reply", UserReplyTreeComponent.OnReplyUserMap);
+            builder.Map("/reply", UserReplyTreeComponent.OnReplyRegisterUserMap);
         }
     }
 }

@@ -8,20 +8,13 @@ namespace ConBrain.Model
     /// </summary>
     public class UserDbContext:DbContext
     {
-        public UserDbContext(string connect):base()
+        public UserDbContext(DbContextOptions<UserDbContext> options):base(options)
         {
-            _connect = connect;
             Database.EnsureCreated();
         }
 
         public DbSet<Person> People { get; set; } = null!;
         public DbSet<Message> Messages { get; set; } = null!;
-        private readonly string _connect;
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlite(_connect);
-            base.OnConfiguring(optionsBuilder);
-        }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

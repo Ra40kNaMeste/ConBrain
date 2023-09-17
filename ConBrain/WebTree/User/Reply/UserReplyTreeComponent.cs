@@ -1,13 +1,14 @@
 ﻿using ConBrain.Model;
 using ConBrain.Tools;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using System.Text.RegularExpressions;
 
 namespace ConBrain
 {
     public static class UserReplyTreeComponent
     {
-        public static void OnReplyUserMap(IApplicationBuilder builder)
+        public static void OnReplyRegisterUserMap(IApplicationBuilder builder)
         {
             builder.Run(async (context) =>
             {
@@ -46,5 +47,24 @@ namespace ConBrain
             });
         }
 
+        public static void OnReplyLoginUserMapPost(UserDbContext db, HttpContext context, ILogger logger)
+        {
+            var form = context.Request.Form;
+            string? login = form["loginOrNick"];
+            if(login == null)
+                logger?.LogWarning(string.Format(Properties.Resources.FormNotFindValueWarning, "loginOrNick"));
+            var person = db.People.Where(i => i.Nick == login || i.Phone == login).FirstOrDefault();
+            if(person == null)
+            {
+                logger?.LogError(Properties.Resources.NotFoundPersonWarning);
+                return;
+            }
+            string? pass = form["pass"];
+            if(pass != null && person.Password == pass)
+            {
+                var claims = new List<Claim>() { new Claim(ClaimTypes.Name, login!) };
+                var jwt = new 
+            }
+        }
     }
 }

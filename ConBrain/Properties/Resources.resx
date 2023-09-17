@@ -135,6 +135,9 @@
   <data name="NotFoundDatabase" xml:space="preserve">
     <value>Database is not found</value>
   </data>
+  <data name="NotFoundPersonWarning" xml:space="preserve">
+    <value>Person with login or phone {0} not found</value>
+  </data>
   <data name="ReadPorpertyByForm" xml:space="preserve">
     <value>Read value = {1} as property {0}</value>
   </data>

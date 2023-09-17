@@ -115,6 +115,15 @@ namespace ConBrain.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Person with login or phone {0} not found.
+        /// </summary>
+        internal static string NotFoundPersonWarning {
+            get {
+                return ResourceManager.GetString("NotFoundPersonWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Read value = {1} as property {0}.
         /// </summary>
         internal static string ReadPorpertyByForm {
