@@ -29,11 +29,9 @@ namespace ConBrain
             app.UseAuthorization();
             app.UseAuthentication();
 
-            app.Use(async (context, next) =>
-            {
-                await next.Invoke();
-            });
             app.Map("/user", UserTreeComponent.OnUserMap);
+            
+
             app.Map("/css", ResponseOperations.ReadCssFilesMap);
             app.Run();
         }
