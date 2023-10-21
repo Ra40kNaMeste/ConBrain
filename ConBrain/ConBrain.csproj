@@ -7,16 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="html\css\null.css" />
-    <Content Include="html\css\style.css" />
     <Content Include="html\register.html" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="css\" />
-    <Folder Include="html\java scripts\" />
+    <Folder Include="wwwroot\java scripts\" />
     <Folder Include="js\" />
-    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\css\null.css" />
+    <None Include="wwwroot\css\style.css" />
   </ItemGroup>
 
   <ItemGroup>

@@ -3,7 +3,7 @@ using ConBrain.Tools;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-namespace ConBrain.WebTree.User.Login
+namespace ConBrain.WebTree.Login
 {
     public class UserLoginTreeComponent
     {

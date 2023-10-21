@@ -1,6 +1,8 @@
 using ConBrain.Loggers;
 using ConBrain.Model;
 using ConBrain.Tools;
+using ConBrain.WebTree.Login;
+using ConBrain.WebTree.Register;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -26,11 +28,14 @@ namespace ConBrain
 
             var app = builder.Build();
 
+            app.UseStaticFiles();
             app.UseAuthorization();
             app.UseAuthentication();
 
-            app.Map("/user", UserTreeComponent.OnUserMap);
-            
+            app.Map("/register", UserRegisterTreeComponent.UserRegisterMap);
+            app.Map("/login", UserLoginTreeComponent.UserLoginMap);
+            app.Map("/reply", UserRegisterTreeComponent.OnReplyRegisterUserMap);
+
 
             app.Map("/css", ResponseOperations.ReadCssFilesMap);
             app.Run();

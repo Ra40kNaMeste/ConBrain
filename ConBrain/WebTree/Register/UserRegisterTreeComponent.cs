@@ -5,7 +5,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
 
-namespace ConBrain
+namespace ConBrain.WebTree.Register
 {
     public class UserRegisterTreeComponent
     {
