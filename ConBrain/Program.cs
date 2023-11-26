@@ -1,8 +1,8 @@
 using ConBrain.Loggers;
 using ConBrain.Model;
 using ConBrain.Tools;
+using ConBrain.WebTree;
 using ConBrain.WebTree.Login;
-using ConBrain.WebTree.Register;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -19,6 +19,8 @@ namespace ConBrain
         {
             var builder = WebApplication.CreateBuilder(args);
             builder.Services.AddDbContext<UserDbContext>((options)=>options.UseSqlite(builder.Configuration.GetConnectionString("sqliteUsers")));
+            builder.Services.AddMvc();
+            
 
             builder.Services.AddSingleton<ILogger>(new ConsoleLogger());
             builder.Services.AddAuthorization();
@@ -27,17 +29,11 @@ namespace ConBrain
             });
 
             var app = builder.Build();
+            app.MapControllerRoute("default", "{controller=Home}/{action=Index}");
 
             app.UseStaticFiles();
-            app.UseAuthorization();
-            app.UseAuthentication();
-
-            app.Map("/register", UserRegisterTreeComponent.UserRegisterMap);
-            app.Map("/login", UserLoginTreeComponent.UserLoginMap);
-            app.Map("/reply", UserRegisterTreeComponent.OnReplyRegisterUserMap);
 
 
-            app.Map("/css", ResponseOperations.ReadCssFilesMap);
             app.Run();
         }
     }

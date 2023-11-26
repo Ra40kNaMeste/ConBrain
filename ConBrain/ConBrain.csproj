@@ -7,13 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\images\mainbackground\bottom.svg" />
+    <Content Remove="wwwroot\images\mainbackground\left.svg" />
+    <Content Remove="wwwroot\images\mainbackground\right.svg" />
+    <Content Remove="wwwroot\images\mainbackground\top.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="html\register.html" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="css\" />
     <Folder Include="wwwroot\java scripts\" />
-    <Folder Include="js\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,6 +34,21 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="wwwroot\images\mainbackground\bottom.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\images\mainbackground\left.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\images\mainbackground\right.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\images\mainbackground\top.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>

@@ -15,17 +15,5 @@
             response.ContentType = "text/html; charset=utf-8";
             await response.WriteAsync(file);
         }
-
-        public static void ReadCssFilesMap(IApplicationBuilder builder)
-        {
-            builder.Run(async (HttpContext context) =>
-            {
-
-                var response = context.Response;
-                var request = context.Request;
-                var path = Directory.GetCurrentDirectory() + "\\html\\css\\" + request.Path;
-                await context.Response.SendFileAsync(path);
-            });
-        }
     }
 }

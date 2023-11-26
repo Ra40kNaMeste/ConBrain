@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="css/style.css"/>
+    <link rel="stylesheet" href="null.css" />
+</head>
+<body>
+    <div>
+        <div>
+            <img src="images/mainbackground/top.svg" width="300" class="topImage" />
+        </div>
+        <div>
+            <h1>@ViewBag.Title</h1>
+            <nav>
+                <a asp-controller="Home" asp-action="Index">Home</a>
+            </nav>
+        </div>
+
+    </div>
+    <div width="100%">
+        <div class="leftImage">
+            <img src="images/mainbackground/left.svg" width="300" />
+        </div>
+        <div class="rightImage">
+            <img src="images/mainbackground/right.svg" width="300" />
+        </div>
+        <main>
+            @RenderBody()
+        </main>
+    </div>
+    <div width="100%">
+        <div class="bottomImage">
+            <img src="images/mainbackground/bottom.svg" width="300" />
+        </div>
+    </div>
+</body>
+</html>
