@@ -4,37 +4,29 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
-    <link rel="stylesheet" href="css/style.css"/>
-    <link rel="stylesheet" href="null.css" />
+    <link type="text/css" rel="stylesheet" href="css/style.css" />
+    <link type="text/css" rel="stylesheet" href="css/null.css" />
+    <link type="text/css" rel="stylesheet" href="css/layout.css" />
 </head>
 <body>
-    <div>
-        <div>
-            <img src="images/mainbackground/top.svg" width="300" class="topImage" />
-        </div>
-        <div>
-            <h1>@ViewBag.Title</h1>
-            <nav>
-                <a asp-controller="Home" asp-action="Index">Home</a>
+    <div id="imageDiv">
+        <img src="images/mainbackground/top.svg" id="topImage" />
+        <img src="images/mainbackground/bottom.svg" id="bottomImage" />
+        <img src="images/mainbackground/left.svg" id="leftImage" />
+        <img src="images/mainbackground/right.svg" id="rightImage" />
+        <div id="contentDiv">
+            <h1 id="title">@ViewBag.Title</h1>
+            <nav class="divMenu">
+                <div>
+                    <a asp-controller="Home" asp-action="Index">Home</a>
+                </div>
+
             </nav>
+            <main>
+                @RenderBody()
+            </main>
         </div>
 
-    </div>
-    <div width="100%">
-        <div class="leftImage">
-            <img src="images/mainbackground/left.svg" width="300" />
-        </div>
-        <div class="rightImage">
-            <img src="images/mainbackground/right.svg" width="300" />
-        </div>
-        <main>
-            @RenderBody()
-        </main>
-    </div>
-    <div width="100%">
-        <div class="bottomImage">
-            <img src="images/mainbackground/bottom.svg" width="300" />
-        </div>
     </div>
 </body>
 </html>

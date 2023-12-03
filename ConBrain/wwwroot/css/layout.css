@@ -1,0 +1,66 @@
+﻿
+#imageDiv {
+    transform:translate(50%, 0);
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    max-width: 1000px;
+    height: 100%;
+}
+#topImage {
+    position:absolute;
+    right: 20px;
+    top: 20px;
+    width: 300px;
+}
+#rightImage {
+    position: absolute;
+    right:0pc;
+    top: 50%;
+    margin-top: -150px;
+    height: 300px;
+}
+#leftImage {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    margin-top: -150px;
+    height: 300px;
+}
+#bottomImage {
+    position:absolute;
+    left: 20px;
+    bottom: 20px;
+    width: 300px;
+}
+#contentDiv {
+    position: relative;
+    background-color: aliceblue;
+    left: 20%;
+    top: 150px;
+    width: 60%;
+    height: auto;
+    border-radius: 1%;
+    display: flex;
+    flex-direction: column;
+    justify-content:right;
+}
+#title {
+    text-align:center;
+    font-size:xx-large;
+}
+.divMenu > div{
+    outline:#bbbbbb solid 3px;
+    margin:20px;
+    width:70px;
+    height:30px;
+    display:flex;
+    align-items:center;
+    background-color:white;
+}
+.divMenu > div > a{
+    display:block;
+    text-align:center;
+    width:100%;
+}
