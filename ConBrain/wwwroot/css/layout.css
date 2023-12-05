@@ -41,7 +41,7 @@
     top: 150px;
     width: 60%;
     height: auto;
-    border-radius: 1%;
+    border-radius: 10px;
     display: flex;
     flex-direction: column;
     justify-content:right;
@@ -50,17 +50,21 @@
     text-align:center;
     font-size:xx-large;
 }
-.divMenu > div{
-    outline:#bbbbbb solid 3px;
-    margin:20px;
-    width:70px;
-    height:30px;
+.divMenu{
     display:flex;
+    flex-direction:row;
+    align-self:flex-start;
     align-items:center;
-    background-color:white;
+    flex-wrap:wrap;
 }
-.divMenu > div > a{
-    display:block;
-    text-align:center;
-    width:100%;
+.divMenu > div {
+    outline: #bbbbbb solid 3px;
+    margin: 5px 10px;
+    padding:5px;
+    width: auto;
+    height: auto;
+    display: inline-flex;
+    align-self: center;
+    align-items: center;
+    background-color: white;
 }

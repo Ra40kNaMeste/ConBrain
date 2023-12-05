@@ -4,23 +4,23 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
-    <link type="text/css" rel="stylesheet" href="css/style.css" />
-    <link type="text/css" rel="stylesheet" href="css/null.css" />
-    <link type="text/css" rel="stylesheet" href="css/layout.css" />
+    <link type="text/css" rel="stylesheet" asp-href-include="~/css/*.css"/>
 </head>
 <body>
     <div id="imageDiv">
-        <img src="images/mainbackground/top.svg" id="topImage" />
-        <img src="images/mainbackground/bottom.svg" id="bottomImage" />
-        <img src="images/mainbackground/left.svg" id="leftImage" />
-        <img src="images/mainbackground/right.svg" id="rightImage" />
+        <img src="~/images/mainbackground/top.svg" asp-append-version="true" id="topImage" />
+        <img src="~/images/mainbackground/bottom.svg" asp-append-version="true" id="bottomImage" />
+        <img src="~/images/mainbackground/left.svg" asp-append-version="true" id="leftImage" />
+        <img src="~/images/mainbackground/right.svg" asp-append-version="true" id="rightImage" />
         <div id="contentDiv">
             <h1 id="title">@ViewBag.Title</h1>
             <nav class="divMenu">
                 <div>
                     <a asp-controller="Home" asp-action="Index">Home</a>
                 </div>
-
+                <div>
+                    <a asp-controller="Authorization" asp-action="Register">Register</a>
+                </div>
             </nav>
             <main>
                 @RenderBody()

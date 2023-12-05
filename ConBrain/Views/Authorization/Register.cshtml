@@ -1,0 +1,36 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewBag.Title = "Register";
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+<form action="replyregister" method="post" enctype="multipart/form-data">
+    <div class="form">
+        <div class="standartForm">
+            <p class="nameForm">Имя:</p>
+            <input class="valueForm" required placeholder="Ваше имя" type="text" name="name" value="" />
+        </div>
+        <div class="standartForm">
+            <p class="nameForm">Фамилия:</p>
+            <input class="valueForm" required placeholder="Ваше фамилия" type="text" name="family" value="" />
+        </div>
+        <div class="standartForm">
+            <p class="nameForm">Отчество:</p>
+            <input class="valueForm" placeholder="Ваше отчество" type="text" name="secondName" value="" />
+        </div>
+        <div class="standartForm">
+            <p class="nameForm">Ник:</p>
+            <input class="valueForm" required placeholder="Ваш ник" type="text" name="nick" value="" />
+        </div>
+        <div class="standartForm">
+            <p class="nameForm">Телефон:</p>
+            <input class="valueForm" required placeholder="Номер телефона" type="tel" name="tel" value="" />
+        </div>
+        <div class="standartForm">
+            <p class="nameForm">Пароль:</p>
+            <input class="valueForm" placeholder="Пароль" type="password" name="pass" value="" />
+        </div>
+        <div class="buttonForm"><button type="submit">Зарегистрироваться</button></div>
+    </div>
+</form>
