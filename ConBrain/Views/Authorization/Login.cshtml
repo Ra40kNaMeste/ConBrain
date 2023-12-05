@@ -1,0 +1,17 @@
+﻿@{
+    ViewBag.Title = "Login";
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+<form action="replylogin" method="post" enctype="multipart/form-data">
+    <div class="form">
+        <div class="standartForm">
+            <p class="nameForm">Логин:</p>
+            <input class="valueForm" required placeholder="номер телефона или ник" type="text" name="loginOrNick" value="" />
+        </div>
+        <div class="standartForm">
+            <p class="nameForm">Пароль:</p>
+            <input class="valueForm" required placeholder="пароль" type="password" name="pass" value="" />
+        </div>
+        <div class="buttonForm"><button type="submit">Залогиниться</button></div>
+    </div>
+</form>
