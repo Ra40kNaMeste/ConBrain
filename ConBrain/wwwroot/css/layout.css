@@ -41,6 +41,7 @@
     top: 150px;
     width: 60%;
     height: auto;
+    min-height:70%;
     border-radius: 10px;
     display: flex;
     flex-direction: column;

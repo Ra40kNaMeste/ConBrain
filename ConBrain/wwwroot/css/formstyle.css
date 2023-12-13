@@ -39,3 +39,7 @@
 .buttonForm button {
 font-size: 30px;
 }
+
+.incorrectInput{
+    background-color: #ff000064;
+}

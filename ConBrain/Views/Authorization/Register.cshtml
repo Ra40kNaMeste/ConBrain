@@ -5,32 +5,40 @@
     ViewBag.Title = "Register";
     Layout = "/Views/Shared/_Layout.cshtml";
 }
-<form action="replyregister" method="post" enctype="multipart/form-data">
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<form enctype="multipart/form-data">
     <div class="form">
         <div class="standartForm">
-            <p class="nameForm">Имя:</p>
-            <input class="valueForm" required placeholder="Ваше имя" type="text" name="name" value="" />
+            <p class="nameForm">Name:</p>
+            <input class="valueForm" required placeholder="your name" type="text" name="name" value="" />
         </div>
         <div class="standartForm">
-            <p class="nameForm">Фамилия:</p>
-            <input class="valueForm" required placeholder="Ваше фамилия" type="text" name="family" value="" />
+            <p class="nameForm">Family:</p>
+            <input class="valueForm" required placeholder="your family" type="text" name="family" value="" />
         </div>
         <div class="standartForm">
-            <p class="nameForm">Отчество:</p>
-            <input class="valueForm" placeholder="Ваше отчество" type="text" name="secondName" value="" />
+            <p class="nameForm">Second name:</p>
+            <input class="valueForm" placeholder="your second name" type="text" name="secondName" value="" />
         </div>
         <div class="standartForm">
-            <p class="nameForm">Ник:</p>
-            <input class="valueForm" required placeholder="Ваш ник" type="text" name="nick" value="" />
+            <p class="nameForm">Nick:</p>
+            <input class="valueForm" required placeholder="your nick" type="text" name="nick" value="" />
         </div>
         <div class="standartForm">
-            <p class="nameForm">Телефон:</p>
-            <input class="valueForm" required placeholder="Номер телефона" type="tel" name="tel" value="" />
+            <p class="nameForm">Phone:</p>
+            <input class="valueForm" required placeholder="phone number" type="tel" name="tel" value="" />
         </div>
         <div class="standartForm">
-            <p class="nameForm">Пароль:</p>
-            <input class="valueForm" placeholder="Пароль" type="password" name="pass" value="" />
+            <p class="nameForm">Password:</p>
+            <input class="valueForm" required placeholder="password" type="password" name="pass" value="" />
         </div>
-        <div class="buttonForm"><button type="submit">Зарегистрироваться</button></div>
+        <div class="standartForm">
+            <p class="nameForm">Repeat password:</p>
+            <input class="valueForm" required placeholder="password" type="password" name="repeatpass" value="" />
+        </div>
+        <div class="buttonForm">
+            <input type="submit" name="send" value="Register"/>
+        </div>
     </div>
 </form>
+<script  asp-append-version="true" src="~/js/passwordValidateScript.js"/>

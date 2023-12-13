@@ -14,11 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="html\register.html" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\js\" />
+    <None Remove="html\.html" />
   </ItemGroup>
 
   <ItemGroup>
