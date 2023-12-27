@@ -11,10 +11,19 @@
     <Content Remove="wwwroot\images\mainbackground\left.svg" />
     <Content Remove="wwwroot\images\mainbackground\right.svg" />
     <Content Remove="wwwroot\images\mainbackground\top.svg" />
+    <Content Remove="wwwroot\js\authorizationSkript.js" />
   </ItemGroup>
 
   <ItemGroup>
     <None Remove="html\.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\js\authorizationSkript.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\js\authorizationSkript.js" />
   </ItemGroup>
 
   <ItemGroup>

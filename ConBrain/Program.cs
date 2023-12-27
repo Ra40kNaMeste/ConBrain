@@ -23,10 +23,10 @@ namespace ConBrain
             
 
             builder.Services.AddSingleton<ILogger>(new ConsoleLogger());
-            builder.Services.AddAuthorization();
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
             });
+            builder.Services.AddAuthorization();
 
             var app = builder.Build();
             app.MapControllerRoute("default", "{controller=Home}/{action=Index}");

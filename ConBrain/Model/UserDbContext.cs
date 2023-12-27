@@ -37,6 +37,7 @@ namespace ConBrain.Model
 
     public class Person
     {
+        public Person() { }
         public int Id { get; set; }
         public string Nick { get; set; } = "";
         public string Name { get; set; } = "";
@@ -51,6 +52,7 @@ namespace ConBrain.Model
 
     public class Message
     {
+        public Message() { }
         public int Id { get; set; }
         public Person? Target { get; set; }
         public Person? Sender { get; set; }
