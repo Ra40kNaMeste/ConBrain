@@ -6,31 +6,32 @@
     Layout = "/Views/Shared/_Layout.cshtml";
 }
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-<form enctype="multipart/form-data" asp-action="RegisterOut" asp-controller="Authorization" method="post">
+
+<form name="loginform" enctype="multipart/form-data" asp-action="RegisterOut" asp-controller="Authorization" method="post">
     <div class="form">
         <div class="standartForm">
             <p class="nameForm">Name:</p>
-            <input class="valueForm" required placeholder="your name" type="text" name="name" value="" />
+            <input class="valueForm sendInput" required placeholder="your name" type="text" name="name" value="" />
         </div>
         <div class="standartForm">
             <p class="nameForm">Family:</p>
-            <input class="valueForm" required placeholder="your family" type="text" name="family" value="" />
+            <input class="valueForm sendInput" required placeholder="your family" type="text" name="family" value="" />
         </div>
         <div class="standartForm">
             <p class="nameForm">Second name:</p>
-            <input class="valueForm" placeholder="your second name" type="text" name="secondName" value="" />
+            <input class="valueForm sendInput" placeholder="your second name" type="text" name="secondName" value="" />
         </div>
         <div class="standartForm">
             <p class="nameForm">Nick:</p>
-            <input class="valueForm" required placeholder="your nick" type="text" name="nick" value="" />
+            <input class="valueForm sendInput" required placeholder="your nick" type="text" name="nick" value="" />
         </div>
         <div class="standartForm">
             <p class="nameForm">Phone:</p>
-            <input class="valueForm" required placeholder="phone number" type="tel" name="tel" value="" />
+            <input class="valueForm sendInput" required placeholder="phone number" type="tel" name="tel" value="" />
         </div>
         <div class="standartForm">
             <p class="nameForm">Password:</p>
-            <input class="valueForm" required placeholder="password" type="password" name="pass" value="" />
+            <input class="valueForm sendInput" required placeholder="password" type="password" name="pass" value="" />
         </div>
         <div class="standartForm">
             <p class="nameForm">Repeat password:</p>
@@ -41,4 +42,6 @@
         </div>
     </div>
 </form>
-<script  asp-append-version="true" src="~/js/passwordValidateScript.js"/>
+<script asp-append-version="true" src="~/js/authorizationSkript.js"></script>
+<script asp-append-version="true" src="~/js/passwordValidateScript.js"></script>
+

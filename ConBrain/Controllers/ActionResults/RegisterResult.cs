@@ -15,7 +15,7 @@ namespace ConBrain.Controllers.ActionResults
         }
         public async Task ExecuteResultAsync(ActionContext context)
         {
-            if (_data.Pass != _data.Repeatpass || _context.People.Where(i => i.Nick == _data.Nick || i.Phone == _data.Tel).Any())
+            if (_context.People.Where(i => i.Nick == _data.Nick || i.Phone == _data.Tel).Any())
             {
                 context.HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
                 await context.HttpContext.Response.StartAsync();
@@ -34,5 +34,5 @@ namespace ConBrain.Controllers.ActionResults
         private readonly AuthorizationSettings _settings;
         private readonly UserDbContext _context;
     }
-    public record class UserRegisterData(string Name, string Family, string SecondName, string Nick, string Tel, string Pass, string Repeatpass);
+    public record class UserRegisterData(string Name, string Family, string SecondName, string Nick, string Tel, string Pass);
 }
