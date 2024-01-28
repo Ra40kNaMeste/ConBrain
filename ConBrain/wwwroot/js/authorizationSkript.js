@@ -1,6 +1,5 @@
 ﻿const form = document.getElementsByName("loginform")[0];
 const values = document.getElementsByClassName("sendInput");
-console.log('Hello world!')
 async function saveToken(e) {
     e.preventDefault();
     const target = e.currentTarget;

@@ -37,7 +37,12 @@ namespace ConBrain.Model
 
     public class Person
     {
-        public Person() { }
+        public Person() 
+        {
+            Friends = new();
+            SendedMessages = new();
+            Messages = new();
+        }
         public int Id { get; set; }
         public string Nick { get; set; } = "";
         public string Name { get; set; } = "";

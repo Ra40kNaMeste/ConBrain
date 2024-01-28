@@ -7,6 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="WebTree\**" />
+    <Compile Remove="Новая папка\**" />
+    <Content Remove="WebTree\**" />
+    <Content Remove="Новая папка\**" />
+    <EmbeddedResource Remove="WebTree\**" />
+    <EmbeddedResource Remove="Новая папка\**" />
+    <None Remove="WebTree\**" />
+    <None Remove="Новая папка\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="wwwroot\images\mainbackground\bottom.svg" />
     <Content Remove="wwwroot\images\mainbackground\left.svg" />
     <Content Remove="wwwroot\images\mainbackground\right.svg" />
@@ -34,6 +45,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.11" />
   </ItemGroup>
 
   <ItemGroup>

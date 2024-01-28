@@ -13,21 +13,27 @@ namespace ConBrain.Controllers
             settings = configuration.GetSection("Authorization").Get<AuthorizationSettings>() ?? throw new FormatException();
             this.context = context;
         }
+        [HttpGet]
+        [Route("Register")]
         public IActionResult Register()
         {
             return View();
         }
+        [HttpGet]
+        [Route("Login")]
         public IActionResult Login() 
         {
             return View();
         }
-
-        public IActionResult LogOut(UserLoginData data)
+        [HttpPost]
+        [Route("Login")]
+        public IActionResult Login(UserLoginData data)
         {
             return new LoginResult(data, settings, context);
         }
-
-        public IActionResult RegisterOut(UserRegisterData data)
+        [HttpPost]
+        [Route("Register")]
+        public IActionResult Register(UserRegisterData data)
         {
             return new RegisterResult(data, settings, context);
         }

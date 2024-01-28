@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewBag.Title = "Home";
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+@using ConBrain.Model;
+@model Person
+
+<div id="nick">@Model.Nick</div>
+<div id="name">@string.Format(@"{0} {1} {2}", Model.Family, Model.Name, Model.LastName)</div>
+<div id="phone">@Model.Phone</div>
+<div id="friends">
+    <div>
+    <p>count = </p><br>@Model.Friends.Count()</br>
+    </div>
+    <div>
+    @{
+        int count = Model.Friends.Count();
+        if (count > 3)
+            count = 3;
+        for (int i = 0; i < count; i++)
+        {
+            <p>@Model.Friends[0].Nick</p>
+        }
+    }
+    </div>
+</div>

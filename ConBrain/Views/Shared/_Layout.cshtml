@@ -16,20 +16,23 @@
             <h1 id="title">@ViewBag.Title</h1>
             <nav class="divMenu">
                 <div>
-                    <a asp-controller="Home" asp-action="Index">Home</a>
+                    <a asp-controller="Home" asp-action="Index" class="auth">Home</a>
                 </div>
                 <div>
-                    <a asp-controller="Authorization" asp-action="Register">Register</a>
+                    <a asp-controller="Authorization" asp-action="Register" class="auth">Register</a>
                 </div>
                 <div>
-                    <a asp-controller="Authorization" asp-action="Login">Sign in</a>
+                    <a asp-controller="Authorization" asp-action="Login" class="auth">Sign in</a>
+                </div>
+                <div>
+                    <a asp-controller="HomePage" asp-action="Dates" class="auth">My Page</a>
                 </div>
             </nav>
             <main>
                 @RenderBody()
             </main>
         </div>
-
+        <script asp-append-version="true" src="~/js/authenticationScript.js"></script>
     </div>
 </body>
 </html>

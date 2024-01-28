@@ -1,7 +1,9 @@
 ﻿using ConBrain.Model;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
 
 namespace ConBrain.Controllers.ActionResults
 {
@@ -24,9 +26,13 @@ namespace ConBrain.Controllers.ActionResults
             await _context.People.AddAsync(new Person() { Family = _data.Family, LastName = _data.SecondName, Name = _data.Name, Nick = _data.Nick, Password = _data.Pass, Phone = _data.Tel });
             await _context.SaveChangesAsync();
 
-            var claims = new List<Claim>() { new Claim(ClaimTypes.Name,_data.Nick), new Claim(ClaimTypes.MobilePhone, _data.Tel) };
-            var jwt = new JwtSecurityToken(issuer: _settings.Issures, audience: _settings.Audience, claims: claims, 
-                expires: DateTime.UtcNow.Add(TimeSpan.FromHours(_settings.ExpiresHours)));
+            var claims = new List<Claim>() { new Claim(ClaimTypes.Name, _data.Nick), new Claim(ClaimTypes.MobilePhone, _data.Tel) };
+            var jwt = new JwtSecurityToken(
+                issuer: _settings.Issures,
+                audience: _settings.Audience,
+                claims: claims,
+            expires: DateTime.UtcNow.Add(TimeSpan.FromHours(_settings.ExpiresHours)),
+                signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_settings.Key)), SecurityAlgorithms.HmacSha256));
             await context.HttpContext.Response.WriteAsJsonAsync(new { nick = _data.Nick, token = new JwtSecurityTokenHandler().WriteToken(jwt) });
         }
 
