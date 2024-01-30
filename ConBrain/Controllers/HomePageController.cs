@@ -12,6 +12,7 @@ namespace ConBrain.Controllers
         {
             _dbContext = dbContext;
         }
+        [Route("home")]
         public IActionResult Dates()
         {
             

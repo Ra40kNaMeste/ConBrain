@@ -22,8 +22,8 @@ async function saveToken(e) {
     //получаем ответ
     if (response.ok === true) {
         const data = await response.json();
-        document.cookie = "nick = " + data.nick;
         document.cookie = "token = " + data.token;
+        window.location.replace("../home")
     }
     else {
 
