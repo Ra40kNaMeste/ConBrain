@@ -1,0 +1,31 @@
+﻿#nick {
+    text-align:right;
+    margin: 20px 0px 0px 0px;
+}
+#personDates {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid #ccc;
+}
+#avatar {
+    width: 80px;
+    height: 80px;
+    margin:10px;
+}
+#name {
+    font-weight: 700;
+    font-size: x-large;
+    padding: 0px 20px;
+}
+#friends{
+    display: flex;
+    flex-direction: row;
+}
+#friendsStatic {
+    font-size: x-large;
+    padding: 0px 20px;
+}
+#friendsForeach{
+    width: 80px;
+    height: 80px;
+}

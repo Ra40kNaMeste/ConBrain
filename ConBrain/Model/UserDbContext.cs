@@ -45,6 +45,7 @@ namespace ConBrain.Model
         }
         public int Id { get; set; }
         public string Nick { get; set; } = "";
+        public string? AvatarPath { get; set; }
         public string Name { get; set; } = "";
         public string Family { get; set; } = "";
         public string? LastName { get; set; }
