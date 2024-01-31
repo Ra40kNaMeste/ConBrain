@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using ConBrain.Model;
-using Microsoft.AspNetCore.Server.IIS.Core;
-using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 

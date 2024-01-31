@@ -56,6 +56,32 @@ namespace ConBrain.Model
         public List<Message> Messages { get; set; } = null!;
     }
 
+    public class PersonSavedMementor
+    {
+        public PersonSavedMementor(string nick, string? avatarPath, string name, string family, string? lastName)
+        {
+            Nick = nick;
+            AvatarPath = avatarPath;
+            Name = name;
+            Family = family;
+            LastName = lastName;
+        }
+        public PersonSavedMementor(Person person)
+        {
+            Nick = person.Nick;
+            AvatarPath = person.AvatarPath;
+            Name = person.Name;
+            Family = person.Family;
+            LastName = person.LastName;
+        }
+
+        public string Nick { get; set; } = "";
+        public string? AvatarPath { get; set; }
+        public string Name { get; set; } = "";
+        public string Family { get; set; } = "";
+        public string? LastName { get; set; }
+    }
+
     public class Message
     {
         public Message() { }

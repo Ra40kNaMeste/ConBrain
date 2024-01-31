@@ -25,14 +25,16 @@
                     <a asp-controller="Authorization" asp-action="Login" class="auth">Sign in</a>
                 </div>
                 <div>
-                    <a asp-controller="HomePage" asp-action="Dates" class="auth">My Page</a>
+                    <a asp-controller="Person" asp-action="Dates" class="auth">My Page</a>
+                </div>
+                <div>
+                    <a asp-controller="Home" asp-action="People" class="auth">People</a>
                 </div>
             </nav>
             <main>
                 @RenderBody()
             </main>
         </div>
-        <script asp-append-version="true" src="~/js/authenticationScript.js"></script>
     </div>
 </body>
 </html>
