@@ -1,49 +1,98 @@
-﻿const peopleBody = document.getElementsByName("peopleBody")[0];
+﻿//Нахождение внешних опорных элементов
+const peopleBody = document.getElementsByName("peopleBody")[0];
 const search = document.getElementsByName("search")[0];
-const step = 20;
 
-let lastElementIndex = 0;
-console.log(search.value);
-UpdateItems();
+//Создание гифки загрузки
+const loadImg = document.createElement("img");
+loadImg.src = "/images/load.gif";
+loadImg.classList.add("middleicon")
 
-async function UpdateItems() {
+const step = 10;
+const scrollOffset = 1;
+
+let lastElementIndex = step;
+UpdateItemsAsync(0, lastElementIndex);
+
+addEventListener("scroll", async(e) => {    
+    //Загрузка данных с сервера
+    let temp = 0
+    while (canEndScroll(scrollOffset)) {
+        temp = await UpdateItemsAsync(lastElementIndex, step);
+        lastElementIndex += temp;
+        if (temp < step)
+            break;
+    }
+})
+
+//Добавление новых пользователей на сервер. Возвращает количество загруженных пользователей
+async function UpdateItemsAsync(lastElementIndex, step) {
+    //Добавляем анимацию загрузки данных с сервера
+    peopleBody.appendChild(loadImg);
+    //Запрашиваем данные с сервера
+    const dates = await LoadPeopleByServer(lastElementIndex, step);
+    
+    //Удаляем анимацию загрузки данных с сервера
+    peopleBody.removeChild(loadImg);
+    
+    //Добавляем загруженные данные в таблицу
+    if (dates != null) {
+        let res = 0;
+        for (data of dates) {
+            appendPersonInTable(data);
+            res++;
+        }
+        return res
+    }
+    return 0;
+}
+
+//Функция загрузки пользователей с сервера
+async function LoadPeopleByServer(lastElementIndex, step) {
+    //Запрашиваем данные с сервера
     let pattern = search.value;
-    console.log('patte = ' + pattern);
     const response = await fetch("/peopleList" + `?offset=${lastElementIndex}&size=${step}&pattern=${pattern}`, {
         method: "GET",
     });
+
     //получаем ответ
-    if (response.ok === true) {
-        const data = await response.json();
-        lastElementIndex += step;
-        for (item of data) {
-            const person = document.createElement("tr");
-            
-
-            const avatarTd = document.createElement("td");
-            const avatar = document.createElement("img");
-            avatar.classList.add("avatar");
-            avatar.src = "/avatars/";
-            if (item.hasOwnProperty("avatarPath") && item.avatarPath != null)
-                avatar.src += item.avatarPath;
-            else
-                avatar.src += "default.svg";
-           
-            avatarTd.appendChild(avatar)
-            
-            const nick = document.createElement("td")
-            if (item.hasOwnProperty("nick"))
-                nick.appendChild(document.createTextNode(item.nick));
-                
-            const name = document.createElement("td")
-            if (item.hasOwnProperty("family") && item.hasOwnProperty("name"))
-                name.appendChild(document.createTextNode(`${item.family} ${item.name}`));
-
-            person.appendChild(avatarTd);
-            person.appendChild(nick);
-            person.appendChild(name);
-
-            peopleBody.appendChild(person);
-        }
-    }
+    if (response.ok === true)
+        return await response.json();
+    else
+        return null;
 }
+
+//Функция добавление пользователя в список
+function appendPersonInTable(data) {
+    const person = document.createElement("tr");
+
+
+    const avatarTd = document.createElement("td");
+    const avatar = document.createElement("img");
+    avatar.classList.add("avatar");
+    avatar.src = "/avatars/";
+    if (data.hasOwnProperty("avatarPath") && data.avatarPath != null)
+        avatar.src += data.avatarPath;
+    else
+        avatar.src += "default.svg";
+
+    avatarTd.appendChild(avatar)
+
+    const nick = document.createElement("td")
+    if (data.hasOwnProperty("nick"))
+        nick.appendChild(document.createTextNode(data.nick));
+
+    const name = document.createElement("td")
+    if (data.hasOwnProperty("family") && data.hasOwnProperty("name"))
+        name.appendChild(document.createTextNode(`${data.family} ${data.name}`));
+
+    person.appendChild(avatarTd);
+    person.appendChild(nick);
+    person.appendChild(name);
+
+    peopleBody.appendChild(person);
+}
+
+function canEndScroll(offset) {
+    return scrollY + document.body.clientHeight + offset >= document.documentElement.scrollHeight;
+}
+
