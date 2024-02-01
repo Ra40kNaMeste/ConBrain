@@ -82,8 +82,13 @@ async function LoadPeopleByServer(lastElementIndex, step) {
 
 //Функция добавление пользователя в список
 function appendPersonInTable(data) {
+    if (!data.hasOwnProperty("nick") || !data.hasOwnProperty("family") || !data.hasOwnProperty("name"))
+        return;
+    
     const person = document.createElement("tr");
-
+    person.addEventListener("click", e => {
+        window.location.href = `../id=${data.nick}`;
+    })
 
     const avatarTd = document.createElement("td");
     const avatar = document.createElement("img");
@@ -93,16 +98,14 @@ function appendPersonInTable(data) {
         avatar.src += data.avatarPath;
     else
         avatar.src += "default.svg";
-
     avatarTd.appendChild(avatar)
 
     const nick = document.createElement("td")
-    if (data.hasOwnProperty("nick"))
-        nick.appendChild(document.createTextNode(data.nick));
+    nick.appendChild(document.createTextNode(data.nick));
+
 
     const name = document.createElement("td")
-    if (data.hasOwnProperty("family") && data.hasOwnProperty("name"))
-        name.appendChild(document.createTextNode(`${data.family} ${data.name}`));
+    name.appendChild(document.createTextNode(`${data.family} ${data.name}`));
 
     person.appendChild(avatarTd);
     person.appendChild(nick);

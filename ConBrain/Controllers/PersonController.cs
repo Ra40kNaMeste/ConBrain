@@ -1,6 +1,7 @@
 ﻿using ConBrain.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 using System.Security.Claims;
 
 namespace ConBrain.Controllers
@@ -17,9 +18,20 @@ namespace ConBrain.Controllers
         {
             var person = GetPersonByAuth();
             if (person == null)
-                Results.BadRequest();
-            return View(person);
+                return new StatusCodeResult(StatusCodes.Status400BadRequest);
+            return View("Person", person);
         }
+
+        [AllowAnonymous]
+        [Route("id={id}")]
+        public IActionResult Person(string id)
+        {
+            var person = _dbContext.People.Where(i => i.Nick == id).FirstOrDefault();
+            if (person == null)
+                return new StatusCodeResult(StatusCodes.Status400BadRequest);
+            return View("Person", person);
+        }
+
         //[Route("messages")]
         //public IActionResult Messages()
         //{ 
