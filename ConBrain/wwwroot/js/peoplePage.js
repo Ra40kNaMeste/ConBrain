@@ -10,8 +10,7 @@ loadImg.classList.add("middleicon")
 const step = 10;
 const scrollOffset = 1;
 
-let lastElementIndex = step;
-UpdateItemsAsync(0, lastElementIndex);
+ResetItems();
 
 addEventListener("scroll", async(e) => {    
     //Загрузка данных с сервера
@@ -23,6 +22,26 @@ addEventListener("scroll", async(e) => {
             break;
     }
 })
+
+search.addEventListener("input", ResetItems);
+
+//Сброс всех данных
+async function ResetItems() {
+    //Сбрасываем начальный элемент
+    lastElementIndex = 0;
+    //Удаляем все элементы
+    while (peopleBody.firstChild) {
+        peopleBody.removeChild(peopleBody.firstChild);
+    }
+
+    //Добавляем элементы пока они не закончатся или пока не достигнем конца экрана
+    while (canEndScroll(scrollOffset)) {
+        let len = await UpdateItemsAsync(lastElementIndex, step);
+        if (len < step)
+            break;
+    }
+
+}
 
 //Добавление новых пользователей на сервер. Возвращает количество загруженных пользователей
 async function UpdateItemsAsync(lastElementIndex, step) {
