@@ -27,8 +27,6 @@
             string fierndsStr = count == 0? "not friends" : string.Format("{0} friends", count);
         }
         <p>@fierndsStr</p>
-    </div>
-    <div id="friendsForeach">
         @{
             if (count > 3)
                 count = 3;
@@ -38,9 +36,10 @@
                 if (friendsAvatar == null || friendsAvatar == string.Empty)
                     friendsAvatar = "default.svg";
                 string friendAvatartPath = "/avatars/" + friendsAvatar;
-                <img class="middleicon" src="@friendAvatartPath"/>
+                <img class="middleicon" src="@friendAvatartPath" />
             }
         }
+        <a asp-asp-controller="Person" asp-action="Friends">...</a>
     </div>
 </div>
 <script asp-append-version="true" src="~/js/personPage/appendfriendbutton.js"></script>

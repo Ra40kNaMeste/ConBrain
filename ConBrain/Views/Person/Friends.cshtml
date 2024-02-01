@@ -1,11 +1,12 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@{
+    ViewBag.Title = "Friends";
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
 @using ConBrain.Model;
 @model Person
 <table>
     <caption>Friends</caption>
-    <tbody>
+    <table name="peopleBody">
         @{
             foreach (var friend  in Model.Friends)
             {
@@ -15,11 +16,12 @@
                 string pathAvatar = "/avatars/" + avatar;
 
                 <tr>
-                    <td>< src=@avatar/></td>
+                    <td><img class="avatar" src=@pathAvatar /></td>
                     <td>@friend.Nick</td>
                     <td>@string.Format("{0} {1}", friend.Family, friend.Name)</td>
                 </tr>
             }
         }
-    </tbody>
+    </table>
 </table>
+<script asp-append-version="true" src="~/js/personPage/setLinkInPeopleBody.js"></script>
