@@ -15,6 +15,7 @@ namespace ConBrain.Model
 
         public DbSet<Person> People { get; set; } = null!;
         public DbSet<Message> Messages { get; set; } = null!;
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -37,34 +38,36 @@ namespace ConBrain.Model
 
     public class Person
     {
-        public Person() 
+        public Person()
         {
             Friends = new();
             SendedMessages = new();
             Messages = new();
         }
         public int Id { get; set; }
+        public string Password { get; set; } = "";
+        public List<Person> Friends { get; set; } = null!;
+        public List<Message> SendedMessages { get; set; } = null!;
+        public List<Message> Messages { get; set; } = null!;
         public string Nick { get; set; } = "";
         public string? AvatarPath { get; set; }
         public string Name { get; set; } = "";
         public string Family { get; set; } = "";
         public string? LastName { get; set; }
         public string Phone { get; set; } = "";
-        public string Password { get; set; } = "";
-        public List<Person> Friends { get; set; } = null!;
-        public List<Message> SendedMessages { get; set; } = null!;
-        public List<Message> Messages { get; set; } = null!;
     }
 
     public class PersonSavedMementor
     {
-        public PersonSavedMementor(string nick, string? avatarPath, string name, string family, string? lastName)
+        public PersonSavedMementor() { }
+        public PersonSavedMementor(string nick, string? avatarPath, string name, string family, string? lastName, string phone)
         {
             Nick = nick;
             AvatarPath = avatarPath;
             Name = name;
             Family = family;
             LastName = lastName;
+            Phone = phone;
         }
         public PersonSavedMementor(Person person)
         {
@@ -80,6 +83,7 @@ namespace ConBrain.Model
         public string Name { get; set; } = "";
         public string Family { get; set; } = "";
         public string? LastName { get; set; }
+        public string Phone { get; set; } = "";
     }
 
     public class Message

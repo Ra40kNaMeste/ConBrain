@@ -19,6 +19,7 @@
     <img class="avatar" src="@pathAvatar" />
     <div id="name">@string.Format(@"{0} {1}", Model.Family, Model.Name)</div>
 </div>
+<div id="addFriendArea"></div>
 <div id="friends">
     <div id="friendsStatic">
         @{
@@ -37,8 +38,9 @@
                 if (friendsAvatar == null || friendsAvatar == string.Empty)
                     friendsAvatar = "default.svg";
                 string friendAvatartPath = "/avatars/" + friendsAvatar;
-                <img src="@friendAvatartPath"/>
+                <img class="middleicon" src="@friendAvatartPath"/>
             }
         }
     </div>
 </div>
+<script asp-append-version="true" src="~/js/personPage/appendfriendbutton.js"></script>
