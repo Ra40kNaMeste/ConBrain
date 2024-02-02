@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Numerics;
 
 namespace ConBrain.Model
@@ -14,7 +15,7 @@ namespace ConBrain.Model
         }
 
         public DbSet<Person> People { get; set; } = null!;
-        public DbSet<Message> Messages { get; set; } = null!;
+        public DbSet<FriendPerson> FreindsList { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -29,26 +30,24 @@ namespace ConBrain.Model
             builder.Entity<Person>().Property(i=>i.Phone).IsRequired();
             builder.Entity<Person>().HasIndex(i => i.Phone).IsUnique();
 
+            builder.Entity<FriendPerson>()
+                .HasOne(p => p.Target)
+                .WithMany(p => p.Friends)
+                .HasForeignKey(p => p.TargetId);
 
-            builder.Entity<Message>().HasKey(i => i.Id);
-            builder.Entity<Message>().HasOne(i => i.Sender).WithMany(i => i.SendedMessages);
-            builder.Entity<Message>().HasOne(i => i.Target).WithMany(i => i.Messages);
+            builder.Entity<FriendPerson>()
+                .HasOne(p => p.Friend)
+                .WithMany(p => p.Subscribers)
+                .HasForeignKey(p => p.FriendId);
         }
     }
 
     public class Person
     {
-        public Person()
-        {
-            Friends = new();
-            SendedMessages = new();
-            Messages = new();
-        }
         public int Id { get; set; }
         public string Password { get; set; } = "";
-        public List<Person> Friends { get; set; } = null!;
-        public List<Message> SendedMessages { get; set; } = null!;
-        public List<Message> Messages { get; set; } = null!;
+        public List<FriendPerson> Friends { get; set; } = new();
+        public List<FriendPerson> Subscribers { get; set; } = new();
         public string Nick { get; set; } = "";
         public string? AvatarPath { get; set; }
         public string Name { get; set; } = "";
@@ -56,6 +55,17 @@ namespace ConBrain.Model
         public string? LastName { get; set; }
         public string Phone { get; set; } = "";
     }
+
+    public class FriendPerson
+    {
+        public int Id { get; set; }
+        public Person Friend { get; set; }
+        public int FriendId { get; set; }
+        public Person Target { get; set; }
+        public int TargetId { get; set; }
+
+    }
+
 
     public class PersonSavedMementor
     {
@@ -85,14 +95,4 @@ namespace ConBrain.Model
         public string? LastName { get; set; }
         public string Phone { get; set; } = "";
     }
-
-    public class Message
-    {
-        public Message() { }
-        public int Id { get; set; }
-        public Person? Target { get; set; }
-        public Person? Sender { get; set; }
-        public string Content { get; set; } = "";
-    }
-
 }

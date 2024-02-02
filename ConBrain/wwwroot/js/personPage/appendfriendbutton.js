@@ -44,6 +44,10 @@ const removeBtn = new ButtonBuilder("removeFriendButton", "remove from friends",
 })
 
 async function UpdateFriendButton() {
+    //Удаляем все элементы
+    while (area.firstChild) {
+        area.removeChild(area.firstChild);
+    }
     const response = await fetch("/person/friends", {
         method: "GET"
     });

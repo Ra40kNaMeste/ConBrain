@@ -2,6 +2,7 @@
 using ConBrain.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
 using System.Security.Claims;
 
@@ -27,7 +28,12 @@ namespace ConBrain.Controllers
         [Route("id={id}")]
         public IActionResult Person(string id)
         {
-            var person = _dbContext.People.Where(i => i.Nick == id).FirstOrDefault();
+            var person = _dbContext.People
+                .Include(i=>i.Subscribers)
+                .Include(i=>i.Friends)
+                    .ThenInclude(f => f.Friend)
+                .Where(i => i.Nick == id)
+                .FirstOrDefault();
             if (person == null)
                 return new StatusCodeResult(StatusCodes.Status400BadRequest);
             return View("Person", person);
@@ -69,7 +75,7 @@ namespace ConBrain.Controllers
             var person = GetPersonByAuth();
             if (person == null)
                 return new StatusCodeResult(StatusCodes.Status401Unauthorized);
-            return new FriendsActionResult(person.Friends.Select(i=>i.Nick));
+            return new FriendsActionResult(person.Friends.Select(i => i.Friend.Nick));
         }
         [HttpPut]
         [Route("person/friends")]
@@ -81,8 +87,8 @@ namespace ConBrain.Controllers
             var friend = _dbContext.People.Where(i=>i.Nick == nick).FirstOrDefault();
             if (friend == null)
                 return new StatusCodeResult(StatusCodes.Status400BadRequest);
-            if(!person.Friends.Contains(friend))
-                person.Friends.Add(friend);
+            if(!person.Friends.Any(i=>i.Target == friend))
+                _dbContext.FreindsList.Add(new FriendPerson() { Friend = friend, Target = person });
             _dbContext.SaveChanges();
             return new StatusCodeResult(StatusCodes.Status200OK);
         }
@@ -97,8 +103,7 @@ namespace ConBrain.Controllers
             var friend = _dbContext.People.Where(i => i.Nick == nick).FirstOrDefault();
             if (friend == null)
                 return new StatusCodeResult(StatusCodes.Status400BadRequest);
-            person.Friends.Remove(friend);
-            _dbContext.Update(person);
+            var paar = person.Friends.RemoveAll(i=>i.Friend == friend);
             await _dbContext.SaveChangesAsync();
             return new StatusCodeResult(StatusCodes.Status200OK);
         }
@@ -109,9 +114,12 @@ namespace ConBrain.Controllers
             string? namePerson = ControllerContext.HttpContext.User.FindFirst(ClaimTypes.Name)?.Value;
             if (namePerson == null)
                 return null;
-            var prope = _dbContext.People;
-            var c = prope.Count();
-            var person = _dbContext.People.FirstOrDefault(i => i.Nick == namePerson);
+            
+            var person = _dbContext.People
+                .Include(i => i.Friends)
+                    .ThenInclude(f=>f.Friend)
+                .Include(i => i.Subscribers)
+                .FirstOrDefault(i => i.Nick == namePerson);
             return person;
         }
         private UserDbContext _dbContext;
