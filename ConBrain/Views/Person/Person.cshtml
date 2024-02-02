@@ -36,10 +36,10 @@
                 if (friendsAvatar == null || friendsAvatar == string.Empty)
                     friendsAvatar = "default.svg";
                 string friendAvatartPath = "/avatars/" + friendsAvatar;
-                <img class="middleicon" src="@friendAvatartPath" />
+                <img class="middleicon" src="@friendAvatartPath"/>
             }
         }
-        <a asp-asp-controller="Person" asp-action="Friends">...</a>
+        <a asp-asp-controller="Person" asp-action="Friends" asp-route-id="@Model.Nick">...</a>
     </div>
 </div>
 <script asp-append-version="true" src="~/js/personPage/appendfriendbutton.js"></script>

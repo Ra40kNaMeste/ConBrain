@@ -1,9 +1,10 @@
-﻿@{
-    ViewBag.Title = "Friends";
+﻿@using ConBrain.Model;
+@model Person
+@{
+    ViewBag.Title = Model.Nick + " friends";
     Layout = "/Views/Shared/_Layout.cshtml";
 }
-@using ConBrain.Model;
-@model Person
+
 <table>
     <caption>Friends</caption>
     <table name="peopleBody">

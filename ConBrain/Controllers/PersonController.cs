@@ -9,9 +9,9 @@ using System.Security.Claims;
 namespace ConBrain.Controllers
 {
     [Authorize]
-    public class PersonController:Controller
+    public class PersonController : Controller
     {
-        public PersonController(UserDbContext dbContext) 
+        public PersonController(UserDbContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -29,8 +29,8 @@ namespace ConBrain.Controllers
         public IActionResult Person(string id)
         {
             var person = _dbContext.People
-                .Include(i=>i.Subscribers)
-                .Include(i=>i.Friends)
+                .Include(i => i.Subscribers)
+                .Include(i => i.Friends)
                     .ThenInclude(f => f.Friend)
                 .Where(i => i.Nick == id)
                 .FirstOrDefault();
@@ -47,10 +47,15 @@ namespace ConBrain.Controllers
         //    return View();
         //}
         [HttpGet]
-        [Route("friends")]
-        public IActionResult Friends()
+        [Route("{id}/friends")]
+        public IActionResult Friends(string id)
         {
-            var person = GetPersonByAuth();
+            var person = _dbContext.People
+                .Include(i => i.Subscribers)
+                .Include(i => i.Friends)
+                    .ThenInclude(f => f.Friend)
+                .Where(i => i.Nick == id)
+                .FirstOrDefault();
             if (person == null)
                 return new StatusCodeResult(StatusCodes.Status400BadRequest);
             return View(person);
