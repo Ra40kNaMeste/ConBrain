@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Build.Execution;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Numerics;
 
@@ -16,6 +17,8 @@ namespace ConBrain.Model
 
         public DbSet<Person> People { get; set; } = null!;
         public DbSet<FriendPerson> FreindsList { get; set; } = null!;
+        public DbSet<Dialog> Dialogs { get; set; } = null!;
+        public DbSet<Message> Messages { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -39,6 +42,9 @@ namespace ConBrain.Model
                 .HasOne(p => p.Friend)
                 .WithMany(p => p.Subscribers)
                 .HasForeignKey(p => p.FriendId);
+            builder.Entity<FriendPerson>().HasKey(p => new{p.TargetId, p.FriendId});
+
+            builder.Entity<Dialog>().Property(i=>i.Name).IsUnicode(true);
         }
     }
 
@@ -48,6 +54,7 @@ namespace ConBrain.Model
         public string Password { get; set; } = "";
         public List<FriendPerson> Friends { get; set; } = new();
         public List<FriendPerson> Subscribers { get; set; } = new();
+        public List<Dialog> Dialogs { get; set; }
         public string Nick { get; set; } = "";
         public string? AvatarPath { get; set; }
         public string Name { get; set; } = "";
@@ -58,12 +65,30 @@ namespace ConBrain.Model
 
     public class FriendPerson
     {
-        public int Id { get; set; }
         public Person Friend { get; set; }
         public int FriendId { get; set; }
         public Person Target { get; set; }
         public int TargetId { get; set; }
 
+    }
+
+    public class Dialog
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public List<Person> Members { get; set; } = new();
+        public List<Message> Messages { get; set; } = new();
+    }
+
+    public class Message
+    {
+        public int Id { get; set; }
+        public DateTime DateTime { get; set; }
+        public string Body { get; set; }
+        public Person? Sender { get; set; }
+
+        public int DialogId { get; set; }
+        public Dialog Dialog { get; set; }
     }
 
 

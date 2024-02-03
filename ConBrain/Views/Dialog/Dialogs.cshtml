@@ -1,0 +1,20 @@
+﻿@using ConBrain.Model;
+@model Person
+@{
+    ViewBag.Title = "My dialogs";
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<div>
+    @{
+        foreach (var dialog in Model.Dialogs)
+        {
+            <div class="dialog">@dialog.Name</div>
+        }
+    }
+    <div>
+        <a asp-controller="Dialog" asp-action="BuildDialog">Create dialog</a>
+    </div>
+</div>
+<script asp-append-version="true" src="~/js/personPage/dialogs.js"></script>

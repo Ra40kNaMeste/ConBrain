@@ -1,0 +1,21 @@
+﻿@using ConBrain.Model;
+@model Person
+@{
+    ViewBag.Title = "Create dialog";
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+<div>
+    <div class="form">
+        <button class="nameForm" id="create">create</button>
+        <div class="standartForm">
+            <p class="nameForm">name dialog</p>
+            <input class="valueForm" type="text" name="dialogName" />
+        </div>
+        <div class="nameForm">Members</div>
+        <div class="standartForm" id="membersBody">
+
+        </div>
+        <button class="nameForm" id="appendFriend">+</button>
+    </div>
+</div>
+<script asp-append-version="true" src="~/js/personPage/builddialog.js"></script>
