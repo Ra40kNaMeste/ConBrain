@@ -120,4 +120,25 @@ namespace ConBrain.Model
         public string? LastName { get; set; }
         public string Phone { get; set; } = "";
     }
+    public class MessageSavedMementor
+    {
+        public MessageSavedMementor(int id, DateTime dateTime, string body, string? sender = null) 
+        {
+            Id = id;
+            DateTime = dateTime;
+            Body = body;
+            Sender = sender;
+        }
+        public MessageSavedMementor(Message message)
+        {
+            Id = message.Id;
+            DateTime = message.DateTime;
+            Body = message.Body;
+            Sender = message.Sender?.Nick;
+        }
+        public int Id { get; set; }
+        public DateTime DateTime { get; set; }
+        public string Body { get; set; }
+        public string? Sender { get; set; }
+    }
 }

@@ -4,4 +4,25 @@
     ViewBag.Title = Model.Dialog.Name;
     Layout = "/Views/Shared/_Layout.cshtml";
 }
-<div>Hello world!</div>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<div>
+    <p id="name">@Model.Dialog.Name</p>
+    <img id="settings" src="/images/settings.svg" class="middleicon"></img>
+    <img id="addPerson" src="/images/add_person.svg" class="middleicon"></img>
+</div>
+<div id="messagesBody">
+
+</div>
+@{
+    string? avatar = Model.person.AvatarPath;
+    if (avatar == null || avatar == string.Empty)
+        avatar = "default.svg";
+    string pathAvatar = "/avatars/" + avatar;
+}
+<div>
+    <img src="@pathAvatar" class="middleicon"/>
+    <input id="text" type="text"/>
+    <button id="send" type="send">-></button>
+</div>
+<script asp-append-version="true" src="~/js/personPage/dialog.js"></script>

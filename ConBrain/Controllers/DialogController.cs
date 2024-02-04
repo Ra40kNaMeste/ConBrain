@@ -1,4 +1,5 @@
-﻿using ConBrain.Model;
+﻿using ConBrain.Controllers.ActionResults;
+using ConBrain.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,7 @@ namespace ConBrain.Controllers
             return View(person);
         }
 
+        [HttpGet]
         [Route("dialog/{name}")]
         public IActionResult Dialog(string name)
         {
@@ -30,6 +32,41 @@ namespace ConBrain.Controllers
             if (dialog == null)
                 return new StatusCodeResult(StatusCodes.Status400BadRequest);
             return View(new DialogData(person, dialog));
+        }
+
+        [HttpGet]
+        [Route("dialog/{name}/messages")]
+        public IActionResult Messages(string name, int start, int count)
+        {
+            var person = GetPersonByAuthWithMessages();
+            if (person == null)
+                return new StatusCodeResult(StatusCodes.Status401Unauthorized);
+            var messages = person.Dialogs.Where(i => i.Name == name).FirstOrDefault()?.Messages;
+            if (messages == null)
+                return new StatusCodeResult(StatusCodes.Status400BadRequest);
+            return new MessagesResult(messages.Select(i=>new MessageSavedMementor(i)), start, count);
+        }
+
+        [HttpPost]
+        [Route("dialog/{name}/messages")]
+        public async Task<IActionResult> Messages(string name, string body)
+        {
+            var person = GetPersonByAuthWithMessages();
+            if (person == null)
+                return new StatusCodeResult(StatusCodes.Status401Unauthorized);
+            var dialog = person.Dialogs.Where(i => i.Name == name).FirstOrDefault();
+            if(dialog == null)
+                return new StatusCodeResult(StatusCodes.Status400BadRequest);
+            var message = new Message()
+            {
+                Body = body,
+                DateTime = DateTime.Now,
+                Dialog = dialog, 
+                Sender = person
+            };
+            _dbContext.Messages.Add(message);
+            await _dbContext.SaveChangesAsync();
+            return new StatusCodeResult(StatusCodes.Status200OK);
         }
 
         [HttpGet]
@@ -70,10 +107,24 @@ namespace ConBrain.Controllers
 
             var person = _dbContext.People
                 .Include(i => i.Friends)
-                .Include(i=>i.Dialogs)
+                .Include(i => i.Dialogs)
                 .FirstOrDefault(i => i.Nick == namePerson);
             return person;
         }
+
+        private Person? GetPersonByAuthWithMessages()
+        {
+            string? namePerson = ControllerContext.HttpContext.User.FindFirst(ClaimTypes.Name)?.Value;
+            if (namePerson == null)
+                return null;
+
+            var person = _dbContext.People
+                .Include(i => i.Dialogs)
+                .ThenInclude(i=>i.Messages)
+                .FirstOrDefault(i => i.Nick == namePerson);
+            return person;
+        }
+
         private UserDbContext _dbContext;
     }
     public record class DialogData(Person person, Dialog Dialog);
