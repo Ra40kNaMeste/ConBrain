@@ -6,12 +6,14 @@ const messageBody = document.getElementById("messagesBody");
 const textInput = document.getElementById("text");
 const sendButton = document.getElementById("send");
 
+const pattern = new RegExp("^(?<year>\w+)-<?{month}\w+>")
+
 let messages = [];
-let ids = [];
+let firstMessageId;s
 
-const count = 5;
+const count = 10;
 
-setInterval(fetchMessages, 1000);
+setInterval(fetchMessages, 500);
 
 sendButton.addEventListener("click", async e => {
     console.log(`dialog/${dialogName}/messages?body=${textInput.value}`);
@@ -24,31 +26,34 @@ sendButton.addEventListener("click", async e => {
 });
 
 async function fetchMessages() {
-    const response = await fetch(`/dialog/${dialogName}/messages?start=0&count=${count}`, {
+    const fetchStr = firstMessageId ? `/dialog/${dialogName}/messages?id=${firstMessageId}` : `/dialog/${dialogName}/messages?start=0&count=${count}`;
+    const response = await fetch(fetchStr, {
         method: "GET"
     });
     if (response.ok) {
         
         const responeMessages = await response.json();
-        let ids = messages.slice();
-        ids = ids.map(i => i.id);
         for (rmes of responeMessages) {
-            if (!ids.includes(rmes.id))
-                messages.push(rmes);
+
+            insertMessage(rmes, 0);
+            firstMessageId = rmes.id;
         }
-        updateMessages();
     }
 }
-function updateMessages() {
+function generateBodyMessage(message) {
+    const root = document.createElement("div");
+    const messageBlock = document.createElement("div");
+
     
-    while (messageBody.firstChild)
-        messageBody.removeChild(messageBody.firstChild);
-    console.log(messages);
-    for (message of messages) {
-        const div = document.createElement("div");
-        div.textContent = message.body;
-        
-        div.classList.add("message");
-        messageBody.appendChild(div);
-    }
+    const datetime = document.createElement("div");
+    datetime.classList.add("dates");
+
+    const message = document.createElement("div");
+    div.textContent = message.body;
+    div.classList.add("message");
+    messageBody.appendChild(div);
+}
+
+function convertDateTime(datetime) {
+
 }

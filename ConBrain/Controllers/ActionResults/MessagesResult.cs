@@ -9,6 +9,10 @@ namespace ConBrain.Controllers.ActionResults
         {
             _messages = messages.Skip(start).Take(count);
         }
+        public MessagesResult(IEnumerable<MessageSavedMementor> messages, int lastId)
+        {
+            _messages = messages.TakeWhile(i=>i.Id != lastId);
+        }
         public async Task ExecuteResultAsync(ActionContext context)
         {
             await context.HttpContext.Response.WriteAsJsonAsync(_messages);

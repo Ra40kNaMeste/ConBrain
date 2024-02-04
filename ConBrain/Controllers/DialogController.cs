@@ -25,7 +25,16 @@ namespace ConBrain.Controllers
         [Route("dialog/{name}")]
         public IActionResult Dialog(string name)
         {
-            var person = GetPersonByAuth();
+            string? namePerson = ControllerContext.HttpContext.User.FindFirst(ClaimTypes.Name)?.Value;
+            if (namePerson == null)
+                return null;
+
+            var person = _dbContext.People
+                .Include(i => i.Friends)
+                .Include(i => i.Dialogs)
+                    .ThenInclude(i=>i.Members)
+                .FirstOrDefault(i => i.Nick == namePerson);
+
             if (person == null)
                 return new StatusCodeResult(StatusCodes.Status401Unauthorized);
             var dialog = person.Dialogs.Where(i => i.Name == name).FirstOrDefault();
@@ -45,6 +54,19 @@ namespace ConBrain.Controllers
             if (messages == null)
                 return new StatusCodeResult(StatusCodes.Status400BadRequest);
             return new MessagesResult(messages.Select(i=>new MessageSavedMementor(i)), start, count);
+        }
+
+        [HttpGet]
+        [Route("dialog/{name}/messages")]
+        public IActionResult Messages(string name, int id)
+        {
+            var person = GetPersonByAuthWithMessages();
+            if (person == null)
+                return new StatusCodeResult(StatusCodes.Status401Unauthorized);
+            var messages = person.Dialogs.Where(i => i.Name == name).FirstOrDefault()?.Messages;
+            if (messages == null)
+                return new StatusCodeResult(StatusCodes.Status400BadRequest);
+            return new MessagesResult(messages.Select(i => new MessageSavedMementor(i)), id);
         }
 
         [HttpPost]
