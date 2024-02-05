@@ -18,10 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\images\mainbackground\bottom.svg" />
-    <Content Remove="wwwroot\images\mainbackground\left.svg" />
-    <Content Remove="wwwroot\images\mainbackground\right.svg" />
-    <Content Remove="wwwroot\images\mainbackground\top.svg" />
     <Content Remove="wwwroot\js\authorizationSkript.js" />
   </ItemGroup>
 
@@ -46,21 +42,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.11" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="wwwroot\images\mainbackground\bottom.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="wwwroot\images\mainbackground\left.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="wwwroot\images\mainbackground\right.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="wwwroot\images\mainbackground\top.svg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
   </ItemGroup>
 
   <ItemGroup>

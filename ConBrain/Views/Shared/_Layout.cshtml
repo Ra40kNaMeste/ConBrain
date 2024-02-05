@@ -8,11 +8,8 @@
     <link type="text/css" rel="stylesheet" asp-href-include="~/css/person/*.css" />
 </head>
 <body>
-    <div id="imageDiv">
-        <img src="~/images/mainbackground/top.svg" asp-append-version="true" id="topImage" />
-        <img src="~/images/mainbackground/bottom.svg" asp-append-version="true" id="bottomImage" />
-        <img src="~/images/mainbackground/left.svg" asp-append-version="true" id="leftImage" />
-        <img src="~/images/mainbackground/right.svg" asp-append-version="true" id="rightImage" />
+    <div id="rootDiv" class="layoutForeground">
+        <img src="~/images/mainbackground/foreground.svg" asp-append-version="true" id="foreground"/>
         <div id="contentDiv">
             <h1 id="title">@ViewBag.Title</h1>
             <nav class="divMenu">

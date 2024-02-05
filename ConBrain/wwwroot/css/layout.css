@@ -1,51 +1,25 @@
-﻿
-#imageDiv {
-    transform:translate(50%, 0);
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    width: 100%;
-    max-width: 1000px;
+﻿#foreground {
+    position:fixed;
     height: 100%;
+    width: 100%;
+    padding:1%;
 }
-#topImage {
-    position:absolute;
-    right: 20px;
-    top: 20px;
-    width: 300px;
-}
-#rightImage {
-    position: absolute;
-    right:0pc;
-    top: 50%;
-    margin-top: -150px;
-    height: 300px;
-}
-#leftImage {
-    position: absolute;
-    left: 20px;
-    top: 50%;
-    margin-top: -150px;
-    height: 300px;
-}
-#bottomImage {
-    position:absolute;
-    left: 20px;
-    bottom: 20px;
-    width: 300px;
+#rootDiv {
+    display: flex;
+    justify-content: center;
 }
 #contentDiv {
-    position: relative;
+    z-index: 1;
+    position: fixed;
     background-color: aliceblue;
-    left: 20%;
-    top: 150px;
-    width: 60%;
-    height: auto;
-    min-height:70%;
-    border-radius: 10px;
+    top:12.5%;
+    height: 75%;
     display: flex;
     flex-direction: column;
-    justify-content:right;
+    justify-content: right;
+    aspect-ratio: 3/4;
+    border-radius:20px;
+    padding:40px;
 }
 #title {
     text-align:center;
