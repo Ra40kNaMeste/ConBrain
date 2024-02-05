@@ -5,13 +5,13 @@ namespace ConBrain.Controllers.ActionResults
 {
     public class MessagesResult : IActionResult
     {
-        public MessagesResult(IEnumerable<MessageSavedMementor> messages, int start, int count) 
+        public MessagesResult(IEnumerable<MessageSavedMementor> messages) 
         {
-            _messages = messages.Skip(start).Take(count);
+            _messages = messages;
         }
-        public MessagesResult(IEnumerable<MessageSavedMementor> messages, int lastId)
+        public MessagesResult(IEnumerable<MessageSavedMementor> messages, int lastId, int count)
         {
-            _messages = messages.TakeWhile(i=>i.Id != lastId);
+            _messages = messages.Reverse().TakeWhile(i => i.Id != lastId).Reverse();
         }
         public async Task ExecuteResultAsync(ActionContext context)
         {

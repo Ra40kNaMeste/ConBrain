@@ -43,6 +43,7 @@ namespace ConBrain.Controllers
             return View(new DialogData(person, dialog));
         }
 
+        #region Messagemethos
         [HttpGet]
         [Route("dialog/{name}/messages")]
         public IActionResult Messages(string name, int start, int count)
@@ -53,20 +54,45 @@ namespace ConBrain.Controllers
             var messages = person.Dialogs.Where(i => i.Name == name).FirstOrDefault()?.Messages;
             if (messages == null)
                 return new StatusCodeResult(StatusCodes.Status400BadRequest);
-            return new MessagesResult(messages.Select(i=>new MessageSavedMementor(i)), start, count);
+            return new MessagesResult(messages
+                .Select(i=>new MessageSavedMementor(i))
+                .Reverse()
+                .Skip(start)
+                .Take(count));
         }
 
         [HttpGet]
-        [Route("dialog/{name}/messages")]
-        public IActionResult Messages(string name, int id)
+        [Route("dialog/{name}/newmessages")]
+        public IActionResult NewMessages(string name, int id)
         {
             var person = GetPersonByAuthWithMessages();
+
             if (person == null)
                 return new StatusCodeResult(StatusCodes.Status401Unauthorized);
             var messages = person.Dialogs.Where(i => i.Name == name).FirstOrDefault()?.Messages;
             if (messages == null)
                 return new StatusCodeResult(StatusCodes.Status400BadRequest);
-            return new MessagesResult(messages.Select(i => new MessageSavedMementor(i)), id);
+            return new MessagesResult(messages.Select(i => new MessageSavedMementor(i))
+                .Reverse()
+                .TakeWhile(i => i.Id != id)
+                .Reverse());
+        }
+
+        [HttpGet]
+        [Route("dialog/{name}/oldmessages")]
+        public IActionResult OldMessages(string name, int id, int count)
+        {
+            var person = GetPersonByAuthWithMessages();
+
+            if (person == null)
+                return new StatusCodeResult(StatusCodes.Status401Unauthorized);
+            var messages = person.Dialogs.Where(i => i.Name == name).FirstOrDefault()?.Messages;
+            if (messages == null)
+                return new StatusCodeResult(StatusCodes.Status400BadRequest);
+            return new MessagesResult(messages.Select(i => new MessageSavedMementor(i))
+                .Reverse()
+                .SkipWhile(i => i.Id != id)
+                .Take(count));
         }
 
         [HttpPost]
@@ -90,6 +116,7 @@ namespace ConBrain.Controllers
             await _dbContext.SaveChangesAsync();
             return new StatusCodeResult(StatusCodes.Status200OK);
         }
+        #endregion //Messagemethods
 
         [HttpGet]
         [Route("dialogs/build")]
@@ -133,7 +160,6 @@ namespace ConBrain.Controllers
                 .FirstOrDefault(i => i.Nick == namePerson);
             return person;
         }
-
         private Person? GetPersonByAuthWithMessages()
         {
             string? namePerson = ControllerContext.HttpContext.User.FindFirst(ClaimTypes.Name)?.Value;
@@ -142,7 +168,8 @@ namespace ConBrain.Controllers
 
             var person = _dbContext.People
                 .Include(i => i.Dialogs)
-                .ThenInclude(i=>i.Messages)
+                    .ThenInclude(i => i.Messages)
+                        .ThenInclude(i=>i.Sender)
                 .FirstOrDefault(i => i.Nick == namePerson);
             return person;
         }
