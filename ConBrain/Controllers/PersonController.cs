@@ -39,13 +39,21 @@ namespace ConBrain.Controllers
             return View("Person", person);
         }
 
-        //[Route("messages")]
-        //public IActionResult Messages()
-        //{ 
-        //    var person = GetPersonByAuth();
-        //    var messages = person.Messages.Select(i => i.Sender == person ? i.Target : i.Sender).Distinct();
-        //    return View();
-        //}
+        [HttpGet]
+        [Route("person")]
+        public IActionResult GetPerson(string nick)
+        {
+            var person = _dbContext.People
+                .Include(i => i.Subscribers)
+                .Include(i => i.Friends)
+                    .ThenInclude(f => f.Friend)
+                .Where(i => i.Nick == nick)
+                .FirstOrDefault();
+            if (person == null)
+                return new StatusCodeResult(StatusCodes.Status400BadRequest);
+            return new PersonActionResult(new(person));
+        }
+
         [HttpGet]
         [Route("{id}/friends")]
         public IActionResult Friends(string id)

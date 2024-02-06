@@ -16,6 +16,40 @@ const count = 20; //Количество загружаемых за раз со
 const scrollOffset = 0; //смещение полосы прокрутки для подгрузки: при перемещении полосы проктрутки в начало начинается подгрузка старых сообщений
 const updateTime = 500; //время обновления страницы
 
+class PersonManager {
+    constructor() {
+        this.#personData = new Map();
+    }
+    #personData;
+    async #loadpersonfromserver(nick) {
+        const response = await fetch(`/person?nick=${nick}`, {
+            method: "GET"
+        });
+        if (response.ok === true) {
+            const person = await response.json();
+            
+            let path = "../avatars/";
+            console.log(path);
+            path += person.avatarPath != null ? person.avatarPath : "default.svg";
+            console.log(path);
+            this.#personData.set(nick, path);
+            return path;
+        }
+        return null;
+    }
+
+    async getPerson(nick) {
+        const res = this.#personData.get(nick);
+        if (res == null)
+            return await this.#loadpersonfromserver(nick);
+        return res;
+    }
+}
+
+//Менеджер пользователей
+const personManager = new PersonManager();
+
+
 //настройка отправки сообщения
 sendButton.addEventListener("click", async e => {
     awaitsendMessage();
@@ -80,51 +114,56 @@ async function fetchMessages(path, appendAction) {
             if (!lastMessageId || i.dateTime > lastMessageId.dateTime)
                 lastMessageId = i;
         })
-
-        console.log(path);
-        console.log(responeMessages)
         for (rmes of responeMessages) {
-            appendAction(rmes);
+            await appendAction(rmes);
         }
     }
 }
 
 //Вставляет сообщение в конец списка (вниз)
-function pushFrontMessage(message) {
-    var block = generateBodyMessage(message);
+async function pushFrontMessage(message) {
+    var block = await generateBodyMessage(message);
+    console.log(block);
     messageBody.appendChild(block);
 }
 
 //Вставляет сообщение в начало списка (наверх)
-function pushBackMessage(message) {
-    var block = generateBodyMessage(message);
+async function pushBackMessage(message) {
+    var block = await generateBodyMessage(message);
+    console.log(block);
     messageBody.insertBefore(block, messageBody.firstChild);
 }
 
 //генерирует тело сообщения
-function generateBodyMessage(message) {
+async function generateBodyMessage(message) {
+    const avatar = document.createElement("img");
+    avatar.classList.add("smallavatar");
+    console.log(message);
+    avatar.src = await personManager.getPerson(message.sender);
+
+    const nick = document.createElement("p");
+    nick.classList.add("nick");
+    nick.textContent = message.sender;
+
     const datetime = document.createElement("div");
     datetime.classList.add("dates");
     const date = new Date(message.dateTime);
     datetime.textContent = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
 
-    const messageDiv = document.createElement("div");
-    messageDiv.textContent = message.body;
-    messageDiv.classList.add("message");
+    const metadataBlock = document.createElement("div");
+    metadataBlock.classList.add("rowstackpanel")
+    metadataBlock.appendChild(avatar);
+    metadataBlock.appendChild(nick);
+    metadataBlock.appendChild(datetime);
 
     const messageBlock = document.createElement("div");
-    messageBlock.classList.add("messageblock")
-    messageBlock.appendChild(datetime);
-    messageBlock.appendChild(messageDiv);
-
-    const avatar = document.createElement("div");
-    avatar.classList.add("avatar");
-    avatar.textContent = message.sender;
-
+    messageBlock.textContent = message.body;
+    messageBlock.classList.add("message");
+ 
     const root = document.createElement("div");
     root.classList.add("rootmessageblock");
+    root.appendChild(metadataBlock);
     root.appendChild(messageBlock);
-    root.appendChild(avatar);
     return root;
 }
 
@@ -132,3 +171,4 @@ function generateBodyMessage(message) {
 function canStartScroll(offset) {
     return contentDiv.scrollTop <= offset;
 }
+

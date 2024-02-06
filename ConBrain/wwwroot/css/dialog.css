@@ -35,3 +35,21 @@
 .sendbutton{
     background-color:transparent;
 }
+.nick{
+    margin:0px 5px;
+}
+.dates {
+    margin: 0px 5px;
+}
+.message{
+    padding:10px;
+    margin: 0px 5px;
+    border-radius:10px;
+    background-color:#ffffff44;
+}
+.rootmessageblock {
+    margin: 10px 20px;
+    padding: 10px;
+    border-radius: 20px;
+    background-color: #00000044;
+}
