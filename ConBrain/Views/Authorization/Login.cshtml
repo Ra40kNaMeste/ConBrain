@@ -3,16 +3,16 @@
 }
 
 <form method="post" class="form" name="loginform" asp-controller="Authorization" asp-action="Login" enctype="multipart/form-data">
-    <div class="standartForm">
+    <div class="rowForm">
         <p class="nameForm">Login:</p>
         <input class="valueForm sendInput" required placeholder="phone number or nick" type="text" name="LoginOrNick" value="" />
     </div>
-    <div class="standartForm">
+    <div class="rowForm">
         <p class="nameForm">Password:</p>
         <input class="valueForm sendInput" required placeholder="password" type="password" name="Pass" value="" />
     </div>
-    <div class="buttonForm"><button type="submit">Sign in</button></div>
-    <a class="valueForm" asp-action="Register" asp-controller="Authorization">register</a>
+    <button class="buttonForm" type="submit">Sign in</button>
+    <a id="registerLink" asp-action="Register" asp-controller="Authorization">register</a>
 </form>
 
 <script asp-append-version="true" src="~/js/authorizations/authorizationSkript.js" />

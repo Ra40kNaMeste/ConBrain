@@ -1,0 +1,51 @@
+﻿.smallicon {
+    margin: 2px 5px;
+    height: 30px;
+    width:30px;
+}
+
+.middleicon {
+    margin: 0px 5px;
+    height: 40px;
+    width: 40px;
+}
+.bigicon {
+    margin: 6px 15px;
+    height: 80px;
+    width: 80px;
+}
+.smallavatar {
+    margin: 0px 5px;
+    height: 40px;
+}
+
+.middleavatar {
+    margin: 5px 10px;
+    height: 60px;
+}
+
+.bigavatar {
+    margin: 6px 15px;
+    height: 120px;
+}
+.rowstackpanel {
+    display: flex;
+    flex-direction: row;
+    justify-content:left;
+    margin: 5px;
+    flex-wrap:nowrap;
+    align-items:stretch;
+}
+.contentbackground{
+    margin:5px;
+    padding:5px;
+    border-radius:10px;
+    background-color:#00000024;
+}
+.nick {
+    text-align: right;
+    margin: 20px 0px 0px 0px;
+}
+.downfixed{
+    z-index:20;
+}

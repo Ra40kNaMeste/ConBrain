@@ -3,16 +3,15 @@
 }
 <div>
     <div class="form">
-        <button class="nameForm" id="create">create</button>
-        <div class="standartForm">
-            <p class="nameForm">name dialog</p>
-            <input class="valueForm" type="text" name="dialogName" />
+        <button class="buttonForm" id="create">create</button>
+        <div class="rowForm">
+            <p class="nameForm">Name</p>
+            <input class="valueForm" type="text" name="dialogName" placeholder="name"/>
         </div>
-        <div class="nameForm">Members</div>
-        <div class="standartForm" id="membersBody">
-
+        <div class="rowForm" id="membersBody">
+            <div class="rowForm">Members: </div>
+            <button class="buttonForm" id="appendFriend">+</button>
         </div>
-        <button class="nameForm" id="appendFriend">+</button>
     </div>
 </div>
 <script asp-append-version="true" src="~/js/personPage/builddialog.js"></script>

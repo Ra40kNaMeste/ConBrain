@@ -1,45 +1,48 @@
 .form {
-    border-radius: 5%;
-    width:100%;
-    margin: 50px auto;
-    color: black;
-    font-size: 30px;
+    border-radius: 15px;
+    margin: 50px 10px;
     padding: 50px 10%;
     margin:2% 5%;
     width:90%;
-    height:96%;
     background-color:#00000030;
     display:flex;
     flex-direction:column;
     align-content:center;
 }
-.standartForm{
+.rowForm {
     display: flex;
-    flex-direction:row;
+    flex-direction: row;
     justify-content: space-between;
-    margin: 5px 0px;
+    flex-wrap:wrap;
+    margin: 5px;
 }
-.nameForm{
-    flex-shrink:2;
+.nameForm {
+    flex-shrink: 2;
+    padding: 10px 5px;
 }
-.valueForm{
-    flex-shrink:4;
-}
-
-.buttonForm{
- display: block;
- background-color: rgb(255, 255, 255);
- margin:5%;
- padding:10px;
- height: auto;
- width: auto;
- text-align: center;
+.valueForm {
+    flex-shrink: 4;
+    background-color: #ffffffAf;
+    padding: 10px 5px;
 }
 
-.buttonForm button {
-font-size: 30px;
+.buttonForm {
+    display: block;
+    background-color: #00fe0037;
+    padding: 10px;
+    margin: 5px;
+    height: auto;
+    width: auto;
+    text-align: center;
+    font-size: medium;
+    border-radius:15px;
 }
-
 .incorrectInput{
     background-color: #ff000064;
+}
+
+#registerLink{
+    color:#D30000;
+    text-align:right;
+    text-decoration:underline;
 }

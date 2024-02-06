@@ -1,8 +1,4 @@
-﻿#peopleBody{
-    display:flex;
-    flex-direction:column;
-}
-#addFriendButton{
+﻿#addFriendButton{
     background:#00b50f8d;
     padding:7px;
     margin:5px;

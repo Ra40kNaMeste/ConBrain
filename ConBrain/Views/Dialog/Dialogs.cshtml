@@ -3,14 +3,13 @@
 }
 
 <div>
+    <a class="stretchbutton" asp-controller="Dialog" asp-action="BuildDialog">Create dialog</a>
+
     @{
         foreach (var dialog in Model.Dialogs)
         {
             <div class="dialog">@dialog.Name</div>
         }
     }
-    <div>
-        <a asp-controller="Dialog" asp-action="BuildDialog">Create dialog</a>
-    </div>
 </div>
 <script asp-append-version="true" src="~/js/personPage/dialogs.js"></script>

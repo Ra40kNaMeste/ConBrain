@@ -1,4 +1,4 @@
-﻿const peopleBodies = document.getElementsByName("peopleBody");
+﻿const peopleBodies = document.getElementsByClassName("peopleBody");
 
 peopleBodies.forEach(body => {
     for (tbody of body.children) {

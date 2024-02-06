@@ -9,32 +9,33 @@
     string pathAvatar = "/avatars/" + avatar;
 }
 
-<div id="nick">@Model.Nick</div>
-<div id="personDates">
-    <img class="avatar" src="@pathAvatar" />
-    <div id="name">@string.Format(@"{0} {1}", Model.Family, Model.Name)</div>
-</div>
-<div id="addFriendArea"></div>
-<div id="friends">
-    <div id="friendsStatic">
-        @{
-            int count = Model.Friends.Count;
-            string fierndsStr = count == 0? "not friends" : string.Format("{0} friends", count);
-        }
-        <p>@fierndsStr</p>
-        @{
-            if (count > 3)
-                count = 3;
-            for (int i = 0; i < count; i++)
-            {
-                string? friendsAvatar = Model.Friends[i].Friend.AvatarPath;
-                if (friendsAvatar == null || friendsAvatar == string.Empty)
-                    friendsAvatar = "default.svg";
-                string friendAvatartPath = "/avatars/" + friendsAvatar;
-                <img class="middleicon" src="@friendAvatartPath"/>
-            }
-        }
-        <a asp-asp-controller="Person" asp-action="Friends" asp-route-id="@Model.Nick">...</a>
+<p class="nick">@Model.Nick</p>
+<div class="rowstackpanel contentbackground">
+    <img class="bigavatar" src="@pathAvatar" />
+    <div>
+        <h2 class="name">@string.Format(@"{0} {1} {2}", Model.Family, Model.Name, Model.LastName)</h2>
     </div>
 </div>
+
+<div class="rowstackpanel">
+    @{
+        int count = Model.Friends.Count;
+        string fierndsStr = count == 0 ? "not friends" : string.Format("{0} friends: ", count);
+    }
+    <h2>@fierndsStr</h2>
+    @{
+        if (count > 3)
+            count = 3;
+        for (int i = 0; i < count; i++)
+        {
+            string? friendsAvatar = Model.Friends[i].Friend.AvatarPath;
+            if (friendsAvatar == null || friendsAvatar == string.Empty)
+                friendsAvatar = "default.svg";
+            string friendAvatartPath = "/avatars/" + friendsAvatar;
+            <img class="smallavatar" src="@friendAvatartPath" />
+        }
+    }
+    <a asp-asp-controller="Person" asp-action="Friends" asp-route-id="@Model.Nick">...</a>
+</div>
+<div id="addFriendArea"></div>
 <script asp-append-version="true" src="~/js/personPage/appendfriendbutton.js"></script>

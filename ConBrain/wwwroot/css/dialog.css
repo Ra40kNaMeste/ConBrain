@@ -1,0 +1,37 @@
+﻿.dialog{
+    padding: 10px;
+    margin:5px;
+    background:#00000044;
+    font-size:x-large;
+    border-radius:10px;
+}
+.stretchbutton {
+    display: block;
+    padding: 10px;
+    margin: 5px;
+    background: #6ddd9271;
+    font-size: x-large;
+    border-radius: 10px;
+    text-decoration: blink;
+    color: #9d08c1;
+    text-align:center;
+}
+.stretchbutton:visited {
+    color: #9d08c1;
+}
+.removeButton{
+    background-color:#ff000048;
+    height:20px;
+    width:20px;
+    border-radius:10px;
+    margin:10px;
+}
+.sublistelement{
+    padding: 6px;
+    margin:2px;
+    border-radius:4px;
+    background-color:#ffffff88;
+}
+.sendbutton{
+    background-color:transparent;
+}

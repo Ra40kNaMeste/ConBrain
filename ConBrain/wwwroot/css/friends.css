@@ -1,0 +1,17 @@
+﻿.peopleBody {
+    table-layout:auto;
+    caption-side:top;
+    border-collapse:collapse;
+}
+.peopleBody caption {
+    text-align: left;
+    margin: 10px;
+    font-size: x-large;
+    font-weight: bold;
+}
+.peopleBody tr{
+}
+.peopleBody tr td{
+    padding:10px;
+    vertical-align:middle;
+}

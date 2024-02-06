@@ -1,6 +1,6 @@
 ﻿//Нахождение внешних опорных элементов
-const peopleBody = document.getElementsByName("peopleBody")[0];
-const search = document.getElementsByName("search")[0];
+const peopleBody = document.getElementsByClassName("peopleBody")[0];
+const search = document.getElementById("search");
 
 //Создание гифки загрузки
 const loadImg = document.createElement("img");
@@ -15,7 +15,7 @@ ResetItems();
 addEventListener("scroll", async(e) => {    
     //Загрузка данных с сервера
     let temp = 0
-    while (canEndScroll(scrollOffset)) {
+    while (!canEndScroll(scrollOffset)) {
         temp = await UpdateItemsAsync(lastElementIndex, step);
         lastElementIndex += temp;
         if (temp < step)
@@ -35,7 +35,7 @@ async function ResetItems() {
     }
 
     //Добавляем элементы пока они не закончатся или пока не достигнем конца экрана
-    while (canEndScroll(scrollOffset)) {
+    while (!canEndScroll(scrollOffset)) {
         let len = await UpdateItemsAsync(lastElementIndex, step);
         if (len < step)
             break;
@@ -92,7 +92,7 @@ function appendPersonInTable(data) {
 
     const avatarTd = document.createElement("td");
     const avatar = document.createElement("img");
-    avatar.classList.add("avatar");
+    avatar.classList.add("middleavatar");
     avatar.src = "/avatars/";
     if (data.hasOwnProperty("avatarPath") && data.avatarPath != null)
         avatar.src += data.avatarPath;

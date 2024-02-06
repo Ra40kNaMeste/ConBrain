@@ -2,40 +2,36 @@
     ViewBag.Title = "Register";
 }
 
-<form name="loginform" enctype="multipart/form-data" asp-action="Register" asp-controller="Authorization" method="post">
-    <div class="form">
-        <div class="standartForm">
-            <p class="nameForm">Name:</p>
-            <input class="valueForm sendInput" required placeholder="your name" type="text" name="name" value="" />
-        </div>
-        <div class="standartForm">
-            <p class="nameForm">Family:</p>
-            <input class="valueForm sendInput" required placeholder="your family" type="text" name="family" value="" />
-        </div>
-        <div class="standartForm">
-            <p class="nameForm">Second name:</p>
-            <input class="valueForm sendInput" placeholder="your second name" type="text" name="secondName" value="" />
-        </div>
-        <div class="standartForm">
-            <p class="nameForm">Nick:</p>
-            <input class="valueForm sendInput" required placeholder="your nick" type="text" name="nick" value="" />
-        </div>
-        <div class="standartForm">
-            <p class="nameForm">Phone:</p>
-            <input class="valueForm sendInput" required placeholder="phone number" type="tel" name="tel" value="" />
-        </div>
-        <div class="standartForm">
-            <p class="nameForm">Password:</p>
-            <input class="valueForm sendInput" required placeholder="password" type="password" name="pass" value="" />
-        </div>
-        <div class="standartForm">
-            <p class="nameForm">Repeat password:</p>
-            <input class="valueForm" required placeholder="password" type="password" name="repeatpass" value="" />
-        </div>
-        <div class="buttonForm">
-            <input type="submit" name="send" value="Register"/>
-        </div>
+<form name="loginform" class="form" enctype="multipart/form-data" asp-action="Register" asp-controller="Authorization" method="post">
+    <div class="rowForm">
+        <p class="nameForm">Name:</p>
+        <input class="valueForm sendInput" required placeholder="your name" type="text" name="name" value="" />
     </div>
+    <div class="rowForm">
+        <p class="nameForm">Family:</p>
+        <input class="valueForm sendInput" required placeholder="your family" type="text" name="family" value="" />
+    </div>
+    <div class="rowForm">
+        <p class="nameForm">Second name:</p>
+        <input class="valueForm sendInput" placeholder="your second name" type="text" name="secondName" value="" />
+    </div>
+    <div class="rowForm">
+        <p class="nameForm">Nick:</p>
+        <input class="valueForm sendInput" required placeholder="your nick" type="text" name="nick" value="" />
+    </div>
+    <div class="rowForm">
+        <p class="nameForm">Phone:</p>
+        <input class="valueForm sendInput" required placeholder="phone number" type="tel" name="tel" value="" />
+    </div>
+    <div class="rowForm">
+        <p class="nameForm">Password:</p>
+        <input class="valueForm sendInput" required placeholder="password" type="password" name="pass" value="" />
+    </div>
+    <div class="rowForm">
+        <p class="nameForm">Repeat password:</p>
+        <input class="valueForm" required placeholder="password" type="password" name="repeatpass" value="" />
+    </div>
+    <button class="buttonForm" type="submit">Register</button>
 </form>
 <script asp-append-version="true" src="~/js/authorizations/authorizationSkript.js"></script>
 <script asp-append-version="true" src="~/js/authorizations/passwordValidateScript.js"></script>

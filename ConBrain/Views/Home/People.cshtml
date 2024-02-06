@@ -5,11 +5,11 @@
     ViewBag.Title = "People";
 }
 <div>
-    <form class="rowFlex">
-        <p>Search</p>
-        <img class="icon" src="~/images/search.svg"/>
-        <input type="text" name="search"/>
-    </form>
-    <table name="peopleBody"></table>
+    <div class="rowstackpanel">
+        <h2>Search</h2>
+        <img class="smallicon" src="~/images/search.svg"/>
+        <input type="text" id="search"/>
+    </div>
+    <table class="peopleBody"></table>
 </div>
 <script asp-append-version="true" src="~/js/peoplePage.js"></script>

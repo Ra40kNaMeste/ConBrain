@@ -1,7 +1,8 @@
 ﻿//определение внешних элементов упрвления
 const settingsButton = document.getElementById("settings")
 const addPersonButton = document.getElementById("addPerson");
-const dialogName = document.getElementById("name").textContent;
+const dialogName = document.getElementById("title").textContent;
+const contentDiv = document.getElementById("mainDiv");
 
 //определение внешних элементов отправки текста
 const messageBody = document.getElementById("messagesBody");
@@ -11,40 +12,55 @@ const sendButton = document.getElementById("send");
 let firstMessageId; //самое первое (старое) сообщение
 let lastMessageId; //самое последнее (новое) сообщение
 
-const count = 10; //Количество загружаемых за раз сообщений
+const count = 20; //Количество загружаемых за раз сообщений
 const scrollOffset = 0; //смещение полосы прокрутки для подгрузки: при перемещении полосы проктрутки в начало начинается подгрузка старых сообщений
 const updateTime = 500; //время обновления страницы
 
 //настройка отправки сообщения
 sendButton.addEventListener("click", async e => {
-    const response = await fetch(`/dialog/${dialogName}/messages?body=${textInput.value}`, {
-        method: "POST"  
-    });
-    if (response.ok) {
-        await updateMessage();
-        window.scroll(0, document.documentElement.scrollHeight);
-        textInput.value = "";
-    }
+    awaitsendMessage();
 });
+
+textInput.addEventListener("keypress", async e => {
+    if (e.key == "Enter")
+        await sendMessage();
+})
+
+
 
 //Изначальная подгузка сообщений и создание таймера для обновления
 updateMessage();
 setInterval(updateMessage, updateTime);
 
 //Добавление подгрузки старых сообщений
-addEventListener("scroll", async (e) => {
+contentDiv.addEventListener("scroll", async (e) => {
     if (canStartScroll(scrollOffset)) {
-        console.log("loading");
+        const oldScrollHeight = contentDiv.scrollHeight;
         if (firstMessageId)
             await fetchMessages(`/dialog/${dialogName}/oldmessages?id=${firstMessageId.id}&count=${count}`, pushBackMessage);
+        contentDiv.scroll(0, contentDiv.scrollHeight - oldScrollHeight);
     }
 })
+
+//Функция отправки сообщения на сервер
+async function sendMessage() {
+    if (textInput.value.length == 0)
+        return;
+    const response = await fetch(`/dialog/${dialogName}/messages?body=${textInput.value}`, {
+        method: "POST"
+    });
+    if (response.ok) {
+        await updateMessage();
+        contentDiv.scroll(0, document.documentElement.scrollHeight);
+        textInput.value = "";
+    }
+}
 
 //Функция обновления сообщений: если ни одно сообщение не добавлено, то загружается массив. Далее - только новые сообщения
 async function updateMessage() {
     if (!lastMessageId) {
         await fetchMessages(`/dialog/${dialogName}/messages?start=0&count=${count}`, pushBackMessage)
-        window.scroll(0, document.documentElement.scrollHeight);
+        contentDiv.scroll(0, contentDiv.scrollHeight);
     }
     else
         await fetchMessages(`/dialog/${dialogName}/newmessages?id=${lastMessageId.id}`, pushFrontMessage)
@@ -57,7 +73,6 @@ async function fetchMessages(path, appendAction) {
     });
     if (response.ok) {
         let responeMessages = await response.json();
-        console.log(responeMessages);
         responeMessages.forEach(i => {
             i.dateTime = new Date(i.dateTime)
             if (!firstMessageId || i.dateTime < firstMessageId.dateTime)
@@ -115,5 +130,5 @@ function generateBodyMessage(message) {
 
 //Условие начала прокрутки
 function canStartScroll(offset) {
-    return scrollY <= offset;
+    return contentDiv.scrollTop <= offset;
 }

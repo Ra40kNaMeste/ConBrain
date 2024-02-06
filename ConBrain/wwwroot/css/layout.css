@@ -24,17 +24,44 @@
     padding: 40px;
     min-width: 460px;
     min-height: 615px;
+
 }
-#title {
-    text-align:center;
-    font-size:xx-large;
+#mainDiv {
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    scroll-padding: 20px;
+    height:100%;
 }
-.divMenu{
-    display:flex;
-    flex-direction:row;
-    align-self:flex-start;
-    align-items:center;
-    flex-wrap:wrap;
+#mainDiv::-webkit-scrollbar {
+    display: block;
+    width: 5px;
+    margin-right: 5px;
+}
+#mainDiv::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#mainDiv::-webkit-scrollbar-thumb {
+    background-color: #00000088;
+    border-right: none;
+    border-left: none;
+}
+
+#mainDiv::-webkit-scrollbar-track-piece:end {
+    background: #00000044;
+    margin-bottom: 20px;
+}
+
+#mainDiv::-webkit-scrollbar-track-piece:start {
+    background: #00000044;
+    margin-top: 20px;
+}
+.divMenu {
+    display: flex;
+    flex-direction: row;
+    align-self: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
 }
 .divMenu > div {
     outline: #bbbbbb solid 3px;
@@ -47,22 +74,9 @@
     align-items: center;
     background-color: white;
 }
-.avatar {
-    width: 80px;
-    height: 80px;
-    margin: 10px;
+main{
+    scroll-behavior:auto;
 }
-.rowFlex{
-    display:flex;
-    flex-direction:row;
-}
-.icon{
-    margin:2px 5px;
-    height:10px;
-    width:10px;
-}
-.middleicon {
-    margin: 6px 15px;
-    height: 30px;
-    width: 30px;
+nav{
+    margin-bottom:10px;
 }

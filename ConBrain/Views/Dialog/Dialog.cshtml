@@ -3,11 +3,6 @@
     ViewBag.Title = Model.Dialog.Name;
 }
 
-<div>
-    <p id="name">@Model.Dialog.Name</p>
-    <img id="settings" src="/images/settings.svg" class="middleicon"></img>
-    <img id="addPerson" src="/images/add_person.svg" class="middleicon"></img>
-</div>
 <div id="messagesBody">
 
 </div>
@@ -17,9 +12,11 @@
         avatar = "default.svg";
     string pathAvatar = "/avatars/" + avatar;
 }
-<div>
-    <img src="@pathAvatar" class="middleicon"/>
-    <input id="text" type="text"/>
-    <button id="send" type="send">-></button>
+<div class ="downfixed rowstackpanel">
+    <img class="middleicon" src="@pathAvatar"/>
+    <input class="valueForm" id="text" type="text" />
+    <button class="smallicon sendbutton" id="send">-></button>
+    <img id="settings" src="/images/settings.svg" class="middleicon"></img>
+    <img id="addPerson" src="/images/add_person.svg" class="middleicon"></img>
 </div>
 <script asp-append-version="true" src="~/js/personPage/dialog.js"></script>

@@ -92,6 +92,7 @@ namespace ConBrain.Controllers
             return new MessagesResult(messages.Select(i => new MessageSavedMementor(i))
                 .Reverse()
                 .SkipWhile(i => i.Id != id)
+                .Skip(1)
                 .Take(count));
         }
 
