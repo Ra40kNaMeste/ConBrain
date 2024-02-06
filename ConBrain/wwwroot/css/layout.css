@@ -3,6 +3,8 @@
     height: 100%;
     width: 100%;
     padding:1%;
+    min-height:843px;
+    min-width:740px;
 }
 #rootDiv {
     display: flex;
@@ -12,14 +14,16 @@
     z-index: 1;
     position: fixed;
     background-color: aliceblue;
-    top:12.5%;
+    top: max(12.5%, 105px);
     height: 75%;
     display: flex;
     flex-direction: column;
     justify-content: right;
     aspect-ratio: 3/4;
-    border-radius:20px;
-    padding:40px;
+    border-radius: 20px;
+    padding: 40px;
+    min-width: 460px;
+    min-height: 615px;
 }
 #title {
     text-align:center;

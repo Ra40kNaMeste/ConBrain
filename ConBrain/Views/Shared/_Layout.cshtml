@@ -4,8 +4,8 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
-    <link type="text/css" rel="stylesheet" asp-href-include="~/css/*.css"/>
-    <link type="text/css" rel="stylesheet" asp-href-include="~/css/person/*.css" />
+    <link type="text/css" rel="stylesheet" asp-href-include="~/css/null.css"/>
+    <link type="text/css" rel="stylesheet" asp-href-include="~/css/layout.css"/>
 </head>
 <body>
     <div id="rootDiv" class="layoutForeground">
@@ -16,20 +16,25 @@
                 <div>
                     <a asp-controller="Home" asp-action="Index" class="auth">Home</a>
                 </div>
-                <div>
-                    <a asp-controller="Authorization" asp-action="Register" class="auth">Register</a>
-                </div>
-                <div>
-                    <a asp-controller="Authorization" asp-action="Login" class="auth">Sign in</a>
-                </div>
-                <div>
-                    <a asp-controller="Person" asp-action="Dates" class="auth">My Page</a>
-                </div>
+                @{
+                    if (User.Claims.Count() != 0)
+                    {
+                        <div>
+                            <a asp-controller="Person" asp-action="Dates" class="auth">My Page</a>
+                        </div>
+                        <div>
+                            <a asp-controller="Dialog" asp-action="Dialogs" class="auth">Dialogs</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div>
+                            <a asp-controller="Authorization" asp-action="Login" class="auth">Sign in</a>
+                        </div>
+                    }
+                }
                 <div>
                     <a asp-controller="Home" asp-action="People" class="auth">People</a>
-                </div>
-                <div>
-                    <a asp-controller="Dialog" asp-action="Dialogs" class="auth">Dialogs</a>
                 </div>
             </nav>
             <main>
