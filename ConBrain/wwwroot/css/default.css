@@ -36,6 +36,20 @@
     flex-wrap:nowrap;
     align-items:stretch;
 }
+.rowstretchstackpanel {
+    display: flex;
+    flex-direction: row;
+    justify-content:space-between;
+    margin: 5px;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+.stackpanel {
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+    flex-wrap: nowrap;
+}
 .contentbackground{
     margin:5px;
     padding:5px;
@@ -48,4 +62,16 @@
 }
 .downfixed{
     z-index:20;
+}
+.btn{
+    text-decoration:blink;
+}
+.btn:visited {
+    text-decoration: blink;
+}
+.removeButton {
+    background-color: #ff000044;
+    width: fit-content;
+    border-radius: 10px;
+    margin: 10px 20px;
 }

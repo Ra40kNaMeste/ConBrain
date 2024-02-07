@@ -13,27 +13,27 @@
             <h1 id="title">@ViewBag.Title</h1>
             <nav class="divMenu">
                 <div>
-                    <a asp-controller="Home" asp-action="Index" class="auth">Home</a>
+                    <a asp-controller="Home" asp-action="Index" class="btn">Home</a>
                 </div>
                 @{
                     if (User.Claims.Count() != 0)
                     {
                         <div>
-                            <a asp-controller="Person" asp-action="Dates" class="auth">My Page</a>
+                            <a asp-controller="Person" asp-action="Dates" class="btn">My Page</a>
                         </div>
                         <div>
-                            <a asp-controller="Dialog" asp-action="Dialogs" class="auth">Dialogs</a>
+                            <a asp-controller="Dialog" asp-action="Dialogs" class="btn">Dialogs</a>
                         </div>
                     }
                     else
                     {
                         <div>
-                            <a asp-controller="Authorization" asp-action="Login" class="auth">Sign in</a>
+                            <a asp-controller="Authorization" asp-action="Login" class="btn">Sign in</a>
                         </div>
                     }
                 }
                 <div>
-                    <a asp-controller="Home" asp-action="People" class="auth">People</a>
+                    <a asp-controller="Home" asp-action="People" class="btn">People</a>
                 </div>
             </nav>
             <main id="mainDiv">

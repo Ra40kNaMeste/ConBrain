@@ -1,0 +1,56 @@
+﻿@model Person
+@{
+    ViewBag.Title = "Edit";
+}
+@{
+    string? avatar = Model.AvatarPath;
+    if (avatar == null || avatar == string.Empty)
+        avatar = "default.svg";
+    string pathAvatar = "/avatars/" + avatar;
+}
+<div class="stackpanel">
+    <div class="rowstretchstackpanel">
+        <img src="@pathAvatar" class="bigavatar" />
+        <input ng-model="image" type="file" id="fileInput" />
+        <a class="insideFormButton" id="loadAvatarButton">load avatar</a>
+    </div>
+    <form class="form" asp-controller="Person" asp-action="Edit">
+        <table>
+            <caption>self information</caption>
+            <tr class="rowForm">
+                <td class="nameForm">Nick</td>
+                <td class="valueFormTd">
+                    <input name="nick" value="@Model.Nick" />
+                </td>
+            </tr>
+            <tr class="rowForm">
+                <td class="nameForm">Name</td>
+                <td class="valueFormTd">
+                    <input name="name" value="@Model.Name" />
+                </td>
+            </tr>
+            <tr class="rowForm">
+                <td class="nameForm">Family</td>
+                <td class="valueFormTd">
+                    <input name="family" value="@Model.Family" />
+                </td>
+            </tr>
+            <tr class="rowForm">
+                <td class="nameForm">Last name</td>
+                <td class="valueFormTd">
+                    <input name="lastName" value="@Model.LastName" />
+                </td>
+            </tr>
+            <tr class="rowForm">
+                <td class="nameForm">Phone</td>
+                <td class="valueFormTd">
+                    <input name="phone" value="@Model.Phone" />
+                </td>
+            </tr>
+        </table>
+        <button>save changed</button>
+    </form>
+    <a class="removeButton" asp-controller="Person" asp-action="ChangePassword">change password</a>
+    <button class="removeButton" id="accountExit">exit from the account</button>
+</div>
+<script asp-append-version="true" src="~/js/personPage/edit.js"></script>

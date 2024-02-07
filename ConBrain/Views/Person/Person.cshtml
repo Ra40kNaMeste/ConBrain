@@ -1,4 +1,4 @@
-﻿
+﻿@using System.Security.Claims;
 @{
     ViewBag.Title = "Home";
 }
@@ -7,9 +7,17 @@
     if (avatar == null || avatar == string.Empty)
         avatar = "default.svg";
     string pathAvatar = "/avatars/" + avatar;
+
+    bool isAuth = Model.Nick != null && User.FindFirst(ClaimTypes.Name)?.Value == Model.Nick;
 }
 
-<p class="nick">@Model.Nick</p>
+<div class="rowstretchstackpanel">
+    <p class="nick">@Model.Nick</p>
+    @if (isAuth)
+        {
+            <a asp-action="Edit" asp-asp-controller="Person">edit</a>
+        }
+</div>
 <div class="rowstackpanel contentbackground">
     <img class="bigavatar" src="@pathAvatar" />
     <div>

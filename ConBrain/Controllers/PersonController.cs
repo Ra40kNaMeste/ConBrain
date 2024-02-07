@@ -11,8 +11,9 @@ namespace ConBrain.Controllers
     [Authorize]
     public class PersonController : Controller
     {
-        public PersonController(UserDbContext dbContext)
+        public PersonController(IConfiguration configuration, UserDbContext dbContext)
         {
+            settings = configuration.GetSection("Authorization").Get<AuthorizationSettings>() ?? throw new FormatException();
             _dbContext = dbContext;
         }
         [Route("home")]
@@ -20,8 +21,64 @@ namespace ConBrain.Controllers
         {
             var person = GetPersonByAuth();
             if (person == null)
-                return new StatusCodeResult(StatusCodes.Status400BadRequest);
+                return new StatusCodeResult(StatusCodes.Status401Unauthorized);
             return View("Person", person);
+        }
+
+        [Route("changepassword")]
+        [HttpGet]
+        public IActionResult ChangePassword()
+        {
+            var person = GetPersonByAuth();
+            if (person == null)
+                return new StatusCodeResult(StatusCodes.Status401Unauthorized);
+            return View(person);
+        }
+
+        [Route("changepassword")]
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordData data)
+        {
+            var person = GetPersonByAuth();
+            if (person == null)
+                return new StatusCodeResult(StatusCodes.Status401Unauthorized);
+            if(person.Password != data.OldPassword)
+                return new StatusCodeResult(StatusCodes.Status400BadRequest);
+            person.Password = data.Pass;
+            await _dbContext.SaveChangesAsync();
+            return new LoginResult(new(person.Nick, person.Password), settings, _dbContext);
+        }
+
+        [Route("edit")]
+        [HttpGet]
+        public IActionResult Edit()
+        {
+            var person = GetPersonByAuth();
+            if(person == null)
+                return new StatusCodeResult(StatusCodes.Status401Unauthorized);
+            return View(person);
+        }
+        [Route("edit")]
+        [HttpPost]
+        public async Task<IActionResult> Edit(PersonData data)
+        {
+            var person = GetPersonByAuth();
+            if (person == null)
+                return new StatusCodeResult(StatusCodes.Status401Unauthorized);
+            person.Nick = data.Nick;
+            person.Name = data.Name;
+            person.Family = data.Family;
+            person.LastName = data.LastName;
+            person.Phone = data.Phone;
+            try
+            {
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                return new StatusCodeResult(StatusCodes.Status400BadRequest);
+            }
+            return Redirect("/home");
         }
 
         [AllowAnonymous]
@@ -35,7 +92,7 @@ namespace ConBrain.Controllers
                 .Where(i => i.Nick == id)
                 .FirstOrDefault();
             if (person == null)
-                return new StatusCodeResult(StatusCodes.Status400BadRequest);
+                return new StatusCodeResult(StatusCodes.Status401Unauthorized);
             return View("Person", person);
         }
 
@@ -135,6 +192,9 @@ namespace ConBrain.Controllers
                 .FirstOrDefault(i => i.Nick == namePerson);
             return person;
         }
-        private UserDbContext _dbContext;
+        private readonly UserDbContext _dbContext;
+        private readonly AuthorizationSettings settings;
     }
+    public record class PersonData(string Nick,  string Name, string Family, string LastName, string Phone);
+    public record class ChangePasswordData(string OldPassword, string Pass);
 }

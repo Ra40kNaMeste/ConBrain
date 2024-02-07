@@ -13,7 +13,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    flex-wrap:wrap;
+    flex-wrap:nowrap;
     margin: 5px;
 }
 .nameForm {
@@ -21,8 +21,15 @@
     padding: 10px 5px;
 }
 .valueForm {
-    flex-shrink: 4;
-    background-color: #ffffffAf;
+    flex-shrink: 2;
+    background-color: #ffffffaf;
+    padding: 10px 5px;
+}
+.valueFormTd {
+    flex-shrink: 2;
+}
+.valueFormTd input {
+    background-color: #ffffffaf;
     padding: 10px 5px;
 }
 
@@ -45,4 +52,10 @@
     color:#D30000;
     text-align:right;
     text-decoration:underline;
+}
+.insideFormButton{
+    text-decoration:underline;
+    background-color:#ffffff44;
+    padding: 5px 10px;
+    border-radius: 10px;
 }

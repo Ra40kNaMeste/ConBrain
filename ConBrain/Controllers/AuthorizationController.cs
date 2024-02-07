@@ -38,7 +38,7 @@ namespace ConBrain.Controllers
             return new RegisterResult(data, settings, context);
         }
         private UserDbContext context;
-        private AuthorizationSettings settings { get; init; }
+        private readonly AuthorizationSettings settings;
     }
     public record class AuthorizationSettings(string Issures, string Audience, string Key, int ExpiresHours);
 }
