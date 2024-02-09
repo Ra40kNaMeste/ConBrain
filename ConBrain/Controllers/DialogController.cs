@@ -3,6 +3,7 @@ using ConBrain.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 
 namespace ConBrain.Controllers
@@ -113,9 +114,22 @@ namespace ConBrain.Controllers
                 Dialog = dialog, 
                 Sender = person
             };
-            _dbContext.Messages.Add(message);
-            await _dbContext.SaveChangesAsync();
-            return new StatusCodeResult(StatusCodes.Status200OK);
+
+            var validationResults = new List<ValidationResult>();
+            if(!Validator.TryValidateObject(message, new(message), validationResults, true))
+            {
+                return new ErrorValidationResult(validationResults);
+            }
+            try
+            {
+                _dbContext.Messages.Add(message);
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return new DbValidationErrorResult(ex.Message);
+            }
+            return new StatusCodeResult(StatusCodes.Status201Created);
         }
         #endregion //Messagemethods
 

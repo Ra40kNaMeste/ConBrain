@@ -3,6 +3,8 @@ using ConBrain.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using System.Net;
 using System.Security.Claims;
 
@@ -45,8 +47,21 @@ namespace ConBrain.Controllers
             if(person.Password != data.OldPassword)
                 return new StatusCodeResult(StatusCodes.Status400BadRequest);
             person.Password = data.Pass;
-            await _dbContext.SaveChangesAsync();
-            return new LoginResult(new(person.Nick, person.Password), settings, _dbContext);
+
+            List<ValidationResult> results = new();
+            if(!Validator.TryValidateObject(person, new(person), results, true))
+                return new ErrorValidationResult(results);
+
+            try
+            {
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return new DbValidationErrorResult(ex.Message);
+            }
+
+            return new LoginResult(person, settings);
         }
 
         [Route("edit")]
@@ -68,15 +83,20 @@ namespace ConBrain.Controllers
             person.Nick = data.Nick;
             person.Name = data.Name;
             person.Family = data.Family;
-            person.LastName = data.LastName;
+            person.SecondName = data.LastName;
             person.Phone = data.Phone;
+
+            List<ValidationResult> results = new();
+            if(!Validator.TryValidateObject(person, new(person), results, true))
+                return new ErrorValidationResult(results);
+
             try
             {
                 await _dbContext.SaveChangesAsync();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return new StatusCodeResult(StatusCodes.Status400BadRequest);
+                return new DbValidationErrorResult(ex.Message);
             }
             return Redirect("/home");
         }

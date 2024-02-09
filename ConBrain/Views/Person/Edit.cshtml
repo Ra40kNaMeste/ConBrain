@@ -20,31 +20,31 @@
             <tr class="rowForm">
                 <td class="nameForm">Nick</td>
                 <td class="valueFormTd">
-                    <input name="nick" value="@Model.Nick" />
+                    <input name="nick" value="@Model.Nick" required maxlength="50" minlength="5" />
                 </td>
             </tr>
             <tr class="rowForm">
                 <td class="nameForm">Name</td>
                 <td class="valueFormTd">
-                    <input name="name" value="@Model.Name" />
+                    <input name="name" value="@Model.Name" required maxlength="50" minlength="1" />
                 </td>
             </tr>
             <tr class="rowForm">
                 <td class="nameForm">Family</td>
                 <td class="valueFormTd">
-                    <input name="family" value="@Model.Family" />
+                    <input name="family" value="@Model.Family" required maxlength="50" minlength="1" />
                 </td>
             </tr>
             <tr class="rowForm">
                 <td class="nameForm">Last name</td>
                 <td class="valueFormTd">
-                    <input name="lastName" value="@Model.LastName" />
+                    <input name="lastName" value="@Model.SecondName" />
                 </td>
             </tr>
             <tr class="rowForm">
                 <td class="nameForm">Phone</td>
                 <td class="valueFormTd">
-                    <input name="phone" value="@Model.Phone" />
+                    <input name="phone" value="@Model.Phone" minlength="7" />
                 </td>
             </tr>
         </table>

@@ -1,5 +1,7 @@
-﻿using Microsoft.Build.Execution;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Build.Execution;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Numerics;
 
@@ -23,15 +25,6 @@ namespace ConBrain.Model
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            builder.Entity<Person>().Property(i => i.Nick).IsRequired().HasMaxLength(100);
-            builder.Entity<Person>().HasIndex(i => i.Nick).IsUnique();
-
-            builder.Entity<Person>().Property(i => i.Name).HasMaxLength(100);
-            builder.Entity<Person>().Property(i => i.Family).HasMaxLength(100);
-            builder.Entity<Person>().Property(i => i.LastName).HasMaxLength(100);
-
-            builder.Entity<Person>().Property(i=>i.Phone).IsRequired();
-            builder.Entity<Person>().HasIndex(i => i.Phone).IsUnique();
 
             builder.Entity<FriendPerson>()
                 .HasOne(p => p.Target)
@@ -50,31 +43,68 @@ namespace ConBrain.Model
 
     public class Person
     {
-        public int Id { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
+        [MinLength(5)]
+        [MaxLength(50)]
+        [StringLength(50, MinimumLength = 5)]
         public string Password { get; set; } = "";
         public List<FriendPerson> Friends { get; set; } = new();
         public List<FriendPerson> Subscribers { get; set; } = new();
         public List<Dialog> Dialogs { get; set; }
+
+        [Key]
+        [Required]
+        [MinLength(5)]
+        [MaxLength(50)]
+        [StringLength(50, MinimumLength = 5)]
         public string Nick { get; set; } = "";
         public string? AvatarPath { get; set; }
+
+        [Required]
+        [MinLength(1)]
+        [MaxLength(50)]
+        [StringLength(50, MinimumLength = 1)]
         public string Name { get; set; } = "";
+
+        [Required]
+        [MinLength(1)]
+        [MaxLength(50)]
+        [StringLength(50, MinimumLength = 1)]
         public string Family { get; set; } = "";
-        public string? LastName { get; set; }
-        public string Phone { get; set; } = "";
+
+        [Required]
+        [MinLength(1)]
+        [MaxLength(50)]
+        [StringLength(50, MinimumLength = 1)]
+        public string? SecondName { get; set; }
+
+        [Required]
+        [MinLength(7)]
+        [MaxLength(50)]
+        [StringLength(50, MinimumLength = 7)]
+        [RegularExpression(@"^\+[0-9]+(-[0-9]{3}){2}(-[0-9]{2}){2}$", ErrorMessage = "The Phone is by format +xx-xxx-xxx-xx-xx")]
+        public string? Phone { get; set; }
     }
 
     public class FriendPerson
     {
         public Person Friend { get; set; }
-        public int FriendId { get; set; }
+        public string FriendId { get; set; }
         public Person Target { get; set; }
-        public int TargetId { get; set; }
+        public string TargetId { get; set; }
 
     }
 
     public class Dialog
     {
         public int Id { get; set; }
+
+        [Required]
+        [MinLength(5)]
+        [MaxLength(50)]
+        [StringLength(50, MinimumLength = 5)]
         public string Name { get; set; }
         public List<Person> Members { get; set; } = new();
         public List<Message> Messages { get; set; } = new();
@@ -83,7 +113,9 @@ namespace ConBrain.Model
     public class Message
     {
         public int Id { get; set; }
+        
         public DateTime DateTime { get; set; }
+
         public string Body { get; set; }
         public Person? Sender { get; set; }
 
@@ -110,7 +142,7 @@ namespace ConBrain.Model
             AvatarPath = person.AvatarPath;
             Name = person.Name;
             Family = person.Family;
-            LastName = person.LastName;
+            LastName = person.SecondName;
         }
 
         public string Nick { get; set; } = "";

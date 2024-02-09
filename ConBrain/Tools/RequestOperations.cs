@@ -24,7 +24,7 @@ namespace ConBrain.Tools
             {
                 Name = getFormValue(form, "name", logger) ?? "",
                 Family = getFormValue(form, "family", logger) ?? "",
-                LastName = getFormValue(form, "secondName", logger),
+                SecondName = getFormValue(form, "secondName", logger),
                 Nick = getFormValue(form, "nick", logger) ?? "",
                 Phone = getFormValue(form, "tel", logger) ?? "",
                 Password = getFormValue(form, "pass", logger) ?? ""

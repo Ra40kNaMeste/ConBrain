@@ -9,7 +9,7 @@ namespace ConBrain.Controllers.ActionResults
         {
             _messages = messages;
         }
-        public MessagesResult(IEnumerable<MessageSavedMementor> messages, int lastId, int count)
+        public MessagesResult(IEnumerable<MessageSavedMementor> messages, int lastId)
         {
             _messages = messages.Reverse().TakeWhile(i => i.Id != lastId).Reverse();
         }

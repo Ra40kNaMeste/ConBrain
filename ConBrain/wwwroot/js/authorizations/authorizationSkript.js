@@ -1,5 +1,5 @@
 ﻿const form = document.getElementsByName("loginform")[0];
-const values = document.getElementsByClassName("sendInput");
+const values = [].slice.call(document.getElementsByClassName("sendInput"));
 async function saveToken(e) {
     e.preventDefault();
     const target = e.currentTarget;
@@ -19,14 +19,23 @@ async function saveToken(e) {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: formBody
     });
+    const data = await response.json();
+    console.log(data);
     //получаем ответ
     if (response.ok === true) {
-        const data = await response.json();
         document.cookie = "token = " + data.token;
         window.location.replace("../home")
     }
     else {
-
+        if (data != null) {
+            for (result of data) {
+                for (member of result.memberNames) {
+                    const box = values.find(i => i.name.toLowerCase() == str);
+                    box.setCustomValidity(result.errorMessage);
+                    box.reportValidity();
+                }
+            }
+        }
     }
 }
 form.addEventListener("submit", saveToken);
