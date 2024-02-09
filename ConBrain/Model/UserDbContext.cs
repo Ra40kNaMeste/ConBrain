@@ -84,7 +84,7 @@ namespace ConBrain.Model
         [MinLength(7)]
         [MaxLength(50)]
         [StringLength(50, MinimumLength = 7)]
-        [RegularExpression(@"^\+[0-9]+(-[0-9]{3}){2}(-[0-9]{2}){2}$", ErrorMessage = "The Phone is by format +xx-xxx-xxx-xx-xx")]
+        [RegularExpression(@"^\+[0-9]+\([0-9]{3}\)[0-9]{3}(-[0-9]{2}){2}$", ErrorMessage = "The Phone is by format +xx(xxx)xxx-xx-xx")]
         public string? Phone { get; set; }
     }
 

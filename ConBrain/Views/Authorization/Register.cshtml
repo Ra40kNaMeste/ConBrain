@@ -21,7 +21,7 @@
     </div>
     <div class="rowForm">
         <p class="nameForm">Phone:</p>
-        <input class="valueForm sendInput" required placeholder="phone number" type="tel" name="phone" value="" minlength="7" />
+        <input class="valueForm sendInput phone" required placeholder="phone number" type="tel" name="phone" value="" minlength="7" />
     </div>
     <div class="rowForm">
         <p class="nameForm">Password:</p>
@@ -31,8 +31,10 @@
         <p class="nameForm">Repeat password:</p>
         <input class="valueForm" required placeholder="password" type="password" name="repeatpass" value="" maxlength="50" minlength="5" />
     </div>
-    <button class="buttonForm" type="submit">Register</button>
+    <button class="buttonForm" name="send" type="submit">Register</button>
 </form>
+@* <script asp-append-version="true" src="~/../node_modules/imask/dist/imask.js" type="module"></script> *@
 <script asp-append-version="true" src="~/js/authorizations/authorizationSkript.js"></script>
 <script asp-append-version="true" src="~/js/authorizations/passwordValidateScript.js"></script>
+<script asp-append-version="true" type="module" src="~/js/authorizations/InputPhone.js"></script>
 
