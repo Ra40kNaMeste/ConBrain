@@ -30,7 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\js\authorizations\authorizationSkript.js" />
+    <None Include="wwwroot\js\authorizations\authorization.js" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,7 +1,5 @@
-﻿const form = document.getElementsByName("loginform")[0];
-const values = [].slice.call(document.getElementsByClassName("sendInput"));
-async function saveToken(e) {
-    e.preventDefault();
+﻿export async function fetchWithAddressString(e) {
+    const values = [].slice.call(document.getElementsByClassName("sendInput"));
     const target = e.currentTarget;
 
     //Собираем тело для отправки
@@ -12,30 +10,22 @@ async function saveToken(e) {
         formBody.push(encodedKey + "=" + encodedValue);
     }
     formBody = formBody.join("&");
-    console.log(formBody);
     //отправляем
     const response = await fetch(target.action, {
         method: target.method,
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: formBody
     });
-    const data = await response.json();
-    console.log(data);
+    return response;
+}
+export async function saveToken(response) {
     //получаем ответ
     if (response.ok === true) {
+        const data = await response.json();
         document.cookie = "token = " + data.token;
         window.location.replace("../home")
+        return true;
     }
-    else {
-        if (data != null) {
-            for (result of data) {
-                for (member of result.memberNames) {
-                    const box = values.find(i => i.name.toLowerCase() == str);
-                    box.setCustomValidity(result.errorMessage);
-                    box.reportValidity();
-                }
-            }
-        }
-    }
+    return false;
 }
-form.addEventListener("submit", saveToken);
+
