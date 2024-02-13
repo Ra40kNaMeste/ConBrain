@@ -29,9 +29,7 @@ class PersonManager {
             const person = await response.json();
             
             let path = "../avatars/";
-            console.log(path);
             path += person.avatarPath != null ? person.avatarPath : "default.svg";
-            console.log(path);
             this.#personData.set(nick, path);
             return path;
         }

@@ -13,7 +13,6 @@ addMemberButton.parentElement.insertBefore(memberList, addMemberButton)
 memberList.classList.add("unshow");
 
 addMemberButton.addEventListener("click", e => {
-    console.log('gg');
     memberList.classList.remove("unshow");
     memberList.classList.add("show");
 })

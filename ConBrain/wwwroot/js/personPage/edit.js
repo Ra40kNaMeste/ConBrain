@@ -7,44 +7,56 @@ const loadedImageSize = new Object();
 loadedImageSize.width = 200;
 loadedImageSize.height = 200;
 
-////Настройка загрузки аватара
-//loadAvatarButton.addEventListener("click", e => {
-//    console.log(fileInput);
-//    if (fileInput.files.length == 0) {
-//        return;
-//    }
-//    console.log(fileInput.files[0]);
-//    for (prop in fileInput.files[0]) {
+//Настройка загрузки аватара
+loadAvatarButton.addEventListener("click", e => {
+    console.log(fileInput);
+    if (fileInput.files.length == 0) {
+        return;
+    }
+    console.log(fileInput.files[0]);
+    for (prop in fileInput.files[0]) {
 
-//    }
-//    var reader = new FileReader();
+    }
+    var reader = new FileReader();
 
-//    reader.onload = e => {
-//        const img = document.createElement("img");
+    reader.onload = rev => {
+        
+        const img = document.createElement("img");
+        img.onload = async () => {
+            const formData = new FormData();
+            const targetimg = convertImageToJpg(img);
+            console.log(targetimg);
+            let blobImg = new Blob([targetimg], { type: "image/jpg" });
+            //const source = new File(targetimg, "avatar.jpg");
+            
+            formData.append("file", blobImg, "avatar.jpg");
+            formData.append("key", "avatar.jpg");
+            const response = await fetch("./image", {
+                method: "POST",
+                body: formData
+            });
+            //console.log(response.status)
+            //if (response.ok)
+            //    console.log("ok");
+        }
+        img.src = rev.target.result;
+        
 
-//        img.onload = e => {
-//            console.log(e);
-//        }
 
-//        img.src = e.target.result;
-//        const formData = new FormData();
-//        const targetimg = convertImageToJpg(img);
-
-//        formData.append("avatar", convertImageToJpg(img), "avatar.jpg");
-//    }
-//    reader.readAsDataURL(fileInput.files[0])
-
-//});
+    }
+    reader.readAsDataURL(fileInput.files[0])
+});
 
 
-//const canvas = document.createElement("canvas");
-//canvas.width = loadedImageSize.width;
-//canvas.height = loadedImageSize.height;
-//function convertImageToJpg(image) {
-//    canvas.getContext("2d").drawImage(image, 0, 0, image.width, image.height, 0, 0, canvas.width, canvas.height);
-//    image.src = canvas.toDataURL();
-//    return image;
-//}
+const canvas = document.createElement("canvas");
+canvas.width = loadedImageSize.width;
+canvas.height = loadedImageSize.height;
+loadAvatarButton.parentNode.appendChild(canvas);
+function convertImageToJpg(image) {
+    const context = canvas.getContext("2d");
+    context.drawImage(image, 0, 0, image.width, image.height, 0, 0, canvas.width, canvas.height);
+    return canvas.toDataURL("image/jpeg").replace(/^data:image\/jpeg;base64,/, "");
+}
 
 accountExitButton.addEventListener("click", e => {
     delete_cookie("token");
