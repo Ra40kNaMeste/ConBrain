@@ -214,7 +214,7 @@ namespace ConBrain.Controllers
             {
                 Directory.CreateDirectory(path);
                 //Копируем дефолтный файл
-                System.IO.File.Copy(Path.Combine(Directory.GetCurrentDirectory(), _avatarPath, _defaultAvatarName), Path.Combine(path, _defaultAvatarName));
+                System.IO.File.Copy(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", _defaultAvatarName), Path.Combine(path, _defaultAvatarName));
             }
             path = Path.Combine(path, key);
             if (!System.IO.File.Exists(path))
