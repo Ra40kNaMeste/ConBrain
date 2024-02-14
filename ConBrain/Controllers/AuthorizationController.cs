@@ -1,6 +1,7 @@
 ﻿using ConBrain.Controllers.ActionResults;
 using ConBrain.Model;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -30,7 +31,7 @@ namespace ConBrain.Controllers
         [Route("Login")]
         public IActionResult Login(UserLoginData data)
         {
-            var person = context.People.Where(i=>i.Nick == data.Nick).FirstOrDefault();
+            var person = context.People.Include(i => i.Data).Where(i=>i.Data.Nick == data.Nick).FirstOrDefault();
             if (person == null || person.Password != data.Password)
                 return new StatusCodeResult(StatusCodes.Status400BadRequest);
 
@@ -42,11 +43,14 @@ namespace ConBrain.Controllers
         {
             var person = new Person()
             {
-                Name = data.Name,
-                Family = data.Family,
-                SecondName = data.SecondName,
-                Nick = data.Nick,
-                Phone = data.Phone,
+                Data = new()
+                {
+                    Name = data.Name,
+                    Family = data.Family,
+                    SecondName = data.SecondName,
+                    Nick = data.Nick,
+                    Phone = data.Phone,
+                },
                 Password = data.Password
             };
 
@@ -56,6 +60,7 @@ namespace ConBrain.Controllers
 
             try
             {
+                context.PersonData.Add(person.Data);
                 context.People.Add(person);
                 await context.SaveChangesAsync();
             }

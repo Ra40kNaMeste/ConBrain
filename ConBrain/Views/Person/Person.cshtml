@@ -3,13 +3,13 @@
     ViewBag.Title = "Home";
 }
 @{
-    string pathAvatar = Model.Nick + "/image?key=" + Model.AvatarPath;
+    string pathAvatar = Model.Data.Nick + "/image?key=" + Model.Data.AvatarPath;
 
-    bool isAuth = Model.Nick != null && User.FindFirst(ClaimTypes.Name)?.Value == Model.Nick;
+    bool isAuth = Model.Data.Nick != null && User.FindFirst(ClaimTypes.Name)?.Value == Model.Data.Nick;
 }
 
 <div class="rowstretchstackpanel">
-    <p class="nick">@Model.Nick</p>
+    <p class="nick">@Model.Data.Nick</p>
     @if (isAuth)
         {
             <a asp-action="Edit" asp-asp-controller="Person">edit</a>
@@ -18,7 +18,7 @@
 <div class="rowstackpanel contentbackground">
     <img class="bigavatar" src="@pathAvatar" />
     <div>
-        <h2 class="name">@string.Format(@"{0} {1} {2}", Model.Family, Model.Name, Model.SecondName)</h2>
+        <h2 class="name">@string.Format(@"{0} {1} {2}", Model.Data.Family, Model.Data.Name, Model.Data.SecondName)</h2>
     </div>
 </div>
 
@@ -34,11 +34,11 @@
         for (int i = 0; i < count; i++)
         {
             var friend = Model.Friends[i].Friend;
-            string friendAvatartPath = friend.Nick + "/image?key=" + friend.AvatarPath;
+            string friendAvatartPath = friend.Data.Nick + "/image?key=" + friend.Data.AvatarPath;
             <img class="smallavatar" src="@friendAvatartPath" />
         }
     }
-    <a asp-asp-controller="Person" asp-action="Friends" asp-route-id="@Model.Nick">...</a>
+    <a asp-asp-controller="Person" asp-action="Friends" asp-route-id="@Model.Data.Nick">...</a>
 </div>
 <div id="addFriendArea"></div>
 <script asp-append-version="true" src="~/js/personPage/appendfriendbutton.js"></script>

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ConBrain.Migrations
 {
     /// <inheritdoc />
-    public partial class appendDialogs : Migration
+    public partial class AddPersonData : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,7 +17,7 @@ namespace ConBrain.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false)
+                    Name = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -30,13 +30,7 @@ namespace ConBrain.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Password = table.Column<string>(type: "TEXT", nullable: false),
-                    Nick = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    AvatarPath = table.Column<string>(type: "TEXT", nullable: true),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    Family = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    LastName = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true),
-                    Phone = table.Column<string>(type: "TEXT", nullable: false)
+                    Password = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -118,6 +112,31 @@ namespace ConBrain.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "PersonData",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Nick = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
+                    AvatarPath = table.Column<string>(type: "TEXT", nullable: true, defaultValue: "default.jpg"),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
+                    Family = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
+                    SecondName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
+                    Phone = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
+                    PersonId = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PersonData", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PersonData_People_PersonId",
+                        column: x => x.PersonId,
+                        principalTable: "People",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_DialogPerson_MembersId",
                 table: "DialogPerson",
@@ -139,15 +158,9 @@ namespace ConBrain.Migrations
                 column: "SenderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_People_Nick",
-                table: "People",
-                column: "Nick",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_People_Phone",
-                table: "People",
-                column: "Phone",
+                name: "IX_PersonData_PersonId",
+                table: "PersonData",
+                column: "PersonId",
                 unique: true);
         }
 
@@ -162,6 +175,9 @@ namespace ConBrain.Migrations
 
             migrationBuilder.DropTable(
                 name: "Messages");
+
+            migrationBuilder.DropTable(
+                name: "PersonData");
 
             migrationBuilder.DropTable(
                 name: "Dialogs");

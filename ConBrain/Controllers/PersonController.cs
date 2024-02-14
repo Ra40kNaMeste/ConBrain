@@ -83,13 +83,13 @@ namespace ConBrain.Controllers
             var person = GetPersonByAuth();
             if(person == null)
                 return new StatusCodeResult(StatusCodes.Status401Unauthorized);
-            return View(person);
+            return View(person.Data);
         }
         [Route("edit")]
         [HttpPost]
         public async Task<IActionResult> Edit(PersonData data)
         {
-            var person = GetPersonByAuth();
+            var person = GetPersonByAuth()?.Data;
             if (person == null)
                 return new StatusCodeResult(StatusCodes.Status401Unauthorized);
 
@@ -139,7 +139,7 @@ namespace ConBrain.Controllers
             var person = GetPerson(nick);
             if (person == null)
                 return new StatusCodeResult(StatusCodes.Status400BadRequest);
-            return new PersonActionResult(new(person));
+            return new PersonActionResult(person.Data);
         }
 
         [HttpGet]
@@ -160,7 +160,7 @@ namespace ConBrain.Controllers
             var person = GetPersonByAuth();
             if (person == null)
                 return new StatusCodeResult(StatusCodes.Status401Unauthorized);
-            return new FriendsActionResult(person.Friends.Select(i => i.Friend.Nick));
+            return new FriendsActionResult(person.Friends.Select(i => i.Friend.Data.Nick));
         }
         [HttpPut]
         [Route("person/friends")]
@@ -169,7 +169,7 @@ namespace ConBrain.Controllers
             var person = GetPersonByAuth();
             if (person == null)
                 return new StatusCodeResult(StatusCodes.Status401Unauthorized);
-            var friend = _dbContext.People.Where(i=>i.Nick == nick).FirstOrDefault();
+            var friend = _dbContext.People.Where(i=>i.Data.Nick == nick).FirstOrDefault();
             if (friend == null)
                 return new StatusCodeResult(StatusCodes.Status400BadRequest);
             if(!person.Friends.Any(i=>i.Target == friend))
@@ -185,7 +185,7 @@ namespace ConBrain.Controllers
             var person = GetPersonByAuth();
             if (person == null)
                 return new StatusCodeResult(StatusCodes.Status401Unauthorized);
-            var friend = _dbContext.People.Where(i => i.Nick == nick).FirstOrDefault();
+            var friend = _dbContext.People.Where(i => i.Data.Nick == nick).FirstOrDefault();
             if (friend == null)
                 return new StatusCodeResult(StatusCodes.Status400BadRequest);
             var paar = person.Friends.RemoveAll(i=>i.Friend == friend);
@@ -237,7 +237,7 @@ namespace ConBrain.Controllers
             if(file == null || !file.CanImage())
                 return new StatusCodeResult(StatusCodes.Status400BadRequest);
 
-            var path = Path.Combine(Directory.GetCurrentDirectory(), _avatarPath, person.Nick);
+            var path = Path.Combine(Directory.GetCurrentDirectory(), _avatarPath, person.Data.Nick);
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
@@ -274,10 +274,12 @@ namespace ConBrain.Controllers
         private Person? GetPerson(string nick)
         {
             var person = _dbContext.People
+                 .Include(i=>i.Data)
                  .Include(i => i.Friends)
                      .ThenInclude(f => f.Friend)
+                        .ThenInclude(f=>f.Data)
                  .Include(i => i.Subscribers)
-                 .FirstOrDefault(i => i.Nick == nick);
+                 .FirstOrDefault(i => i.Data.Nick == nick);
             return person;
         }
 

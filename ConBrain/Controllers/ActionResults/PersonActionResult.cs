@@ -5,14 +5,14 @@ namespace ConBrain.Controllers.ActionResults
 {
     public class PersonActionResult : IActionResult
     {
-        public PersonActionResult(PersonSavedMementor person)
+        public PersonActionResult(Model.PersonData person)
         {
             _person = person;
         }
         public async Task ExecuteResultAsync(ActionContext context)
         {
-            await context.HttpContext.Response.WriteAsJsonAsync<PersonSavedMementor>(_person);
+            await context.HttpContext.Response.WriteAsJsonAsync(_person);
         }
-        private PersonSavedMementor _person;
+        private Model.PersonData _person;
     }
 }

@@ -31,10 +31,11 @@ namespace ConBrain.Controllers
                 return null;
 
             var person = _dbContext.People
+                .Include(i => i.Data)
                 .Include(i => i.Friends)
                 .Include(i => i.Dialogs)
                     .ThenInclude(i=>i.Members)
-                .FirstOrDefault(i => i.Nick == namePerson);
+                .FirstOrDefault(i => i.Data.Nick == namePerson);
 
             if (person == null)
                 return new StatusCodeResult(StatusCodes.Status401Unauthorized);
@@ -155,7 +156,7 @@ namespace ConBrain.Controllers
             var dialog = new Dialog()
             {
                 Name = name,
-                Members = _dbContext.People.Where(i => people.Contains(i.Nick)).ToList()
+                Members = _dbContext.People.Where(i => people.Contains(i.Data.Nick)).ToList()
             };
             dialog.Members.Add(person);
             _dbContext.Dialogs.Add(dialog);
@@ -170,9 +171,10 @@ namespace ConBrain.Controllers
                 return null;
 
             var person = _dbContext.People
+                .Include(i=>i.Data)
                 .Include(i => i.Friends)
                 .Include(i => i.Dialogs)
-                .FirstOrDefault(i => i.Nick == namePerson);
+                .FirstOrDefault(i => i.Data.Nick == namePerson);
             return person;
         }
         private Person? GetPersonByAuthWithMessages()
@@ -182,10 +184,12 @@ namespace ConBrain.Controllers
                 return null;
 
             var person = _dbContext.People
+                .Include(i => i.Data)
                 .Include(i => i.Dialogs)
                     .ThenInclude(i => i.Messages)
                         .ThenInclude(i=>i.Sender)
-                .FirstOrDefault(i => i.Nick == namePerson);
+                            .ThenInclude(i=>i.Data)
+                .FirstOrDefault(i => i.Data.Nick == namePerson);
             return person;
         }
 

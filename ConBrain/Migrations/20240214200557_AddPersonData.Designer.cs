@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConBrain.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20240203094933_appendDialogs")]
-    partial class appendDialogs
+    [Migration("20240214200557_AddPersonData")]
+    partial class AddPersonData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,6 +28,8 @@ namespace ConBrain.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasMaxLength(50)
+                        .IsUnicode(true)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -84,45 +86,61 @@ namespace ConBrain.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("AvatarPath")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Family")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("LastName")
-                        .HasMaxLength(100)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Nick")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
+                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Nick")
-                        .IsUnique();
-
-                    b.HasIndex("Phone")
-                        .IsUnique();
-
                     b.ToTable("People");
+                });
+
+            modelBuilder.Entity("ConBrain.Model.PersonData", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("AvatarPath")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasDefaultValue("default.jpg");
+
+                    b.Property<string>("Family")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Nick")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("PersonId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SecondName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PersonId")
+                        .IsUnique();
+
+                    b.ToTable("PersonData");
                 });
 
             modelBuilder.Entity("DialogPerson", b =>
@@ -176,6 +194,15 @@ namespace ConBrain.Migrations
                     b.Navigation("Sender");
                 });
 
+            modelBuilder.Entity("ConBrain.Model.PersonData", b =>
+                {
+                    b.HasOne("ConBrain.Model.Person", null)
+                        .WithOne("Data")
+                        .HasForeignKey("ConBrain.Model.PersonData", "PersonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("DialogPerson", b =>
                 {
                     b.HasOne("ConBrain.Model.Dialog", null)
@@ -198,6 +225,9 @@ namespace ConBrain.Migrations
 
             modelBuilder.Entity("ConBrain.Model.Person", b =>
                 {
+                    b.Navigation("Data")
+                        .IsRequired();
+
                     b.Navigation("Friends");
 
                     b.Navigation("Subscribers");

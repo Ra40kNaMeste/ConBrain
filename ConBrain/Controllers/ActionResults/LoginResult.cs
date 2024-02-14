@@ -17,14 +17,14 @@ namespace ConBrain.Controllers.ActionResults
         }
         public async Task ExecuteResultAsync(ActionContext context)
         {
-            var claims = new List<Claim>() { new Claim(ClaimTypes.Name, _person.Nick) };
+            var claims = new List<Claim>() { new Claim(ClaimTypes.Name, _person.Data.Nick) };
             var jwt = new JwtSecurityToken(
                 issuer: _settings.Issures, 
                 audience: _settings.Audience, 
                 claims: claims,
             expires: DateTime.UtcNow.Add(TimeSpan.FromHours(_settings.ExpiresHours)),
                 signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_settings.Key)), SecurityAlgorithms.HmacSha256));
-            await context.HttpContext.Response.WriteAsJsonAsync(new { nick = _person.Nick, token = new JwtSecurityTokenHandler().WriteToken(jwt) });
+            await context.HttpContext.Response.WriteAsJsonAsync(new { nick = _person.Data.Nick, token = new JwtSecurityTokenHandler().WriteToken(jwt) });
         }
         private readonly Person _person;
         private readonly AuthorizationSettings _settings;

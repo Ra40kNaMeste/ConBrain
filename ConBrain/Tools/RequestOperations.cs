@@ -18,17 +18,5 @@ namespace ConBrain.Tools
             logger?.LogDebug(string.Format(Properties.Resources.ReadPorpertyByForm, nameProperty, res));
             return res;
         }
-        public static Person AddPersonByForm(IFormCollection form, ILogger? logger = null)
-        {
-            return new Person()
-            {
-                Name = getFormValue(form, "name", logger) ?? "",
-                Family = getFormValue(form, "family", logger) ?? "",
-                SecondName = getFormValue(form, "secondName", logger),
-                Nick = getFormValue(form, "nick", logger) ?? "",
-                Phone = getFormValue(form, "tel", logger) ?? "",
-                Password = getFormValue(form, "pass", logger) ?? ""
-            };
-        }
     }
 }

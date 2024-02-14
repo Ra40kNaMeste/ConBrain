@@ -22,6 +22,8 @@ namespace ConBrain.Model
         public DbSet<Dialog> Dialogs { get; set; } = null!;
         public DbSet<Message> Messages { get; set; } = null!;
 
+        public DbSet<PersonData> PersonData { get; set; } = null!;
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -37,12 +39,16 @@ namespace ConBrain.Model
                 .HasForeignKey(p => p.FriendId);
             builder.Entity<FriendPerson>().HasKey(p => new{p.TargetId, p.FriendId});
 
+            builder.Entity<PersonData>().Property(i => i.AvatarPath).HasDefaultValue("default.jpg");
+
             builder.Entity<Dialog>().Property(i=>i.Name).IsUnicode(true);
         }
     }
 
     public class Person
     {
+        [Key]
+        public int Id { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
@@ -53,47 +59,16 @@ namespace ConBrain.Model
         public List<FriendPerson> Friends { get; set; } = new();
         public List<FriendPerson> Subscribers { get; set; } = new();
         public List<Dialog> Dialogs { get; set; }
+        public PersonData Data { get; set; }
 
-        [Key]
-        [Required]
-        [MinLength(5)]
-        [MaxLength(50)]
-        [StringLength(50, MinimumLength = 5)]
-        public string Nick { get; set; } = "";
-        public string? AvatarPath { get; set; }
-
-        [Required]
-        [MinLength(1)]
-        [MaxLength(50)]
-        [StringLength(50, MinimumLength = 1)]
-        public string Name { get; set; } = "";
-
-        [Required]
-        [MinLength(1)]
-        [MaxLength(50)]
-        [StringLength(50, MinimumLength = 1)]
-        public string Family { get; set; } = "";
-
-        [Required]
-        [MinLength(1)]
-        [MaxLength(50)]
-        [StringLength(50, MinimumLength = 1)]
-        public string? SecondName { get; set; }
-
-        [Required]
-        [MinLength(7)]
-        [MaxLength(50)]
-        [StringLength(50, MinimumLength = 7)]
-        [RegularExpression(@"^\+[0-9]+\([0-9]{3}\)[0-9]{3}(-[0-9]{2}){2}$", ErrorMessage = "The Phone is by format +xx(xxx)xxx-xx-xx")]
-        public string? Phone { get; set; }
     }
 
     public class FriendPerson
     {
         public Person Friend { get; set; }
-        public string FriendId { get; set; }
+        public int FriendId { get; set; }
         public Person Target { get; set; }
-        public string TargetId { get; set; }
+        public int TargetId { get; set; }
 
     }
 
@@ -124,33 +99,47 @@ namespace ConBrain.Model
     }
 
 
-    public class PersonSavedMementor
+    public class PersonData
     {
-        public PersonSavedMementor() { }
-        public PersonSavedMementor(string nick, string? avatarPath, string name, string family, string? lastName, string phone)
-        {
-            Nick = nick;
-            AvatarPath = avatarPath;
-            Name = name;
-            Family = family;
-            LastName = lastName;
-            Phone = phone;
-        }
-        public PersonSavedMementor(Person person)
-        {
-            Nick = person.Nick;
-            AvatarPath = person.AvatarPath;
-            Name = person.Name;
-            Family = person.Family;
-            LastName = person.SecondName;
-        }
+        public PersonData() { }
 
+        [Key]
+        public int Id { get; set; }
+
+        [Required]
+        [MinLength(5)]
+        [MaxLength(50)]
+        [StringLength(50, MinimumLength = 5)]
         public string Nick { get; set; } = "";
+        
         public string? AvatarPath { get; set; }
+
+        [Required]
+        [MinLength(1)]
+        [MaxLength(50)]
+        [StringLength(50, MinimumLength = 1)]
         public string Name { get; set; } = "";
+
+        [Required]
+        [MinLength(1)]
+        [MaxLength(50)]
+        [StringLength(50, MinimumLength = 1)]
         public string Family { get; set; } = "";
-        public string? LastName { get; set; }
-        public string Phone { get; set; } = "";
+
+        [Required]
+        [MinLength(1)]
+        [MaxLength(50)]
+        [StringLength(50, MinimumLength = 1)]
+        public string? SecondName { get; set; }
+
+        [Required]
+        [MinLength(7)]
+        [MaxLength(50)]
+        [StringLength(50, MinimumLength = 7)]
+        [RegularExpression(@"^\+[0-9]+\([0-9]{3}\)[0-9]{3}(-[0-9]{2}){2}$", ErrorMessage = "The Phone is by format +xx(xxx)xxx-xx-xx")]
+        public string? Phone { get; set; }
+
+        public int PersonId { get; set; }
     }
     public class MessageSavedMementor
     {
@@ -166,7 +155,7 @@ namespace ConBrain.Model
             Id = message.Id;
             DateTime = message.DateTime;
             Body = message.Body;
-            Sender = message.Sender?.Nick;
+            Sender = message.Sender?.Data.Nick;
         }
         public int Id { get; set; }
         public DateTime DateTime { get; set; }

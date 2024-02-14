@@ -26,8 +26,9 @@ class PersonManager {
             method: "GET"
         });
         if (response.ok === true) {
-            const person = await response.json();
             
+            const person = await response.json();
+            console.log(person)
             let path = `../${person.nick}/image?key=${person.avatarPath}`;
             this.#personData.set(nick, path);
             return path;

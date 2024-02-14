@@ -8,10 +8,10 @@ namespace ConBrain.Controllers.ActionResults
         public PeopleActionResult(int offset, int size, string? pattern, UserDbContext context)
         {
 
-            var temp = pattern == null || pattern == "" ? context.People : context.People
+            var temp = pattern == null || pattern == "" ? context.PersonData : context.PersonData
                 .Where(i => i.Nick.Contains(pattern) || i.Name.Contains(pattern) || i.Family.Contains(pattern));
             _people = temp.Skip(offset)
-                .Take(size).Select(i=>new PersonSavedMementor(i));
+                .Take(size);
         }
 
         public async Task ExecuteResultAsync(ActionContext context)
@@ -19,6 +19,6 @@ namespace ConBrain.Controllers.ActionResults
             await context.HttpContext.Response.WriteAsJsonAsync(_people);
         }
 
-        private IEnumerable<PersonSavedMementor> _people;
+        private IEnumerable<Model.PersonData> _people;
     }
 }
