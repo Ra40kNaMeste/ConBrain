@@ -25,7 +25,6 @@ loadAvatarButton.addEventListener("click", e => {
         img.onload = async () => {
             const formData = new FormData();
             const targetimg = convertImageToJpg(img);
-            console.log(targetimg);
             let blobImg = new Blob([targetimg], { type: "image/jpg" });
             //const source = new File(targetimg, "avatar.jpg");
             
@@ -35,14 +34,13 @@ loadAvatarButton.addEventListener("click", e => {
                 method: "POST",
                 body: formData
             });
-            //console.log(response.status)
-            //if (response.ok)
-            //    console.log("ok");
+            if (response.ok === true) {
+                const sendPerson = await fetch(`./edit?avatarPath=avatar.jpg`, {
+                    method: "POST"
+                });
+            }
         }
         img.src = rev.target.result;
-        
-
-
     }
     reader.readAsDataURL(fileInput.files[0])
 });
@@ -51,7 +49,6 @@ loadAvatarButton.addEventListener("click", e => {
 const canvas = document.createElement("canvas");
 canvas.width = loadedImageSize.width;
 canvas.height = loadedImageSize.height;
-loadAvatarButton.parentNode.appendChild(canvas);
 function convertImageToJpg(image) {
     const context = canvas.getContext("2d");
     context.drawImage(image, 0, 0, image.width, image.height, 0, 0, canvas.width, canvas.height);

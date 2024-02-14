@@ -7,10 +7,7 @@
 
 </div>
 @{
-    string? avatar = Model.person.AvatarPath;
-    if (avatar == null || avatar == string.Empty)
-        avatar = "default.svg";
-    string pathAvatar = "/avatars/" + avatar;
+    string pathAvatar = "../" + Model.person.Nick + "/image?key=" + Model.person.AvatarPath;
 }
 <div class ="downfixed rowstackpanel">
     <img class="middleicon" src="@pathAvatar"/>

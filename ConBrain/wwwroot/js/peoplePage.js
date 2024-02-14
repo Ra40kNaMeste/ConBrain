@@ -93,11 +93,7 @@ function appendPersonInTable(data) {
     const avatarTd = document.createElement("td");
     const avatar = document.createElement("img");
     avatar.classList.add("middleavatar");
-    avatar.src = "/avatars/";
-    if (data.hasOwnProperty("avatarPath") && data.avatarPath != null)
-        avatar.src += data.avatarPath;
-    else
-        avatar.src += "default.svg";
+    avatar.src = `/${data.nick}/image?key=${data.avatarPath}`;
     avatarTd.appendChild(avatar)
 
     const nick = document.createElement("td")

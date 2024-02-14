@@ -8,11 +8,7 @@
     @{
         foreach (var friend  in Model.Friends)
         {
-            string? avatar = Model.AvatarPath;
-            if (avatar == null || avatar == string.Empty)
-                avatar = "default.svg";
-            string pathAvatar = "/avatars/" + avatar;
-
+            string pathAvatar = "../" + friend.Friend.Nick + "/image?key=" + friend.Friend.AvatarPath;
             <tr>
                 <td><img class="middleavatar" src=@pathAvatar /></td>
                 <td>@friend.Friend.Nick</td>

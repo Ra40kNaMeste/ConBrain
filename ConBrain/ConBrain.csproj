@@ -8,12 +8,16 @@
 
   <ItemGroup>
     <Compile Remove="WebTree\**" />
+    <Compile Remove="wwwroot\avatars\**" />
     <Compile Remove="Новая папка\**" />
     <Content Remove="WebTree\**" />
+    <Content Remove="wwwroot\avatars\**" />
     <Content Remove="Новая папка\**" />
     <EmbeddedResource Remove="WebTree\**" />
+    <EmbeddedResource Remove="wwwroot\avatars\**" />
     <EmbeddedResource Remove="Новая папка\**" />
     <None Remove="WebTree\**" />
+    <None Remove="wwwroot\avatars\**" />
     <None Remove="Новая папка\**" />
   </ItemGroup>
 
@@ -22,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="avatars\default-100.jpg" />
     <None Remove="html\.html" />
   </ItemGroup>
 
@@ -66,10 +71,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\avatars\" />
   </ItemGroup>
 
 </Project>

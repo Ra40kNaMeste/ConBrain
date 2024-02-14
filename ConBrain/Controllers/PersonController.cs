@@ -92,11 +92,19 @@ namespace ConBrain.Controllers
             var person = GetPersonByAuth();
             if (person == null)
                 return new StatusCodeResult(StatusCodes.Status401Unauthorized);
-            person.Nick = data.Nick;
-            person.Name = data.Name;
-            person.Family = data.Family;
-            person.SecondName = data.LastName;
-            person.Phone = data.Phone;
+
+            if(data.Nick != null)
+                person.Nick = data.Nick;
+            if (data.Name != null)
+                person.Name = data.Name;
+            if (data.Family != null)
+                person.Family = data.Family;
+            if (data.LastName != null)
+                person.SecondName = data.LastName;
+            if (data.Phone != null)
+                person.Phone = data.Phone;
+            if (data.AvatarPath != null)
+                person.AvatarPath = data.AvatarPath;
 
             List<ValidationResult> results = new();
             if(!Validator.TryValidateObject(person, new(person), results, true))
@@ -117,27 +125,18 @@ namespace ConBrain.Controllers
         [Route("id={id}")]
         public IActionResult PersonPage(string id)
         {
-            var person = _dbContext.People
-                .Include(i => i.Subscribers)
-                .Include(i => i.Friends)
-                    .ThenInclude(f => f.Friend)
-                .Where(i => i.Nick == id)
-                .FirstOrDefault();
+            var person = GetPerson(id);
             if (person == null)
                 return new StatusCodeResult(StatusCodes.Status401Unauthorized);
             return View("Person", person);
         }
 
+        [AllowAnonymous]
         [HttpGet]
         [Route("person")]
         public IActionResult Person(string nick)
         {
-            var person = _dbContext.People
-                .Include(i => i.Subscribers)
-                .Include(i => i.Friends)
-                    .ThenInclude(f => f.Friend)
-                .Where(i => i.Nick == nick)
-                .FirstOrDefault();
+            var person = GetPerson(nick);
             if (person == null)
                 return new StatusCodeResult(StatusCodes.Status400BadRequest);
             return new PersonActionResult(new(person));
@@ -147,26 +146,10 @@ namespace ConBrain.Controllers
         [Route("{id}/friends")]
         public IActionResult Friends(string id)
         {
-            var person = _dbContext.People
-                .Include(i => i.Subscribers)
-                .Include(i => i.Friends)
-                    .ThenInclude(f => f.Friend)
-                .Where(i => i.Nick == id)
-                .FirstOrDefault();
+            var person = GetPerson(id);
             if (person == null)
                 return new StatusCodeResult(StatusCodes.Status400BadRequest);
             return View(person);
-        }
-
-        [HttpGet]
-        public IActionResult AuthPersonData()
-        {
-            var person = GetPersonByAuth();
-            if (person == null)
-            {
-                return new StatusCodeResult(StatusCodes.Status401Unauthorized);
-            }
-            return new PersonActionResult(new PersonSavedMementor(person));
         }
 
         #region person/friends
@@ -212,47 +195,32 @@ namespace ConBrain.Controllers
 
         #endregion //person/friends
 
+        /// <summary>
+        ///Метод отправки изображения пользователя
+        /// </summary>
+        /// <param name="nick">Ник пользователя</param>
+        /// <param name="key">Ключ изображения</param>
+        /// <returns>Изображение</returns>
         [HttpGet]
-        [Route("avatar")]
-        public IActionResult Avatar(string nick)
-        {
-            var person = GetPerson(nick);
-            if (person == null)
-                return new StatusCodeResult(StatusCodes.Status401Unauthorized);
-
-            var path = Path.Combine(Directory.GetCurrentDirectory(), _avatarPath);
-            FileInfo avatar;
-            if (person.AvatarPath != null)
-                avatar = new(Path.Combine(path, person.Nick, person.AvatarPath));
-            else
-                avatar = new(Path.Combine(path, _defaultAvatarName));
-
-            if (avatar.Exists)
-                return File(avatar.FullName, "image/jpeg");
-            throw new FileNotFoundException(avatar.FullName);
-        }
-
-        [HttpPost]
-        [Route("avatar")]
-        public IActionResult PostAvatar(string imageKey)
-        {
-            var person = GetPersonByAuth();
-            if (person == null)
-                return new StatusCodeResult(StatusCodes.Status401Unauthorized);
-
-            var path = Path.Combine(Directory.GetCurrentDirectory(), _avatarPath, person.Nick, imageKey);
-            if(!System.IO.File.Exists(path))
-                return new StatusCodeResult(StatusCodes.Status400BadRequest);
-            person.AvatarPath = path;
-            return new StatusCodeResult(StatusCodes.Status200OK);
-        }
-
-        [HttpGet]
+        [AllowAnonymous]
         [Route("{nick}/image")]
-        public IActionResult Image(string nick)
+        public IActionResult Image(string nick, string key)
         {
             var person = GetPerson(nick);
-            return null;
+            if (person == null)
+                return new StatusCodeResult(StatusCodes.Status400BadRequest);
+            var path = Path.Combine(Directory.GetCurrentDirectory(), _avatarPath, nick);
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+                //Копируем дефолтный файл
+                System.IO.File.Copy(Path.Combine(Directory.GetCurrentDirectory(), _avatarPath, _defaultAvatarName), Path.Combine(path, _defaultAvatarName));
+            }
+            path = Path.Combine(path, key);
+            if (!System.IO.File.Exists(path))
+                return new StatusCodeResult(StatusCodes.Status401Unauthorized);
+            var bytes = System.IO.File.ReadAllBytes(path);
+            return File(bytes, "image/jpeg");
         }
 
         //Метод для добавления изображения авторизированного пользователя
@@ -260,18 +228,26 @@ namespace ConBrain.Controllers
         [Route("image")]
         public async Task<IActionResult> Image(IFormFile file, string key)
         {
+            //Авторизированный пользователь
             var person = GetPersonByAuth();
             if (person == null)
                 return new StatusCodeResult(StatusCodes.Status401Unauthorized);
 
+            //Создание файла записи
             if(file == null || !file.CanImage())
                 return new StatusCodeResult(StatusCodes.Status400BadRequest);
 
             var path = Path.Combine(Directory.GetCurrentDirectory(), _avatarPath, person.Nick);
             if (!Directory.Exists(path))
+            {
                 Directory.CreateDirectory(path);
+                //Копируем дефолтный файл
+                System.IO.File.Copy(Path.Combine(Directory.GetCurrentDirectory(), _avatarPath, _defaultAvatarName), Path.Combine(path, _defaultAvatarName));
+            }
+                
             path = Path.Combine(path, key);
 
+            //Создание изображение, его обрезка и сохранение на сервере
             try
             {
                 using var img = await file.From64bitToImageAsync();
@@ -312,7 +288,7 @@ namespace ConBrain.Controllers
         private readonly AuthorizationSettings settings;
         private readonly ImageSettings _imageSettings;
     }
-    public record class PersonData(string Nick,  string Name, string Family, string LastName, string Phone);
+    public record class PersonData(string Nick,  string Name, string Family, string LastName, string Phone, string AvatarPath);
     public record class ChangePasswordData(string OldPassword, string Pass);
 
     public record class PathSetting(string Avatar, string DefaultAvatarName);
