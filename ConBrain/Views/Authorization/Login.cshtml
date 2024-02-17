@@ -1,18 +1,8 @@
 ﻿@{
     ViewBag.Title = "Sign in";
 }
-
-<form method="post" class="form" name="loginform" asp-controller="Authorization" asp-action="Login" enctype="multipart/form-data">
-    <div class="rowForm">
-        <p class="nameForm">Login:</p>
-        <input class="valueForm sendInput" required placeholder="nick" type="text" name="nick" value="" maxlength="50" minlength="5" />
-    </div>
-    <div class="rowForm">
-        <p class="nameForm">Password:</p>
-        <input class="valueForm sendInput" required placeholder="password" type="password" name="password" value="" maxlength="50" minlength="5" />
-    </div>
-    <button class="buttonForm" type="submit">Sign in</button>
-    <a id="registerLink" asp-action="Register" asp-controller="Authorization">register</a>
-</form>
+@model UserLoginData
+<table-form name="loginform" class="form" asp-controller="Authorization" method="post" asp-action="Login" target="@Model" table-name="log in"
+            row-class-name="rowForm" property-class-name="nameForm" value-class-name="valueFormTd" request-button-content="log in"></table-form>
 
 <script asp-append-version="true" type="module" src="~/js/authorizations/login.js" />

@@ -25,7 +25,7 @@ namespace ConBrain.Controllers
         [Route("Login")]
         public IActionResult Login() 
         {
-            return View();
+            return View(new UserLoginData());
         }
         [HttpPost]
         [Route("Login")]
@@ -89,5 +89,15 @@ namespace ConBrain.Controllers
         [TagHelpers.Display("Repeat password", Type = "password")]
         public string RepeatPassword { get; set; }
     }
-    public record class UserLoginData(string Nick, string Password);
+    public class UserLoginData 
+    {
+        [Required]
+        [StringLength(50, MinimumLength = 5)]
+        [TagHelpers.Display("Login", Type = "text", Classes = new string[] { "sendInput" })]
+        public string Nick { get; set; }
+        [Required]
+        [StringLength(50, MinimumLength = 5)]
+        [TagHelpers.Display("Password", Type = "password", Classes = new string[] { "sendInput" })]
+        public string Password { get; set; }
+    }
 }
