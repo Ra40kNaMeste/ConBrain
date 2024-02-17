@@ -11,7 +11,9 @@
         <input ng-model="image" type="file" id="fileInput" />
         <a class="insideFormButton" id="loadAvatarButton">load avatar</a>
     </div>
-    <form class="form" asp-controller="Person" asp-action="Edit">
+    <table-form asp-controller="Person" asp-action="Edit" target="@Model" table-name="self information"
+                row-class-name="rowForm" property-class-name="nameForm" value-class-name="valueFormTd"></table-form>
+@*     <form class="form" asp-controller="Person" asp-action="Edit">
         <table>
             <caption>self information</caption>
             <tr class="rowForm">
@@ -47,7 +49,7 @@
         </table>
         <button>save changed</button>
     </form>
-    <a class="removeButton" asp-controller="Person" asp-action="ChangePassword">change password</a>
+ *@    <a class="removeButton" asp-controller="Person" asp-action="ChangePassword">change password</a>
     <button class="removeButton" id="accountExit">exit from the account</button>
 </div>
 <script asp-append-version="true" src="~/js/personPage/edit.js"></script>
