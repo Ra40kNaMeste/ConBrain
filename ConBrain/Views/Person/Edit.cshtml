@@ -11,45 +11,10 @@
         <input ng-model="image" type="file" id="fileInput" />
         <a class="insideFormButton" id="loadAvatarButton">load avatar</a>
     </div>
-    <table-form asp-controller="Person" asp-action="Edit" target="@Model" table-name="self information"
-                row-class-name="rowForm" property-class-name="nameForm" value-class-name="valueFormTd"></table-form>
-@*     <form class="form" asp-controller="Person" asp-action="Edit">
-        <table>
-            <caption>self information</caption>
-            <tr class="rowForm">
-                <td class="nameForm">Nick</td>
-                <td class="valueFormTd">
-                    <input name="nick" value="@Model.Nick" required maxlength="50" minlength="5" />
-                </td>
-            </tr>
-            <tr class="rowForm">
-                <td class="nameForm">Name</td>
-                <td class="valueFormTd">
-                    <input name="name" value="@Model.Name" required maxlength="50" minlength="1" />
-                </td>
-            </tr>
-            <tr class="rowForm">
-                <td class="nameForm">Family</td>
-                <td class="valueFormTd">
-                    <input name="family" value="@Model.Family" required maxlength="50" minlength="1" />
-                </td>
-            </tr>
-            <tr class="rowForm">
-                <td class="nameForm">Last name</td>
-                <td class="valueFormTd">
-                    <input name="lastName" value="@Model.SecondName" />
-                </td>
-            </tr>
-            <tr class="rowForm">
-                <td class="nameForm">Phone</td>
-                <td class="valueFormTd">
-                    <input name="phone" class="phone" value="@Model.Phone" minlength="7" />
-                </td>
-            </tr>
-        </table>
-        <button>save changed</button>
-    </form>
- *@    <a class="removeButton" asp-controller="Person" asp-action="ChangePassword">change password</a>
+    <table-form class="form" asp-controller="Person" asp-action="Edit" target="@Model" table-name="self information"
+                row-class-name="rowForm" property-class-name="nameForm" value-class-name="valueFormTd" request-button-content="save changed"></table-form>
+
+    <a class="removeButton" asp-controller="Person" asp-action="ChangePassword">change password</a>
     <button class="removeButton" id="accountExit">exit from the account</button>
 </div>
 <script asp-append-version="true" src="~/js/personPage/edit.js"></script>

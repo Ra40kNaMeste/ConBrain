@@ -1,4 +1,4 @@
-.form {
+form {
     border-radius: 15px;
     margin: 50px 10px;
     padding: 50px 10%;
@@ -33,7 +33,7 @@
     padding: 10px 5px;
 }
 
-.buttonForm {
+form button {
     display: block;
     background-color: #00fe0037;
     padding: 10px;

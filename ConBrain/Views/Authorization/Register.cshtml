@@ -1,39 +1,10 @@
 ﻿@{
     ViewBag.Title = "Register";
 }
+@model UserRegisterData
+<table-form name="loginform" class="form" asp-controller="Authorization" method="post" asp-action="Register" target="@Model" table-name="register"
+            row-class-name="rowForm" property-class-name="nameForm" value-class-name="valueFormTd" request-button-content="register"></table-form>
 
-<form name="loginform" class="form" enctype="multipart/form-data" asp-action="Register" asp-controller="Authorization" method="post">
-    <div class="rowForm">
-        <p class="nameForm">Name:</p>
-        <input class="valueForm sendInput" required placeholder="your name" type="text" name="name" value="" maxlength="50" minlength="1"/>
-    </div>
-    <div class="rowForm">
-        <p class="nameForm">Family:</p>
-        <input class="valueForm sendInput" required placeholder="your family" type="text" name="family" value="" maxlength="50" minlength="1" />
-    </div>
-    <div class="rowForm">
-        <p class="nameForm">Second name:</p>
-        <input class="valueForm sendInput" placeholder="your second name" type="text" name="secondName" value="" maxlength="50" minlength="1" />
-    </div>
-    <div class="rowForm">
-        <p class="nameForm">Nick:</p>
-        <input class="valueForm sendInput" required placeholder="your nick" type="text" name="nick" value="" maxlength="50" minlength="5" />
-    </div>
-    <div class="rowForm">
-        <p class="nameForm">Phone:</p>
-        <input class="valueForm sendInput phone" required placeholder="phone number" type="tel" name="phone" value="" minlength="7" />
-    </div>
-    <div class="rowForm">
-        <p class="nameForm">Password:</p>
-        <input class="valueForm sendInput" required placeholder="password" type="password" name="password" value="" maxlength="50" minlength="5" />
-    </div>
-    <div class="rowForm">
-        <p class="nameForm">Repeat password:</p>
-        <input class="valueForm" required placeholder="password" type="password" name="repeatpass" value="" maxlength="50" minlength="5" />
-    </div>
-    <button class="buttonForm" name="send" type="submit">Register</button>
-</form>
-@* <script asp-append-version="true" src="~/../node_modules/imask/dist/imask.js" type="module"></script> *@
 <script asp-append-version="true" type="module" src="~/js/authorizations/register.js"></script>
 <script asp-append-version="true" src="~/js/authorizations/passwordValidate.js"></script>
 <script asp-append-version="true" type="module" src="~/js/authorizations/inputPhone.js"></script>

@@ -19,7 +19,7 @@ namespace ConBrain.Controllers
         [Route("Register")]
         public IActionResult Register()
         {
-            return View();
+            return View(new UserRegisterData());
         }
         [HttpGet]
         [Route("Login")]
@@ -49,7 +49,7 @@ namespace ConBrain.Controllers
                     Family = data.Family,
                     SecondName = data.SecondName,
                     Nick = data.Nick,
-                    Phone = data.Phone,
+                    Phone = data.Phone
                 },
                 Password = data.Password
             };
@@ -75,6 +75,19 @@ namespace ConBrain.Controllers
         private readonly AuthorizationSettings settings;
     }
     public record class AuthorizationSettings(string Issures, string Audience, string Key, int ExpiresHours);
-    public record class UserRegisterData(string Name, string Family, string SecondName, string Nick, string Phone, string Password);
+
+
+    public class UserRegisterData : PersonData
+    {
+        [Required]
+        [StringLength(50, MinimumLength = 5)]
+        [TagHelpers.Display("Password", Type="password", Classes = new string[] { "sendInput" })]
+        public string Password { get; set; }
+
+        [Required]
+        [StringLength(50, MinimumLength = 5)]
+        [TagHelpers.Display("Repeat password", Type = "password")]
+        public string RepeatPassword { get; set; }
+    }
     public record class UserLoginData(string Nick, string Password);
 }

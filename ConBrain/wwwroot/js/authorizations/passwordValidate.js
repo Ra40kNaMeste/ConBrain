@@ -1,5 +1,5 @@
 ﻿function validate(e) {
-    const secondPassword = document.getElementsByName("repeatpass")[0];
+    const secondPassword = document.getElementsByName("repeatpassword")[0];
 
     if (secondPassword.value != document.getElementsByName("password")[0].value) {
         secondPassword.value = "";

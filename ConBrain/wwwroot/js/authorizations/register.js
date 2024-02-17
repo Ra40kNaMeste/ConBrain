@@ -3,6 +3,7 @@ const form = document.getElementsByName("loginform")[0];
 const values = [].slice.call(document.getElementsByClassName("sendInput"));
 
 form.addEventListener("submit", async e => {
+    console.log("gg")
     e.preventDefault();
     const response = await fetchWithAddressString(e);
     if (await saveToken(response) == false) {   

@@ -10,6 +10,7 @@
         formBody.push(encodedKey + "=" + encodedValue);
     }
     formBody = formBody.join("&");
+    console.log(formBody)
     //отправляем
     const response = await fetch(target.action, {
         method: target.method,

@@ -93,18 +93,7 @@ namespace ConBrain.Controllers
             if (person == null)
                 return new StatusCodeResult(StatusCodes.Status401Unauthorized);
 
-            if(data.Nick != null)
-                person.Nick = data.Nick;
-            if (data.Name != null)
-                person.Name = data.Name;
-            if (data.Family != null)
-                person.Family = data.Family;
-            if (data.LastName != null)
-                person.SecondName = data.LastName;
-            if (data.Phone != null)
-                person.Phone = data.Phone;
-            if (data.AvatarPath != null)
-                person.AvatarPath = data.AvatarPath;
+            data.CopyTo(person);
 
             List<ValidationResult> results = new();
             if(!Validator.TryValidateObject(person, new(person), results, true))
@@ -290,7 +279,6 @@ namespace ConBrain.Controllers
         private readonly AuthorizationSettings settings;
         private readonly ImageSettings _imageSettings;
     }
-    public record class PersonData(string Nick,  string Name, string Family, string LastName, string Phone, string AvatarPath);
     public record class ChangePasswordData(string OldPassword, string Pass);
 
     public record class PathSetting(string Avatar, string DefaultAvatarName);
