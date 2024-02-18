@@ -9,13 +9,14 @@
     <div class="rowstretchstackpanel">
         <img src="@pathAvatar" class="bigavatar" />
         <input ng-model="image" type="file" id="fileInput" />
-        <a class="insideFormButton" id="loadAvatarButton">load avatar</a>
     </div>
     <table-form class="form" asp-controller="Person" asp-action="Edit" target="@Model" table-name="self information"
                 row-class-name="rowForm" property-class-name="nameForm" value-class-name="valueFormTd" request-button-content="save changed"></table-form>
-
-    <a class="removeButton" asp-controller="Person" asp-action="ChangePassword">change password</a>
-    <button class="removeButton" id="accountExit">exit from the account</button>
+    <div class="stackpanel">
+        <a class="removeButton" asp-controller="Person" asp-action="ChangePassword">change password</a>
+        <button class="removeButton" id="accountExit">exit from the account</button>
+    </div>
+    
 </div>
 <script asp-append-version="true" src="~/js/personPage/edit.js"></script>
 <script asp-append-version="true" type="module" src="~/js/authorizations/inputPhone.js"></script>

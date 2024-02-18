@@ -17,16 +17,19 @@
 .smallavatar {
     margin: 0px 5px;
     height: 40px;
+    border-radius:30%;
 }
 
 .middleavatar {
     margin: 5px 10px;
     height: 60px;
+    border-radius: 30%;
 }
 
 .bigavatar {
     margin: 6px 15px;
     height: 120px;
+    border-radius: 30%;
 }
 .rowstackpanel {
     display: flex;
@@ -71,7 +74,12 @@
 }
 .removeButton {
     background-color: #ff000044;
+    display: block;
     width: fit-content;
     border-radius: 10px;
-    margin: 10px 20px;
+    margin: 5px 20px;
+    padding: 10px;
+    width: auto;
+    text-align: center;
+    text-decoration:blink;
 }

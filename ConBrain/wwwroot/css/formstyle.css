@@ -9,6 +9,7 @@ form {
     flex-direction:column;
     align-content:center;
 }
+
 .rowForm {
     display: flex;
     flex-direction: row;
@@ -50,6 +51,8 @@ form button {
 
 #registerLink{
     color:#D30000;
+    padding-right:20px;
+    display:block;
     text-align:right;
     text-decoration:underline;
 }

@@ -8,12 +8,10 @@ loadedImageSize.width = 200;
 loadedImageSize.height = 200;
 
 //Настройка загрузки аватара
-loadAvatarButton.addEventListener("click", e => {
-    console.log(fileInput);
+fileInput.addEventListener("change", e => {
     if (fileInput.files.length == 0) {
         return;
     }
-    console.log(fileInput.files[0]);
     for (prop in fileInput.files[0]) {
 
     }
@@ -35,9 +33,7 @@ loadAvatarButton.addEventListener("click", e => {
                 body: formData
             });
             if (response.ok === true) {
-                const sendPerson = await fetch(`./edit?avatarPath=avatar.jpg`, {
-                    method: "POST"
-                });
+                window.location.reload();
             }
         }
         img.src = rev.target.result;
