@@ -3,6 +3,7 @@
   "name": "asp.net",
   "private": true,
   "devDependencies": {
+    "@microsoft/signalr": "^8.0.0",
     "imask": "7.4.0"
   }
 }

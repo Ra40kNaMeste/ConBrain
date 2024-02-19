@@ -8,11 +8,20 @@ using System.Security.Claims;
 
 namespace ConBrain.Controllers
 {
+
+    /// <summary>
+    /// Контроллер для диалогов и всего, что с ними связано (в т.ч. чатов)
+    /// </summary>
     [Authorize]
     public class DialogController:Controller
     {
+        #region Dialogs
         public DialogController(UserDbContext context) { _dbContext = context; }
 
+        /// <summary>
+        /// Список всех доступных диалогов
+        /// </summary>
+        /// <returns></returns>
         [Route("dialogs")]
         public IActionResult Dialogs()
         {
@@ -22,6 +31,11 @@ namespace ConBrain.Controllers
             return View(person);
         }
 
+        /// <summary>
+        /// Диалог по его имени
+        /// </summary>
+        /// <param name="name">Имя диалога</param>
+        /// <returns></returns>
         [HttpGet]
         [Route("dialog/{name}")]
         public IActionResult Dialog(string name)
@@ -45,95 +59,10 @@ namespace ConBrain.Controllers
             return View(new DialogData(person, dialog));
         }
 
-        #region Messagemethos
-        [HttpGet]
-        [Route("dialog/{name}/messages")]
-        public IActionResult Messages(string name, int start, int count)
-        {
-            var person = GetPersonByAuthWithMessages();
-            if (person == null)
-                return new StatusCodeResult(StatusCodes.Status401Unauthorized);
-            var messages = person.Dialogs.Where(i => i.Name == name).FirstOrDefault()?.Messages;
-            if (messages == null)
-                return new StatusCodeResult(StatusCodes.Status400BadRequest);
-            return new MessagesResult(messages
-                .Select(i=>new MessageSavedMementor(i))
-                .Reverse()
-                .Skip(start)
-                .Take(count));
-        }
-
-        [HttpGet]
-        [Route("dialog/{name}/newmessages")]
-        public IActionResult NewMessages(string name, int id)
-        {
-            var person = GetPersonByAuthWithMessages();
-
-            if (person == null)
-                return new StatusCodeResult(StatusCodes.Status401Unauthorized);
-            var messages = person.Dialogs.Where(i => i.Name == name).FirstOrDefault()?.Messages;
-            if (messages == null)
-                return new StatusCodeResult(StatusCodes.Status400BadRequest);
-            return new MessagesResult(messages.Select(i => new MessageSavedMementor(i))
-                .Reverse()
-                .TakeWhile(i => i.Id != id)
-                .Reverse());
-        }
-
-        [HttpGet]
-        [Route("dialog/{name}/oldmessages")]
-        public IActionResult OldMessages(string name, int id, int count)
-        {
-            var person = GetPersonByAuthWithMessages();
-
-            if (person == null)
-                return new StatusCodeResult(StatusCodes.Status401Unauthorized);
-            var messages = person.Dialogs.Where(i => i.Name == name).FirstOrDefault()?.Messages;
-            if (messages == null)
-                return new StatusCodeResult(StatusCodes.Status400BadRequest);
-            return new MessagesResult(messages.Select(i => new MessageSavedMementor(i))
-                .Reverse()
-                .SkipWhile(i => i.Id != id)
-                .Skip(1)
-                .Take(count));
-        }
-
-        [HttpPost]
-        [Route("dialog/{name}/messages")]
-        public async Task<IActionResult> Messages(string name, string body)
-        {
-            var person = GetPersonByAuthWithMessages();
-            if (person == null)
-                return new StatusCodeResult(StatusCodes.Status401Unauthorized);
-            var dialog = person.Dialogs.Where(i => i.Name == name).FirstOrDefault();
-            if(dialog == null)
-                return new StatusCodeResult(StatusCodes.Status400BadRequest);
-            var message = new Message()
-            {
-                Body = body,
-                DateTime = DateTime.Now,
-                Dialog = dialog, 
-                Sender = person
-            };
-
-            var validationResults = new List<ValidationResult>();
-            if(!Validator.TryValidateObject(message, new(message), validationResults, true))
-            {
-                return new ErrorValidationResult(validationResults);
-            }
-            try
-            {
-                _dbContext.Messages.Add(message);
-                await _dbContext.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                return new DbValidationErrorResult(ex.Message);
-            }
-            return new StatusCodeResult(StatusCodes.Status201Created);
-        }
-        #endregion //Messagemethods
-
+        /// <summary>
+        /// Вызывает конструктор нового диалога
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route("dialogs/build")]
         public IActionResult BuildDialog()
@@ -144,6 +73,12 @@ namespace ConBrain.Controllers
             return View(person);
         }
 
+        /// <summary>
+        /// Принимает параметры для создания нового диалога
+        /// </summary>
+        /// <param name="name">Название нового диалога</param>
+        /// <param name="people">Ники входящих в него людей</param>
+        /// <returns>Статус код</returns>
         [HttpPost]
         [Route("dialogs/build")]
         public async Task<IActionResult> BuildDialog(string name, string[] people)
@@ -164,6 +99,60 @@ namespace ConBrain.Controllers
             return new StatusCodeResult(StatusCodes.Status200OK);
         }
 
+        #endregion //Dialogs
+
+        #region Messagemethos
+        /// <summary>
+        /// Диапазон сообщений из диалога
+        /// </summary>
+        /// <param name="name">Название диалога</param>
+        /// <param name="start">Начальное сообщение (с более новых)</param>
+        /// <param name="count">Колчество сообщений после начальных</param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("dialog/{name}/messages")]
+        public IActionResult Messages(string name, int start, int count)
+        {
+            var person = GetPersonByAuthWithMessages();
+            if (person == null)
+                return new StatusCodeResult(StatusCodes.Status401Unauthorized);
+            var messages = person.Dialogs.Where(i => i.Name == name).FirstOrDefault()?.Messages;
+            if (messages == null)
+                return new StatusCodeResult(StatusCodes.Status400BadRequest);
+            return new MessagesResult(messages
+                .Select(i=>new MessageSavedMementor(i))
+                .Reverse()
+                .Skip(start)
+                .Take(count));
+        }
+
+        /// <summary>
+        /// Диапазон старых сообщений из диалога (после указанного)
+        /// </summary>
+        /// <param name="name">Название диалога</param>
+        /// <param name="id">Ид последнего сообщение (самого нового)</param>
+        /// <param name="count">Количество сообщений</param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("dialog/{name}/oldmessages")]
+        public IActionResult OldMessages(string name, int id, int count)
+        {
+            var person = GetPersonByAuthWithMessages();
+
+            if (person == null)
+                return new StatusCodeResult(StatusCodes.Status401Unauthorized);
+            var messages = person.Dialogs.Where(i => i.Name == name).FirstOrDefault()?.Messages;
+            if (messages == null)
+                return new StatusCodeResult(StatusCodes.Status400BadRequest);
+            return new MessagesResult(messages.Select(i => new MessageSavedMementor(i))
+                .Reverse()
+                .SkipWhile(i => i.Id != id)
+                .Skip(1)
+                .Take(count));
+        }
+        #endregion //Messagemethods
+
+        #region PrivateMethods
         private Person? GetPersonByAuth()
         {
             string? namePerson = ControllerContext.HttpContext.User.FindFirst(ClaimTypes.Name)?.Value;
@@ -192,7 +181,7 @@ namespace ConBrain.Controllers
                 .FirstOrDefault(i => i.Data.Nick == namePerson);
             return person;
         }
-
+        #endregion //PrivateMethods
         private UserDbContext _dbContext;
     }
     public record class DialogData(Person person, Dialog Dialog);

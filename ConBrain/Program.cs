@@ -1,4 +1,5 @@
 using ConBrain.Controllers;
+using ConBrain.Controllers.Hubs;
 using ConBrain.Loggers;
 using ConBrain.Model;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -17,6 +18,11 @@ namespace ConBrain
             builder.Services.AddDbContext<UserDbContext>((options)=>options.UseSqlite(builder.Configuration.GetConnectionString("sqliteUsers")));
             builder.Services.AddMvc();
             builder.Services.AddTransient<JwtTokenMiddleware>();
+            builder.Services.AddSignalR(o =>
+            {
+                o.ClientTimeoutInterval = TimeSpan.FromSeconds(30);
+                o.KeepAliveInterval = TimeSpan.FromSeconds(15);
+            });
             
 
             builder.Services.AddSingleton<ILogger>(new ConsoleLogger());
@@ -43,10 +49,7 @@ namespace ConBrain
                     ValidateIssuerSigningKey = true
                 };
             });
-            builder.Services.AddAuthorization(c =>
-            {
-                
-            });
+            builder.Services.AddAuthorization();
 
             var app = builder.Build();
             app.UseJwtToken();
@@ -58,6 +61,7 @@ namespace ConBrain
             
             app.MapControllerRoute("default", "{controller=Home}/{action=Index}");
             app.MapControllerRoute("login", "{controller=Authorization}/{action=Login}");
+            app.MapHub<DialogHub>("/message");
 
             app.UseStaticFiles();
 
