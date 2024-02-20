@@ -9,6 +9,7 @@ loadImg.classList.add("middleicon")
 
 const step = 10;
 const scrollOffset = 1;
+const timeoutLoading = 5000;
 
 ResetItems();
 
@@ -30,9 +31,7 @@ async function ResetItems() {
     //Сбрасываем начальный элемент
     lastElementIndex = 0;
     //Удаляем все элементы
-    while (peopleBody.firstChild) {
-        peopleBody.removeChild(peopleBody.firstChild);
-    }
+    cleanTable();
 
     //Добавляем элементы пока они не закончатся или пока не достигнем конца экрана
     while (!canEndScroll(scrollOffset)) {
@@ -62,6 +61,14 @@ async function UpdateItemsAsync(lastElementIndex, step) {
         }
         return res
     }
+    //Если возникла ошибка - выводим ошибку
+    else {
+        cleanTable();
+        showErrorLoaded();
+        setTimeout(async () => {
+            await ResetItems();
+        }, timeoutLoading);
+    }
     return 0;
 }
 
@@ -74,10 +81,7 @@ async function LoadPeopleByServer(lastElementIndex, step) {
     });
 
     //получаем ответ
-    if (response.ok === true)
-        return await response.json();
-    else
-        return null;
+    return response.ok === true ? await response.json() : null;
 }
 
 //Функция добавление пользователя в список
@@ -108,6 +112,15 @@ function appendPersonInTable(data) {
     person.appendChild(name);
 
     peopleBody.appendChild(person);
+}
+function cleanTable() {
+    while (peopleBody.firstChild)
+        peopleBody.removeChild(peopleBody.firstChild);
+}
+function showErrorLoaded() {
+    const message = document.createElement("p");
+    message.textContent = "Data loading error. Start reloading...";
+    peopleBody.appendChild(message);
 }
 
 function canEndScroll(offset) {

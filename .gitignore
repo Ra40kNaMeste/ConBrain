@@ -10,7 +10,7 @@
 *.sln.docstates
 *.vsidx
 
-*.avatars/
+*avatars/
 
 #database
 *.db

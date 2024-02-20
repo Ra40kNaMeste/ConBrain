@@ -47,6 +47,13 @@
     flex-wrap: nowrap;
     align-items: center;
 }
+.rowwrapstackpanel {
+    display: flex;
+    flex-direction: row;
+    margin: 5px;
+    flex-wrap: wrap;
+    align-items: center;
+}
 .stackpanel {
     display: flex;
     flex-direction: column;

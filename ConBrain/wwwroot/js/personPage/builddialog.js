@@ -19,9 +19,10 @@ addMemberButton.addEventListener("click", e => {
 
 //Настройка кнопки создания диалога
 createButton.addEventListener("click", async e => {
-    if (await fetchDialog()) {
+    if (await fetchDialog())
         window.location.href = `./${nameDialog.textContent}`;
-    }
+    else
+        window.location.href = `../../error?message=Oops. Error create dialog. Maybe dialog with there name already exists`
 });
 
 //Функция для добавления собеседника
@@ -48,7 +49,6 @@ async function fetchDialog() {
     for (friend of members) {
         fetchStr += `&people=${friend}`;
     }
-    console.log(fetchStr);
     const response = await fetch(fetchStr, {
         method: "POST",
     });
@@ -69,7 +69,7 @@ async function fillmemberList() {
             member.textContent = friend;
             member.classList.add("sublistelement");
             member.addEventListener("click", (e) => {
-                addMember(friend);
+                addMember(member.value);
                 memberList.classList.remove("show");
                 memberList.classList.add("unshow");
             });

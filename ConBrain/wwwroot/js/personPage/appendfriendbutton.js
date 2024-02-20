@@ -28,9 +28,10 @@ const addBtn = new ButtonBuilder("addFriendButton", "append on friends", async e
     const response = await fetch(`/person/friends?nick=${currentPerson}`, {
         method: "PUT",
     });
-    if (response.ok === true) {
-        UpdateFriendButton();
-    }
+    if (response.ok === true)
+        await UpdateFriendButton();
+    else
+        AppendErrorMessage("Unknow error add friend");
 })
 
 const removeBtn = new ButtonBuilder("removeFriendButton", "remove from friends", async e => {
@@ -38,9 +39,10 @@ const removeBtn = new ButtonBuilder("removeFriendButton", "remove from friends",
         method: "DELETE",
         body: currentPerson
     });
-    if (response.ok === true) {
-        UpdateFriendButton();
-    }
+    if (response.ok === true)
+        await UpdateFriendButton();
+    else
+        AppendErrorMessage("Unknow error remove friend");
 })
 
 async function UpdateFriendButton() {
@@ -54,7 +56,13 @@ async function UpdateFriendButton() {
     if (response.ok === true) {
         var data = await response.json();
         let btn = data.includes(currentPerson) ? removeBtn.getButton() : addBtn.getButton();
-        console.log(btn)
         area.appendChild(btn);
     }
+}
+function AppendErrorMessage(message) {
+    while (area.firstChild != area.lastChild)
+        area.removeChild(area.lastChild);
+    const mess = document.createElement("p");
+    mess.textContent = message;
+    area.appendChild(mess);
 }

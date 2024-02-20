@@ -24,7 +24,6 @@ fileInput.addEventListener("change", e => {
             const formData = new FormData();
             const targetimg = convertImageToJpg(img);
             let blobImg = new Blob([targetimg], { type: "image/jpg" });
-            //const source = new File(targetimg, "avatar.jpg");
             
             formData.append("file", blobImg, "avatar.jpg");
             formData.append("key", "avatar.jpg");
@@ -35,6 +34,20 @@ fileInput.addEventListener("change", e => {
             if (response.ok === true) {
                 window.location.reload();
             }
+            else {
+                let message;
+                switch (response.status) {
+                    case 400:
+                        message = "Bad request data. Report to us please";
+                        break;
+                    case 401:
+                        message = "Authorized time has expired. Log in again please";
+                    default:
+                        message = "Unknown error. Report to us please";
+                }
+                document.location.href = `./error?message=${message}`;
+            }
+            
         }
         img.src = rev.target.result;
     }

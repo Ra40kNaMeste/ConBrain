@@ -16,6 +16,7 @@ let firstMessageId; //самое первое (старое) сообщение
 
 const count = 20; //Количество загружаемых за раз сообщений
 const scrollOffset = 0; //смещение полосы прокрутки для подгрузки: при перемещении полосы проктрутки в начало начинается подгрузка старых сообщений
+const timeoutloading = 5000;
 
 class PersonManager {
     constructor() {
@@ -61,7 +62,7 @@ hubConnection.on("Message", async mess =>{
     });
 });
 
-await hubConnection.start();
+await startHub(hubConnection);
 
 //Подключение к диалогу
 await hubConnection.invoke("Subscribe", dialogName);
@@ -169,6 +170,19 @@ async function sendMessage(){
 
     await hubConnection.invoke("Send", textInput.value, dialogName);
     textInput.value = "";
+}
+
+async function startHub(hubConnection) {
+    await hubConnection.start()
+        .catch((p) => {
+            const message = document.createElement("p");
+            message.textContent = "Error loading messages. Start reload..";
+            messageBody.appendChild(message);
+            setTimeout(() => {
+                messageBody.removeChild(message);
+                startHub(hubConnection);
+            }, timeoutloading)
+        });
 }
 
 //Условие начала прокрутки

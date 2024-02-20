@@ -1,0 +1,20 @@
+﻿
+@{
+    ViewData["Title"] = "MessageError";
+    Layout = null;
+}
+@model string
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Error</title>
+    <link type="text/css" rel="stylesheet" asp-href-include="~/css/*.css" />
+</head>
+<body>
+    <div id="rootDiv" class="layoutForeground">
+        <img src="~/images/mainbackground/foreground.svg" asp-append-version="true" id="foreground" />
+        <main id="contentDiv">
+            <h1>oops error...</h1>
+            <p>@Model</p>
+        </main>
+    </div>
+</body>
