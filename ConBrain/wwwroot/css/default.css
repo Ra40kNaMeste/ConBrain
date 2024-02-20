@@ -82,11 +82,19 @@
 .removeButton {
     background-color: #ff000044;
     display: block;
-    width: fit-content;
     border-radius: 10px;
-    margin: 5px 20px;
-    padding: 10px;
+    margin: 10px 3px;
+    padding: 5px;
     width: auto;
     text-align: center;
     text-decoration:blink;
+}
+.centralText {
+    display: block;
+    width: auto;
+    align-self:center;
+    height: auto;
+    vertical-align:central;
+    text-align: center;
+    text-decoration: blink;
 }

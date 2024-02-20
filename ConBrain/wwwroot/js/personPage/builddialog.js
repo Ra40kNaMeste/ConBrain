@@ -6,15 +6,19 @@ const createButton = document.getElementById("create"); //кнопка созд�
 const members = []; //Собеседники (ники)
 const memberList = document.createElement("div"); //Список друзей
 
-fillmemberList(); //Заполнение списка друзей
+fillMemberList(); //Заполнение списка друзей
 
 //Настройка кнопки addMemberButton
 addMemberButton.parentElement.insertBefore(memberList, addMemberButton)
 memberList.classList.add("unshow");
+addMemberButton.classList.add("show");
 
 addMemberButton.addEventListener("click", e => {
     memberList.classList.remove("unshow");
     memberList.classList.add("show");
+
+    addMemberButton.classList.remove("show");
+    addMemberButton.classList.add("unshow");
 })
 
 //Настройка кнопки создания диалога
@@ -26,15 +30,17 @@ createButton.addEventListener("click", async e => {
 });
 
 //Функция для добавления собеседника
-function addMember(nick) {
-    members.push(nick);
-    memberBody.insertBefore(createMemberElement(nick), memberList);
+function addMember(member) {
+    members.push(member.value);
+    memberBody.insertBefore(createMemberElement(member), memberList);
+    memberList.removeChild(member);
 }
 
 //Функция для удаления собеседника
-function removeMember(nick, block) {
-    removeElement(members, nick);
+function removeMember(member, block) {
+    removeElement(members, member.value);
     memberBody.removeChild(block);
+    memberList.appendChild(member);
 }
 
 function removeElement(list, element) {
@@ -56,7 +62,7 @@ async function fetchDialog() {
 }
 
 //Функция для заполнения выпадающего списка друзей
-async function fillmemberList() {
+async function fillMemberList() {
     let friends = [];
     const response = await fetch(`/person/friends`, {
         method: "GET"
@@ -69,9 +75,15 @@ async function fillmemberList() {
             member.textContent = friend;
             member.classList.add("sublistelement");
             member.addEventListener("click", (e) => {
-                addMember(member.value);
+                addMember(member);
                 memberList.classList.remove("show");
                 memberList.classList.add("unshow");
+                
+                if (memberList.children.length != 0) {
+                    addMemberButton.classList.remove("unshow");
+                    addMemberButton.classList.add("show");
+                }
+                    
             });
             memberList.appendChild(member);
         }
@@ -82,8 +94,8 @@ function createMemberElement(member) {
     div.classList.add("rowForm");
 
     const name = document.createElement("p");
-    name.classList.add("nameForm");
-    name.textContent = member;
+    name.classList.add("centralText");
+    name.textContent = member.value;
 
     //Добавление кнопки удаления
     const deleteBtn = document.createElement("button");
@@ -91,6 +103,7 @@ function createMemberElement(member) {
     deleteBtn.classList.add("removeButton");
     deleteBtn.addEventListener("click", e => {
         removeMember(member, div);
+        addMemberButton.classList.add("show");
     })
 
     div.appendChild(name);
