@@ -18,6 +18,7 @@ namespace ConBrain
             builder.Services.AddDbContext<UserDbContext>((options)=>options.UseSqlite(builder.Configuration.GetConnectionString("sqliteUsers")));
             builder.Services.AddMvc();
             builder.Services.AddTransient<JwtTokenMiddleware>();
+            builder.Services.AddTransient((i) => new HandleNotAuthorizationMiddleware("login"));
             builder.Services.AddSignalR(o =>
             {
                 o.ClientTimeoutInterval = TimeSpan.FromSeconds(30);
@@ -53,12 +54,11 @@ namespace ConBrain
 
             var app = builder.Build();
             app.UseJwtToken();
+            app.UseHandleNotAuthorization();
 
             app.UseAuthentication();
             app.UseAuthorization();
-            
-            
-            
+
             app.MapControllerRoute("default", "{controller=Home}/{action=Index}");
             app.MapControllerRoute("login", "{controller=Authorization}/{action=Login}");
             app.MapHub<DialogHub>("/message");
