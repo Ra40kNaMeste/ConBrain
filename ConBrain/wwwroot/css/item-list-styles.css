@@ -1,0 +1,31 @@
+﻿.leftstackpanel {
+    display: flex;
+    flex-direction: row;
+    justify-content:left;
+    margin: 5px;
+    flex-wrap:nowrap;
+}
+
+.topstackpanel {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    margin: 5px;
+    flex-wrap: nowrap;
+}
+
+.rightstackpanel {
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    margin: 5px;
+    flex-wrap: nowrap;
+}
+
+.downstackpanel {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    margin: 5px;
+    flex-wrap: nowrap;
+}

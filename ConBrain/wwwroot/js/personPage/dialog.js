@@ -2,8 +2,6 @@
 import "../../../node_modules/@microsoft/signalr/dist/browser/signalr.js";
 
 //определение внешних элементов упрвления
-const settingsButton = document.getElementById("settings")
-const addPersonButton = document.getElementById("addPerson");
 const dialogName = document.getElementById("title").textContent;
 const contentDiv = document.getElementById("mainDiv");
 

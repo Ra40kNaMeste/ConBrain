@@ -31,14 +31,7 @@
     height: 120px;
     border-radius: 30%;
 }
-.rowstackpanel {
-    display: flex;
-    flex-direction: row;
-    justify-content:left;
-    margin: 5px;
-    flex-wrap:nowrap;
-    align-items:stretch;
-}
+
 .rowstretchstackpanel {
     display: flex;
     flex-direction: row;
@@ -54,12 +47,7 @@
     flex-wrap: wrap;
     align-items: center;
 }
-.stackpanel {
-    display: flex;
-    flex-direction: column;
-    margin: 5px;
-    flex-wrap: nowrap;
-}
+
 .contentbackground{
     margin:5px;
     padding:5px;

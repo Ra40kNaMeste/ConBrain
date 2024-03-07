@@ -6,7 +6,11 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
+using React.AspNet;
 using System.Text;
+using JavaScriptEngineSwitcher.V8;
+using JavaScriptEngineSwitcher.Extensions.MsDependencyInjection;
+using JavaScriptEngineSwitcher.ChakraCore;
 
 namespace ConBrain
 {
@@ -24,7 +28,13 @@ namespace ConBrain
                 o.ClientTimeoutInterval = TimeSpan.FromSeconds(30);
                 o.KeepAliveInterval = TimeSpan.FromSeconds(15);
             });
-            
+            builder.Services.AddControllersWithViews();
+            builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            builder.Services.AddReact();
+
+            builder.Services.AddJsEngineSwitcher(options => options.DefaultEngineName = ChakraCoreJsEngine.EngineName).AddChakraCore();
+
+            //builder.Services.AddJsEngineSwitcher(options => options.DefaultEngineName = V8JsEngine.EngineName).AddV8();
 
             builder.Services.AddSingleton<ILogger>(new ConsoleLogger());
             var config = builder.Configuration.GetSection("Authorization").Get<AuthorizationSettings>();
@@ -63,8 +73,11 @@ namespace ConBrain
             app.MapControllerRoute("login", "{controller=Authorization}/{action=Login}");
             app.MapHub<DialogHub>("/message");
 
+            
+            app.UseReact(config =>
+            {
+            });
             app.UseStaticFiles();
-
             IHostEnvironment? env = app.Services.GetService<IHostEnvironment>();
             app.UseFileServer(new FileServerOptions()
             {
