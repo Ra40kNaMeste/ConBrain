@@ -1,10 +1,6 @@
-﻿class Hello extends React.Component {
-    render() {
-        return <h1>Привет, React.JS</h1>;
-    }
-}
-
+﻿
+import { LoadingDatesList } from "../../js/components/loading-dates-list.jsx";
 ReactDOM.render(
-    <Hello />,
+    <p>gg</p>,
     document.getElementById("content")
 );

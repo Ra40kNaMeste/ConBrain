@@ -1,35 +1,19 @@
-﻿import * from "../../../../node_modules/react/index";
-import * from  "../../../../node_modules/react-dom/index";
+﻿//import "../../../../node_modules/react/index.js";
+//import "../../../../node_modules/react-dom/index.js";
 
-class DataManager {
-    constructor(requestItem) {
-        this.#dates = new Map();
-        this.#requestItem = requestItem;
-    }
-    #dates;
-    #requestItem;
-    async #loadpersonfromserver(nick) {
-        let item = await this.#requestItem(nick);
-        this.#dates.set(nick, item);
-        return item;
-    }
+//    async getPerson(nick) {
+//        const res = this.#dates.get(nick);
+//        if (res == null)
+//            return await this.#loadpersonfromserver(nick);
+//        return res;
+//    }
+//}
 
-    async getPerson(nick) {
-        const res = this.#dates.get(nick);
-        if (res == null)
-            return await this.#loadpersonfromserver(nick);
-        return res;
-    }
-}
-
-class LoadingDatesList extends Component
+export class LoadingDatesList extends React.Component
 {
-    constructor(props, direction, builder) {
+    constructor(props) {
         super(props);
-        this.props = new {
-            style: direction + "stackpanel",
-            builder:builder
-        };
+
         this.state = new {
             loading: true,
             dates: []
@@ -38,7 +22,7 @@ class LoadingDatesList extends Component
 
     render() {
         return <div className={this.props.style}>
-            {this.state["dates"].map((o, e) => props["builder"](p))}
+            {this.state["dates"].map((o, e) => <p>o</p>)}
             {this.state["loading"] && <img src="/images/load.gif" />}
         </div>
     }
