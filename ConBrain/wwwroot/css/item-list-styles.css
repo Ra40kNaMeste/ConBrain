@@ -29,3 +29,6 @@
     margin: 5px;
     flex-wrap: nowrap;
 }
+.loadingimage{
+    align-self:center;
+}

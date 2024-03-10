@@ -1,6 +1,24 @@
-﻿
-import { LoadingDatesList } from "../../js/components/loading-dates-list.jsx";
+﻿import { LoadingDatesList } from "../../../js/components/loading-dates-list.jsx";
+
+function redirectToPerson(nick){
+    window.location.href = `../id=${nick}`;
+}
+
+let builder = (o)=>
+    <tr onClick={() => redirectToPerson(`${o.nick}`)}>
+        <td>
+            <img className="middleavatar" src={`/${o.nick}/image?key=${o.avatarPath}` } />
+        </td>
+        <td>{o.nick}</td>
+        <td>{`${o.family} ${o.name}`}</td>
+    </tr>;
+
+
+let dates = [];
+dates.push("one");
+dates.push("two");
+
 ReactDOM.render(
-    <p>gg</p>,
+    <LoadingDatesList url="/peopleList?" step="10" offset="0" direction="Left" builder={ builder }></LoadingDatesList>,
     document.getElementById("content")
 );

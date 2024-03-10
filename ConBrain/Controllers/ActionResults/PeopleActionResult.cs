@@ -5,13 +5,14 @@ namespace ConBrain.Controllers.ActionResults
 {
     public class PeopleActionResult : IActionResult
     {
-        public PeopleActionResult(int offset, int size, string? pattern, UserDbContext context)
+        public PeopleActionResult(int[] ignores, int size, string? pattern, UserDbContext context)
         {
 
-            var temp = pattern == null || pattern == "" ? context.PersonData : context.PersonData
-                .Where(i => i.Nick.Contains(pattern) || i.Name.Contains(pattern) || i.Family.Contains(pattern));
-            _people = temp.Skip(offset)
-                .Take(size);
+            _people = context.PersonData
+                .Where(i => !ignores.Contains(i.Id));
+            if(pattern != null && pattern != "")
+                _people = _people.Where(i => i.Nick.Contains(pattern) || i.Name.Contains(pattern) || i.Family.Contains(pattern));
+            _people = _people.Take(size);            
         }
 
         public async Task ExecuteResultAsync(ActionContext context)
@@ -19,6 +20,6 @@ namespace ConBrain.Controllers.ActionResults
             await context.HttpContext.Response.WriteAsJsonAsync(_people);
         }
 
-        private IEnumerable<Model.PersonData> _people;
+        private IEnumerable<PersonData> _people;
     }
 }

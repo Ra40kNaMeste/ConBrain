@@ -151,6 +151,7 @@ namespace ConBrain.Model
         [NonCopy]
         public int PersonId { get; set; }
     }
+
     public class MessageSavedMementor
     {
         public MessageSavedMementor(int id, DateTime dateTime, string body, string? sender = null) 

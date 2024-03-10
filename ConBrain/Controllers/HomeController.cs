@@ -22,9 +22,9 @@ namespace ConBrain.Controllers
 
         [HttpGet]
         [Route("peopleList")]
-        public IActionResult People(int offset, int size, string? pattern)
+        public IActionResult People(int[] ignores, int size, string? pattern)
         {
-            return new PeopleActionResult(offset, size, pattern, _context);
+            return new PeopleActionResult(ignores, size, pattern, _context);
         }
         private readonly UserDbContext _context;
     }
