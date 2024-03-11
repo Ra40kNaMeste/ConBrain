@@ -19,6 +19,6 @@ dates.push("one");
 dates.push("two");
 
 ReactDOM.render(
-    <LoadingDatesList url="/peopleList?" step="10" offset="1" direction="Down" builder={ builder }></LoadingDatesList>,
+    <LoadingDatesList url="/peopleList?" step="5" offset="1" direction="Down" builder={ builder }></LoadingDatesList>,
     document.getElementById("content")
 );
