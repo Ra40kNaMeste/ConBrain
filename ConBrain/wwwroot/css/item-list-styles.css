@@ -9,7 +9,7 @@
 .topstackpanel {
     display: flex;
     flex-direction: column;
-    justify-content: start;
+    justify-content: end;
     margin: 5px;
     flex-wrap: nowrap;
 }
@@ -25,7 +25,7 @@
 .downstackpanel {
     display: flex;
     flex-direction: column;
-    justify-content: end;
+    justify-content: start;
     margin: 5px;
     flex-wrap: nowrap;
 }

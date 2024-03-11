@@ -55,12 +55,21 @@ export class LoadingDatesList extends React.Component
 
     async init() {
         this.#condition = this.getFunction(this.props["direction"]);
-        for (let i = 0; i < 3; i++)
-            await this.load()
     }
 
-    async scroll() {
-        if (this.#condition(this.props["offset"])) {
+    async scroll(reference) {
+        console.log("scrolling");
+        console.log(reference);
+        if (reference.#condition(reference.rootdiv.current, parseInt(reference.props["offset"]))) {
+            console.log("loading");
+            await reference.load();
+        }
+    }
+
+    async componentDidMount() {
+        console.log("gg");
+        while (this.#condition(this.rootdiv.current, parseInt(this.props["offset"]))) {
+            console.log("loading");
             await this.load();
         }
     }
@@ -99,29 +108,26 @@ export class LoadingDatesList extends React.Component
                 return "topstackpanel";
         }
     }
-
-    topscroll(offset) {
-        console.log(this.rootdiv)
-        rd = this.rootdiv;
-        if (rd == null)
-            return false;
-        console.log("gg")
-        return rd.current.scrolltop < offset;
+    topscroll(root, offset) {
+        console.log(root.scrollTop)
+        return root.scrollTop <= parseInt(offset);
     }
 
-    downscroll(offset) {
-        return rd.scrolly + rd.clientheight + offset >= rd.scrollheight;
+    downscroll(root, offset) {
+        console.log(`st = ${root.scrollTop} ch = ${root.clientHeight} sH = ${root.scrollHeight} offset=${root.scrollTop + root.clientHeight + offset}`)
+        return root.scrollTop + root.clientHeight + offset >= root.scrollHeight;
     }
 
-    leftscroll(offset) {
+    leftscroll(root, offset) {
         return rd.scrollleft < offset;
     }
-    rightscroll(offset) {
+    rightscroll(root, offset) {
         return rd.scrolly + rd.clientheight + offset >= rd.current.scrollheight;
     }
 
     render() {
-        return <div className={this.#style} ref={this.rootdiv }>
+        const divClasNames = `${this.#style} scrollDiv`;
+        return <div className={divClasNames} ref={this.rootdiv} onScroll={ ()=>this.scroll(this) }>
             {this.state["dates"].map((o, e) => this.props["builder"](o))}
             {this.state["loading"] && <img src="/images/load.gif" className="middleicon loadingimage" />}
         </div>
