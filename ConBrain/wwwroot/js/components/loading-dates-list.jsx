@@ -7,19 +7,37 @@
     #ignores;
     #url;
     #step;
+    #flag = false;
     async load() {
         const res = [];
-
+        if (this.#flag)
+            return res;
+        this.#flag = true;
+        console.log(this.#url + `size=${this.#step}&${this.#ignores.map(i => "ignores=" + i).join('&')}`);
         const response = await fetch(this.#url + `size=${this.#step}&${this.#ignores.map(i => "ignores=" + i).join('&')}`);
         if (response.ok === true) {
             const loadingData = await response.json();
-            
+            console.log(loadingData);
             for (const data of loadingData) {
                 res.push(data);
                 this.#ignores.push(data.id);
             }
         }
+        this.#flag = false;
         return res;
+    }
+}
+
+class DownLoaidingDatesListFunctions {
+    style = "downstackpanel";
+    condition(root, offset) {
+        return root.scrollTop + root.clientHeight + offset >= root.scrollHeight;
+    }
+    scroll(root, offset) {
+        return {top:root.scrollTop, left:root.scrollLeft}
+    }
+    append(old, append) {
+        return [...old, ...append]
     }
 }
 
@@ -37,9 +55,6 @@ export class LoadingDatesList extends React.Component
         super(props);
 
         this.#data = new DataStore(this.props["url"], this.props["step"]);
-        console.log(this.props.direction);
-        this.#condition = this.getFunction(this.props["direction"]);
-        this.#style = this.getStyle(this.props["direction"]);  
 
         this.rootdiv = React.createRef();
 
@@ -49,85 +64,86 @@ export class LoadingDatesList extends React.Component
         };
         this.init();
     }
-    #style;
-    #condition;
+    functions;
     #data;
 
     async init() {
-        this.#condition = this.getFunction(this.props["direction"]);
+        this.functions = this.getFunctions(this.props["direction"]);
     }
 
-    async scroll(reference) {
+    async scroll() {
         console.log("scrolling");
-        console.log(reference);
-        if (reference.#condition(reference.rootdiv.current, parseInt(reference.props["offset"]))) {
-            console.log("loading");
-            await reference.load();
+        console.log();
+        const root = this.rootdiv.current;
+        console.log(this.functions.condition(root, parseInt(this.props["offset"])));
+
+        if (this.functions.condition(root, parseInt(this.props["offset"]))) {
+            const old = {
+                scrollTop: root.scrollTop,
+                scrollLeft: root.scrollLeft,
+                scrollHeight: root.scrollHeight,
+                scrollWidth: root.scrollWidth
+            };
+            console.log("loading scroll");
+            await this.load();
+            root.scroll(this.functions.scroll(old, root));
         }
     }
 
     async componentDidMount() {
         console.log("gg");
-        while (this.#condition(this.rootdiv.current, parseInt(this.props["offset"]))) {
+        const root = this.rootdiv.current;
+        if (this.functions.condition(root, parseInt(this.props["offset"]))) {
             console.log("loading");
+            const old = {
+                scrollTop: root.scrollTop,
+                scrollLeft: root.scrollLeft,
+                scrollHeight: root.scrollHeight,
+                scrollWidth: root.scrollWidth,
+
+            };
             await this.load();
+            root.scroll(this.functions.scroll(old, root));
         }
     }
 
     async load() {
         this.setState({ loading: true });
         const loadingData = await this.#data.load();
-        this.setState({ dates: [...this.state["dates"], ...loadingData] });
+        this.setState({ dates: this.functions.append(this.state["dates"], loadingData) });
 
         this.setState({ loading: false });
         console.log(this.state["loading"])
     }
 
-    getFunction(direction) {
+    getFunctions(direction) {
         switch (direction) {
             case "Down":
-                return this.downscroll;
+                return new DownLoaidingDatesListFunctions();
             case "Left":
-                return this.leftscroll;
+                return this.leftScrollCondition;
             case "Right":
-                return this.rightscroll;
+                return this.rightScrollCondition;
             default:
-                return this.topscroll;
+                return this.topScrollCondition;
         }
     }
 
-    getStyle(direction) {
-        switch (direction) {
-            case "Down":
-                return "downstackpanel";
-            case "Left":
-                return "leftstackpanel";
-            case "Right":
-                return "rightstackpanel";
-            default:
-                return "topstackpanel";
-        }
-    }
-    topscroll(root, offset) {
-        console.log(root.scrollTop)
-        return root.scrollTop <= parseInt(offset);
-    }
-
-    downscroll(root, offset) {
-        console.log(`st = ${root.scrollTop} ch = ${root.clientHeight} sH = ${root.scrollHeight} offset=${root.scrollTop + root.clientHeight + offset}`)
-        return root.scrollTop + root.clientHeight + offset >= root.scrollHeight;
-    }
-
-    leftscroll(root, offset) {
-        return rd.scrollleft < offset;
-    }
-    rightscroll(root, offset) {
-        return rd.scrolly + rd.clientheight + offset >= rd.current.scrollheight;
-    }
-
+    //topScrollCondition(root, offset) {
+    //    console.log(root.scrollTop)
+    //    return root.scrollTop <= offset;
+    //}
+    
+    //leftScrollCondition(root, offset) {
+    //    return rd.scrollleft < offset;
+    //}
+    //rightScrollCondition(root, offset) {
+    //    return rd.scrolly + rd.clientheight + offset >= rd.current.scrollheight;
+    //}
+    
     render() {
-        const divClasNames = `${this.#style} scrollDiv`;
-        return <div className={divClasNames} ref={this.rootdiv} onScroll={ ()=>this.scroll(this) }>
+        const divClassNames = `${this.functions.style} scrollDiv`;
+        return <div className={divClassNames} ref={this.rootdiv} onScroll={ ()=>this.scroll() }>
             {this.state["dates"].map((o, e) => this.props["builder"](o))}
             {this.state["loading"] && <img src="/images/load.gif" className="middleicon loadingimage" />}
         </div>
