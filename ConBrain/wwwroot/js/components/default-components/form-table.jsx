@@ -13,10 +13,25 @@ export class FormTable extends React.Component {
             const values = [].slice.call(document.getElementsByClassName("sendInput"));
             const response = await fetchWithAddressString(e.target, values);
             if (await saveToken(response) == false) {
-                values.forEach(value => {
-                    value.setCustomValidity("incorrect login or password");
-                    value.reportValidity();
-                })
+                const data = await response.json();
+                if (data != null) {
+                    for (const result of data) {
+                        for (const member of result.memberNames) {
+                            const box = values.find(i => i.name.toLowerCase() == member);
+                            box.setCustomValidity(result.errorMessage);
+                            box.reportValidity();
+
+                            box.addEventListener("input", (e) => {
+                                box.setCustomValidity("");
+                                box.reportValidity();
+                            });
+                            
+                        }
+                    }
+                }
+                else {
+                    alert("Unknow error log in");
+                }
             }
         })
     }

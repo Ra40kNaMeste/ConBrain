@@ -32,10 +32,14 @@ namespace ConBrain.Controllers
         public IActionResult Login(UserLoginData data)
         {
             var person = context.People.Include(i => i.Data).Where(i=>i.Data.Nick == data.Login).FirstOrDefault();
-            if (person == null || person.Password != data.Password)
-                return new StatusCodeResult(StatusCodes.Status400BadRequest);
-
-            return new LoginResult(person, settings);
+            List<ValidationResult> results = new();
+            if (person == null)
+                results.Add(new("User does not exist", new string[] { nameof(data.Login).ToLower() }));
+            else if (person.Password != data.Password)
+                results.Add(new("Uncorrect password", new string[] { nameof(data.Password).ToLower() }));
+            else
+                return new LoginResult(person, settings);
+            return new ErrorValidationResult(results);
         }
         [HttpPost]
         [Route("Register")]
