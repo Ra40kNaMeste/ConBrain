@@ -5,18 +5,11 @@ function redirectToPerson(nick){
 }
 
 let builder = (o)=>
-    <tr onClick={() => redirectToPerson(`${o.nick}`)}>
-        <td>
-            <img className="middleavatar" src={`/${o.nick}/image?key=${o.avatarPath}` } />
-        </td>
-        <td>{o.nick}</td>
-        <td>{`${o.family} ${o.name}`}</td>
-    </tr>;
-
-
-let dates = [];
-dates.push("one");
-dates.push("two");
+    <div onClick={() => redirectToPerson(`${o.nick}`)} className="rowwrapstackpanel">
+        <img className="middleavatar" src={`/${o.nick}/image?key=${o.avatarPath}` } />
+        <p className="textBlock">{o.nick}</p>
+        <p className="textBlock">{`${o.family} ${o.name}`}</p>
+    </div>;
 
 ReactDOM.render(
     <LoadingDatesList url="/peopleList?" step="5" offset="1" direction="Down" builder={ builder }></LoadingDatesList>,

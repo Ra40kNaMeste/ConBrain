@@ -48,6 +48,14 @@
     align-items: center;
 }
 
+.rownowrapstackpanel {
+    display: flex;
+    flex-direction: row;
+    margin: 5px;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
 .contentbackground{
     margin:5px;
     padding:5px;
@@ -89,4 +97,7 @@
 .fullSize{
     height:100%;
     width:100%;
+}
+.textBlock{
+    padding: 0px 10px;
 }
