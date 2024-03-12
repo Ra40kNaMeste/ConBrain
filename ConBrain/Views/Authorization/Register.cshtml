@@ -1,11 +1,9 @@
 ﻿@{
     ViewBag.Title = "Register";
 }
-@model UserRegisterData
-<table-form name="loginform" class="form" asp-controller="Authorization" method="post" asp-action="Register" target="@Model" table-name="register"
-            row-class-name="rowForm" property-class-name="nameForm" value-class-name="valueFormTd" request-button-content="register"></table-form>
-
-<script asp-append-version="true" type="module" src="~/js/authorizations/register.js"></script>
-<script asp-append-version="true" src="~/js/authorizations/passwordValidate.js"></script>
-<script asp-append-version="true" type="module" src="~/js/authorizations/inputPhone.js"></script>
-
+<div id="content" class="fullSize">
+</div>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/16.11.0/umd/react.development.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.11.0/umd/react-dom.development.js"></script>
+<script asp-append-version="true" type="module" src="@Url.Content("js/authorizations/register.jsx")"></script>
+@Html.ReactInitJavaScript()

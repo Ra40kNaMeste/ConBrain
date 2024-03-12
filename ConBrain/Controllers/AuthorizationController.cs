@@ -15,12 +15,7 @@ namespace ConBrain.Controllers
             settings = configuration.GetSection("Authorization").Get<AuthorizationSettings>() ?? throw new FormatException();
             this.context = context;
         }
-        [HttpGet]
-        [Route("Register")]
-        public IActionResult Register()
-        {
-            return View(new UserRegisterData());
-        }
+
         [HttpGet]
         [Route("login")]
         public IActionResult Login() 
@@ -41,8 +36,16 @@ namespace ConBrain.Controllers
                 return new LoginResult(person, settings);
             return new ErrorValidationResult(results);
         }
+
+        [HttpGet]
+        [Route("register")]
+        public IActionResult Register()
+        {
+            return View();
+        }
+
         [HttpPost]
-        [Route("Register")]
+        [Route("register")]
         public async Task<IActionResult> Register(UserRegisterData data)
         {
             var person = new Person()
@@ -88,10 +91,6 @@ namespace ConBrain.Controllers
         [TagHelpers.Display("Password", Type="password", Classes = new string[] { "sendInput" })]
         public string Password { get; set; }
 
-        [Required]
-        [StringLength(50, MinimumLength = 5)]
-        [TagHelpers.Display("Repeat password", Type = "password")]
-        public string RepeatPassword { get; set; }
     }
     public record class UserLoginData(string Login, string Password);
 }
