@@ -1,31 +1,46 @@
-﻿import * from "../../../../node_modules/react/index";
-import * from  "../../../../node_modules/react-dom/index";
+﻿import { fetchWithAddressString, saveToken } from "../../authorizations/authorization.js";
 
-class FormTable extends Component {
-    constructor(name, controller, action, sendContent, ...parameters) {
-        this.state["params"] = parameters;
-        this.state["name"] = name;
-        this.state["sendContent"] = sendContent;
 
-        this.props["controller"] = controller;
-        this.props["action"] = action;
+export class FormTable extends React.Component {
+    constructor(props) {
+        super(props);
+        this.table = React.createRef();
+    }
+    componentDidMount() {
+        const table = this.table.current;
+        table.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const values = [].slice.call(document.getElementsByClassName("sendInput"));
+            const response = await fetchWithAddressString(e.target, values);
+            if (await saveToken(response) == false) {
+                values.forEach(value => {
+                    value.setCustomValidity("incorrect login or password");
+                    value.reportValidity();
+                })
+            }
+        })
     }
     render() {
-        return
-        <form asp-controller={this.props["controller"]} asp-action={this.props["action"]} method="POST">
+        return <form ref={this.table} name={this.props.name} action={this.props.action} method={this.props.method} className="form">
             <table>
-                <caption>{this.state["name"]}</caption>
-                {
-                    this.state["params"].map((o, i) =>
-                        <tr class="rowForm">
-                            <td class="nameForm">{o.name}</td>
-                            <td class="valueFormTd">
-                                <input name={o.property} value={o.value} type={o.type} maxlength={o.maxLength} minlength={o.minLength} />
-                            </td>
-                        </tr>)
-                }
+                <caption>{this.props.caption }</caption>
+                <tbody>
+                    {this.props.children}
+                </tbody>
             </table>
-            <button name="send">{this.state["sendContent"]}</button>
+            <button>sign in</button>
         </form>
     }
+
+}
+
+
+export function FormTableItem(props) {
+
+    return <tr className="rowForm">
+        <td className="nameForm">{props.name}</td>
+        <td className="valueFormTd">
+            <input autoComplete="on" className={props.isSend ?"sendInput":"" } name={props.property} value={props.value} type={props.type} maxLength={props.maxLength} minLength={props.minLength} />
+        </td>
+    </tr>
 }

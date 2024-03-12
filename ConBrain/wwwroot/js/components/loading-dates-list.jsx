@@ -13,7 +13,6 @@
         if (this.#flag)
             return res;
         this.#flag = true;
-        console.log(this.#url + `size=${this.#step}&${this.#ignores.map(i => "ignores=" + i).join('&')}`);
         const response = await fetch(this.#url + `size=${this.#step}&${this.#ignores.map(i => "ignores=" + i).join('&')}`);
         if (response.ok === true) {
             const loadingData = await response.json();

@@ -33,10 +33,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\js\authorizations\authorization.js" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="JavaScriptEngineSwitcher.ChakraCore" Version="3.23.7" />
     <PackageReference Include="JavaScriptEngineSwitcher.ChakraCore.Native.win-arm" Version="3.21.0" />
     <PackageReference Include="JavaScriptEngineSwitcher.ChakraCore.Native.win-x64" Version="3.21.0" />
@@ -70,9 +66,6 @@
 
   <ItemGroup>
     <Content Update="wwwroot\css\null.css">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\css\formstyle.css">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

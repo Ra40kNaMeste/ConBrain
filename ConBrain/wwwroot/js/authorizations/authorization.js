@@ -1,7 +1,4 @@
-﻿export async function fetchWithAddressString(e) {
-    const values = [].slice.call(document.getElementsByClassName("sendInput"));
-    const target = e.currentTarget;
-
+﻿export async function fetchWithAddressString(target, values) {
     //Собираем тело для отправки
     var formBody = [];
     for (var value of values) {
@@ -10,7 +7,6 @@
         formBody.push(encodedKey + "=" + encodedValue);
     }
     formBody = formBody.join("&");
-    console.log(formBody)
     //отправляем
     const response = await fetch(target.action, {
         method: target.method,

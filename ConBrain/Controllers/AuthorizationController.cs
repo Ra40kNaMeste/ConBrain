@@ -22,16 +22,16 @@ namespace ConBrain.Controllers
             return View(new UserRegisterData());
         }
         [HttpGet]
-        [Route("Login")]
+        [Route("login")]
         public IActionResult Login() 
         {
-            return View(new UserLoginData());
+            return View();
         }
         [HttpPost]
-        [Route("Login")]
+        [Route("login")]
         public IActionResult Login(UserLoginData data)
         {
-            var person = context.People.Include(i => i.Data).Where(i=>i.Data.Nick == data.Nick).FirstOrDefault();
+            var person = context.People.Include(i => i.Data).Where(i=>i.Data.Nick == data.Login).FirstOrDefault();
             if (person == null || person.Password != data.Password)
                 return new StatusCodeResult(StatusCodes.Status400BadRequest);
 
@@ -89,15 +89,5 @@ namespace ConBrain.Controllers
         [TagHelpers.Display("Repeat password", Type = "password")]
         public string RepeatPassword { get; set; }
     }
-    public class UserLoginData 
-    {
-        [Required]
-        [StringLength(50, MinimumLength = 5)]
-        [TagHelpers.Display("Login", Type = "text", Classes = new string[] { "sendInput" })]
-        public string Nick { get; set; }
-        [Required]
-        [StringLength(50, MinimumLength = 5)]
-        [TagHelpers.Display("Password", Type = "password", Classes = new string[] { "sendInput" })]
-        public string Password { get; set; }
-    }
+    public record class UserLoginData(string Login, string Password);
 }
