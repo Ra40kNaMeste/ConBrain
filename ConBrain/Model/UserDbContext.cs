@@ -30,6 +30,9 @@ namespace ConBrain.Model
         {
             base.OnModelCreating(builder);
 
+            builder.Entity<PersonData>().HasIndex(i => i.Nick).IsUnique();
+            builder.Entity<PersonData>().HasIndex(i => i.Phone).IsUnique();
+
             builder.Entity<FriendPerson>()
                 .HasOne(p => p.Target)
                 .WithMany(p => p.Friends)
@@ -113,7 +116,6 @@ namespace ConBrain.Model
         [MinLength(5)]
         [MaxLength(50)]
         [StringLength(50, MinimumLength = 5)]
-        [TagHelpers.Display("Nick", Type = "text", Classes = new string[] { "sendInput" })]
         public string Nick { get; set; } = "";
 
         [NonCopy]
@@ -123,21 +125,18 @@ namespace ConBrain.Model
         [MinLength(1)]
         [MaxLength(50)]
         [StringLength(50, MinimumLength = 1)]
-        [TagHelpers.Display("Name", Type = "text", Classes = new string[] { "sendInput" })]
         public string Name { get; set; } = "";
 
         [Required]
         [MinLength(1)]
         [MaxLength(50)]
         [StringLength(50, MinimumLength = 1)]
-        [TagHelpers.Display("Family", Type = "text", Classes = new string[] { "sendInput" })]
         public string Family { get; set; } = "";
 
         [Required]
         [MinLength(1)]
         [MaxLength(50)]
         [StringLength(50, MinimumLength = 1)]
-        [TagHelpers.Display("Second name", Type = "text", Classes = new string[] { "sendInput" })]
         public string? SecondName { get; set; }
 
         [Required]
@@ -145,7 +144,6 @@ namespace ConBrain.Model
         [MaxLength(50)]
         [StringLength(50, MinimumLength = 7)]
         [RegularExpression(@"^\+[0-9]+\([0-9]{3}\)[0-9]{3}(-[0-9]{2}){2}$", ErrorMessage = "The Phone is by format +xx(xxx)xxx-xx-xx")]
-        [TagHelpers.Display("Phone", Type = "tel", Classes =new string[] {"phone", "sendInput" })]
         public string? Phone { get; set; }
 
         [NonCopy]

@@ -70,7 +70,7 @@ namespace ConBrain.Controllers
             }
             catch (Exception ex)
             {
-                return new DbValidationErrorResult(ex.Message);
+                return new DbValidationErrorResult(ex);
             }
 
             return new LoginResult(person, settings);
@@ -105,7 +105,7 @@ namespace ConBrain.Controllers
             }
             catch (Exception ex)
             {
-                return new DbValidationErrorResult(ex.Message);
+                return new DbValidationErrorResult(ex);
             }
             return Redirect("/home");
         }
