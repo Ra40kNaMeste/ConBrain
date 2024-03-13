@@ -16,7 +16,6 @@
         const response = await fetch(this.#url + `size=${this.#step}&${this.#ignores.map(i => "ignores=" + i).join('&')}`);
         if (response.ok === true) {
             const loadingData = await response.json();
-            console.log(loadingData);
             for (const data of loadingData) {
                 res.push(data);
                 this.#ignores.push(data.id);
@@ -128,8 +127,10 @@ export class LoadingDatesList extends React.Component
 
         while (this.functions.condition(root, parseInt(this.props["offset"]))) {
             let old = this.copyScrollPosition(root);
-            await this.load();
+            const count = await this.load();
             root.scroll(this.functions.scroll(old, root));
+            if (count == 0)
+                return;
         }
     }
 
@@ -143,6 +144,7 @@ export class LoadingDatesList extends React.Component
         this.setState({ dates: this.functions.append(this.state["dates"], loadingData) });
 
         this.setState({ loading: false });
+        return loadingData.length;
     }
 
     //Возвращает набор действий для направления

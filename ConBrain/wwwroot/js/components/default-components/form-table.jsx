@@ -16,7 +16,6 @@ export class FormTable extends React.Component {
 
         const values = [].slice.call(document.getElementsByClassName("sendInput"));
         const phoneFields = values.filter(i => i.type == "tel");
-        console.log(phoneFields);
         if (phoneFields)
             phoneFields.forEach(i => IMask(i, {
                 mask: '+00(000)000-00-00'
@@ -62,7 +61,7 @@ export class FormTable extends React.Component {
                     {this.props.children}
                 </tbody>
             </table>
-            <button>sign in</button>
+            <button>{this.props.sendContent}</button>
         </form>
     }
 
@@ -95,11 +94,12 @@ export class FormTableWithPasswordValidation extends FormTable {
 }
 
 export function FormTableItem(props) {
-
+    let classes = props.isSend ? "sendInput" : "";
+    classes += " valueForm";
     return <tr className="rowForm">
         <td className="nameForm">{props.name}</td>
         <td className="valueFormTd">
-            <input autoComplete="on" className={props.isSend ?"sendInput":"" } name={props.property} value={props.value} type={props.type} maxLength={props.maxLength} minLength={props.minLength} />
+            <input autoComplete="on" className={classes} name={props.property} value={props.value} type={props.type} maxLength={props.maxLength} minLength={props.minLength} />
         </td>
     </tr>
 }

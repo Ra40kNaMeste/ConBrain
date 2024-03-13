@@ -20,8 +20,8 @@
     flex-direction: column;
     justify-content: right;
     aspect-ratio: 3/4;
-    border-radius: 20px;
-    padding: 40px;
+    border-radius: var(--big-border-radius);
+    padding: 20px;
     min-width: 460px;
     min-height: 615px;
 
@@ -43,20 +43,20 @@
 }
 
 .scrollDiv::-webkit-scrollbar-thumb {
-    background-color: #00000088;
+    background-color: var(--dark-background-color);
     border-right: none;
     border-left: none;
 }
 
-.scrollDiv::-webkit-scrollbar-track-piece:end {
-    background: #00000044;
-    margin-bottom: 20px;
-}
+    .scrollDiv::-webkit-scrollbar-track-piece:end {
+        background: var(--dark-background-color);
+        margin-bottom: 20px;
+    }
 
-.scrollDiv::-webkit-scrollbar-track-piece:start {
-    background: #00000044;
-    margin-top: 20px;
-}
+    .scrollDiv::-webkit-scrollbar-track-piece:start {
+        background: var(--dark-background-color);
+        margin-top: 20px;
+    }
 .divMenu {
     display: flex;
     flex-direction: row;
@@ -76,9 +76,8 @@
     background-color: white;
 }
 main {
-    height: 80%;
+    height: 85%;
 }
 nav {
-    height: 20%;
     margin-bottom: 10px;
 }

@@ -1,0 +1,10 @@
+﻿:root {
+    --background-color: #742477;
+    --big-border-radius: 15px;
+    --border-radius: 10px;
+    --small-border-radius: 5px;
+    --dark-background-color: #00000044;
+    --light-background-color: #ffffffaf;
+    --good-color: #00fe0037;
+    --poorly-color: #ff000064;
+}

@@ -56,6 +56,31 @@
     align-items: center;
 }
 
+.columnstretchstackpanel {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 5px;
+    flex-wrap: nowrap;
+    align-items: stretch;
+}
+
+.columnwrapstackpanel {
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+    flex-wrap: wrap;
+    align-items: stretch;
+}
+
+.columnnowrapstackpanel {
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+    flex-wrap: nowrap;
+    align-items: stretch;
+}
+
 .contentbackground{
     margin:5px;
     padding:5px;
@@ -69,22 +94,26 @@
 .downfixed{
     z-index:20;
 }
-.btn{
-    text-decoration:blink;
+.btn {
+    text-decoration: solid;
 }
-.btn:visited {
-    text-decoration: blink;
+    .btn:visited {
+        text-decoration:solid;
+    }
+
+.registerBtn {
+    color: var(--background-color);
+    align-self: end;
+    text-decoration: underline;
+    font-size: x-large;
 }
-.removeButton {
-    background-color: #ff000044;
-    display: block;
-    border-radius: 10px;
-    margin: 10px 3px;
-    padding: 5px;
-    width: auto;
-    text-align: center;
-    text-decoration:blink;
-}
+    .registerBtn:visited {
+        color: var(--background-color);
+        align-self: end;
+        text-decoration: underline;
+        font-size: x-large;
+    }
+
 .centralText {
     display: block;
     width: auto;

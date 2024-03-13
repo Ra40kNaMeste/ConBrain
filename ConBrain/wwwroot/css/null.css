@@ -38,7 +38,7 @@ td{
     border: 0;
 }
 html, body {
-    background-color: #742477;
+    background-color: var(--background-color);
 }
 
 caption{
@@ -49,6 +49,6 @@ button {
     padding: 5px;
     border-radius: 5px;
     width: fit-content;
-    background-color: #00000022;
+    background-color: var(--dark-background-color);
     margin:3px 20px;
 }
