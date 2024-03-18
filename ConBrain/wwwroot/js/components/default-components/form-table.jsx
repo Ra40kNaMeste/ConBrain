@@ -1,4 +1,5 @@
 ﻿import { fetchWithAddressString, saveToken } from "../../authorizations/authorization.js";
+import { SelectItemListByUrl } from "./select-item-list.jsx"
 import "../../../node_modules/imask/dist/imask.js";
 
 
@@ -102,4 +103,41 @@ export function FormTableItem(props) {
             <input autoComplete="on" className={classes} name={props.property} value={props.value} type={props.type} maxLength={props.maxLength} minLength={props.minLength} />
         </td>
     </tr>
+}
+
+export class FormTableAppendFriendItem extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { values: [], isSelected: false };
+    }
+
+    render() {
+        let selectBox;
+        if (this.state.isSelected) {
+            selectBox = <SelectItemListByUrl x="" url="/friends?" selected={(child) => {
+                this.state.values.push(child);
+                this.setState({ values: this.state.values, isSelected: false });
+            }}>
+            </SelectItemListByUrl>
+            console.log(this.state.isSelected);
+        }
+        else {
+            selectBox = <button onClick={() => this.setState({ isSelected: true })}>+</button>;
+        }
+
+        return <tr className="rowForm">
+            <td className="nameForm">{this.props.name}</td>
+            <td className="valueFormTd rowwrapstackpanel">
+                {this.state.values.map((o, e) =>
+                    <div className="rownowrapstackpanel">
+                        <p>{o.nick}</p>
+                        <button className="deleteButton" onClick={() => {
+                            const val = this.state.values.filter(i=>i.nick != o.nick);
+                            this.setState({ values: val, isSelected: false});
+                        }}>x</button>
+                    </div>)}
+                {selectBox}
+            </td>
+        </tr>
+    }
 }

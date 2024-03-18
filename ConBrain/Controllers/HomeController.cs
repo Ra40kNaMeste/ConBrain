@@ -24,7 +24,7 @@ namespace ConBrain.Controllers
         [Route("peopleList")]
         public IActionResult People(int[] ignores, int size, string? pattern)
         {
-            return new PeopleActionResult(ignores, size, pattern, _context);
+            return new PeopleActionResult(ignores, size, pattern, _context.PersonData);
         }
         private readonly UserDbContext _context;
     }

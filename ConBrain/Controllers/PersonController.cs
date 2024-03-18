@@ -143,16 +143,16 @@ namespace ConBrain.Controllers
 
         #region person/friends
         [HttpGet]
-        [Route("person/friends")]
-        public IActionResult GetFriend()
+        [Route("friends")]
+        public IActionResult GetFriend(int[] ignores, int size, string? pattern)
         {
             var person = GetPersonByAuth();
             if (person == null)
                 return new StatusCodeResult(StatusCodes.Status401Unauthorized);
-            return new FriendsActionResult(person.Friends.Select(i => i.Friend.Data.Nick));
+            return new PeopleActionResult(ignores, size, pattern, person.Friends.Select(i => i.Friend.Data));
         }
         [HttpPut]
-        [Route("person/friends")]
+        [Route("friends")]
         public async Task<IActionResult> AddFriend(string nick)
         {
             var person = GetPersonByAuth();
@@ -168,7 +168,7 @@ namespace ConBrain.Controllers
         }
 
         [HttpDelete]
-        [Route("person/friends")]
+        [Route("friends")]
         public async Task<IActionResult> RemoveFriend(string nick)
         {
             var person = GetPersonByAuth();

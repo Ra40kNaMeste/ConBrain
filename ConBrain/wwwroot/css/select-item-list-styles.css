@@ -1,0 +1,19 @@
+﻿.selectblock {
+    position: absolute;
+    max-height: 200px;
+    border-radius: var(--border-radius);
+    background: var(--dark-background-color);
+}
+.empty{
+    height: 0px;
+    width: 100px;
+    margin: 0px;
+    padding: 0px;
+    align-self:start;
+}
+.item {
+    margin: 3px;
+    padding: 5px;
+    border-radius: var(--border-radius);
+    background: white;
+}

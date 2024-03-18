@@ -25,7 +25,7 @@ class ButtonBuilder {
 }
 
 const addBtn = new ButtonBuilder("addFriendButton", "append on friends", async e => {
-    const response = await fetch(`/person/friends?nick=${currentPerson}`, {
+    const response = await fetch(`/friends?nick=${currentPerson}`, {
         method: "PUT",
     });
     if (response.ok === true)
@@ -35,7 +35,7 @@ const addBtn = new ButtonBuilder("addFriendButton", "append on friends", async e
 })
 
 const removeBtn = new ButtonBuilder("removeFriendButton", "remove from friends", async e => {
-    const response = await fetch(`/person/friends?nick=${currentPerson}`, {
+    const response = await fetch(`/friends?nick=${currentPerson}`, {
         method: "DELETE",
         body: currentPerson
     });
@@ -50,7 +50,7 @@ async function UpdateFriendButton() {
     while (area.firstChild) {
         area.removeChild(area.firstChild);
     }
-    const response = await fetch("/person/friends", {
+    const response = await fetch("/friends", {
         method: "GET"
     });
     if (response.ok === true) {
