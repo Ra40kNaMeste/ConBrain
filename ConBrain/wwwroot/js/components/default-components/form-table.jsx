@@ -122,7 +122,9 @@ export class FormTableAppendFriendItem extends React.Component {
             console.log(this.state.isSelected);
         }
         else {
-            selectBox = <button onClick={() => this.setState({ isSelected: true })}>+</button>;
+            selectBox = <div className="addItemDiv">
+                <button className="addItemButton" onClick={() => this.setState({ isSelected: true })}>+</button>
+            </div>;
         }
 
         return <tr className="rowForm">
@@ -131,7 +133,7 @@ export class FormTableAppendFriendItem extends React.Component {
                 {this.state.values.map((o, e) =>
                     <div className="rownowrapstackpanel">
                         <p>{o.nick}</p>
-                        <button className="deleteButton" onClick={() => {
+                        <button className="deleteItemButton" onClick={() => {
                             const val = this.state.values.filter(i=>i.nick != o.nick);
                             this.setState({ values: val, isSelected: false});
                         }}>x</button>

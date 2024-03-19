@@ -8,7 +8,7 @@
     height:auto;
 }
 
-    .form button {
+    .form > button {
         display: block;
         background-color: var(--good-color);
         padding: 10px;
@@ -24,7 +24,7 @@
 .rowForm {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content:stretch;
     align-items: center;
     flex-wrap: nowrap;
     border-radius: var(--border-radius);
@@ -35,13 +35,15 @@
 .nameForm {
     flex-shrink: 2;
     padding: 10px 5px;
+    width: 30%;
 }
 
 .valueFormTd {
     flex-shrink: 2;
+    width: 70%;
 }
 
-    .valueFormTd>* {
+    .valueFormTd > * {
         background-color: var(--light-background-color);
         border-radius: var(--border-radius);
         flex-shrink: 2;
@@ -49,6 +51,9 @@
         margin: 2px 10px;
     }
 
+.valueForm {
+    width: calc(100% - 20px);
+}
 
 .incorrectInput {
     background-color: var(--poorly-color);
@@ -61,8 +66,30 @@
     border-radius: var(--border-radius);
 }
 
-.deleteButton {
+.deleteItemButton {
     padding: 2px;
-    margin: 0px;
+    margin: 0px 0px 0px 10px;
+    height: 20px;
+    width: 20px;
+    border-radius: 10px;
+    text-align: center;
     background-color: var(--poorly-color);
+}
+
+.addItemButton {
+    padding: 2px;
+    margin: 0px 0px;
+    height: 25px;
+    width: 25px;
+    border-radius: calc(25px/2);
+    text-align: center;
+    background-color: var(--good-color);
+}
+.addItemDiv {
+    width: var(--list-width);
+    background-color: transparent;
+    padding: 0px;
+    margin: 0px;
+    display: flex;
+    align-items: center;
 }

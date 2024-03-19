@@ -1,19 +1,24 @@
 ﻿.selectblock {
     position: absolute;
     max-height: 200px;
+    width: var(--list-width);
     border-radius: var(--border-radius);
     background: var(--dark-background-color);
 }
-.empty{
+.empty {
     height: 0px;
-    width: 100px;
+    width: var(--list-width);
     margin: 0px;
     padding: 0px;
-    align-self:start;
+    align-self: start;
 }
 .item {
     margin: 3px;
     padding: 5px;
     border-radius: var(--border-radius);
     background: white;
+}
+
+:root{
+    --list-width: 100px;
 }
