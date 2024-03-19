@@ -16,6 +16,7 @@ export class FormTable extends React.Component {
         const table = this.table.current;
 
         const values = [].slice.call(document.getElementsByClassName("sendInput"));
+
         const phoneFields = values.filter(i => i.type == "tel");
         if (phoneFields)
             phoneFields.forEach(i => IMask(i, {
@@ -28,6 +29,9 @@ export class FormTable extends React.Component {
                 if (!validator(e))
                     return;
 
+            const values = [].slice.call(document.getElementsByClassName("sendInput"));
+            console.log("values");
+            console.log(values);
             const response = await fetchWithAddressString(e.target, values);
             if (await saveToken(response) == false) {
                 const data = await response.json();
@@ -112,14 +116,22 @@ export class FormTableAppendFriendItem extends React.Component {
     }
 
     render() {
+        let classes = "fromEmpty";
+        if (this.props.isSend)
+            classes += " sendInput";
+
+        const value = this.state.values.map(i => i.id).join(`&${this.props.name}=`)
+
         let selectBox;
         if (this.state.isSelected) {
-            selectBox = <SelectItemListByUrl x="" url="/friends?" selected={(child) => {
+            
+            const url = `/friends?${this.state.values.map(i => "ignores=" + i.id).join('&')}&`
+
+            selectBox = <SelectItemListByUrl x="" url={url} selected={(child) => {
                 this.state.values.push(child);
                 this.setState({ values: this.state.values, isSelected: false });
             }}>
             </SelectItemListByUrl>
-            console.log(this.state.isSelected);
         }
         else {
             selectBox = <div className="addItemDiv">
@@ -131,8 +143,9 @@ export class FormTableAppendFriendItem extends React.Component {
             <td className="nameForm">{this.props.name}</td>
             <td className="valueFormTd rowwrapstackpanel">
                 {this.state.values.map((o, e) =>
-                    <div className="rownowrapstackpanel">
+                    <div className="rownowrapstackpanel" onClick={() => this.setState({ isSelected: false })}>
                         <p>{o.nick}</p>
+                        <input className={classes} name={this.props.property} value={o.nick} />
                         <button className="deleteItemButton" onClick={() => {
                             const val = this.state.values.filter(i=>i.nick != o.nick);
                             this.setState({ values: val, isSelected: false});

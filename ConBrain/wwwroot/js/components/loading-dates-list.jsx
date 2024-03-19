@@ -45,7 +45,6 @@ class TopLoaidingDatesListFunctions {
         return root.scrollTop <= offset;
     }
     scroll(old, root) {
-        console.log(old.scrollHeight)
         return { top: root.scrollHeight + old.scrollTop - old.scrollHeight, left: root.scrollLeft }
     }
     append(old, append) {

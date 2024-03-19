@@ -20,7 +20,6 @@ export class SelectItemListByUrl extends React.Component {
         const root = this.root.current;
         
         var rect = root.getBoundingClientRect();
-        console.log(rect);
         window.style.top = rect.top;
         window.style.left = rect.left;
 
