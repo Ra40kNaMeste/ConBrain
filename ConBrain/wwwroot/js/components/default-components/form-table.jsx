@@ -127,7 +127,7 @@ export class FormTableAppendFriendItem extends React.Component {
             
             const url = `/friends?${this.state.values.map(i => "ignores=" + i.id).join('&')}&`
 
-            selectBox = <SelectItemListByUrl x="" url={url} selected={(child) => {
+            selectBox = <SelectItemListByUrl className="fullSize" x="" url={url} selected={(child) => {
                 this.state.values.push(child);
                 this.setState({ values: this.state.values, isSelected: false });
             }}>

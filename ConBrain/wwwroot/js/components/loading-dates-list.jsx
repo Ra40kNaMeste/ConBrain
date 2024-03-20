@@ -37,6 +37,9 @@ class DownLoaidingDatesListFunctions {
     append(old, append) {
         return [...old, ...append]
     }
+    push(old, pushed) {
+        return [...pushed.reverse(), ...old];
+    }
 }
 
 class TopLoaidingDatesListFunctions {
@@ -49,6 +52,9 @@ class TopLoaidingDatesListFunctions {
     }
     append(old, append) {
         return [...append.reverse(), ...old]
+    }
+    push(old, pushed) {
+        return [...old, ...pushed]
     }
 }
 
@@ -63,6 +69,9 @@ class LeftLoaidingDatesListFunctions {
     append(old, append) {
         return [...old, ...append]
     }
+    push(old, pushed) {
+        return [...pushed.reverse(), ...old];
+    }
 }
 
 class RightLoaidingDatesListFunctions {
@@ -75,6 +84,9 @@ class RightLoaidingDatesListFunctions {
     }
     append(old, append) {
         return [...append.reverse(), ...old]
+    }
+    push(old, pushed) {
+        return[...old, ...pushed]
     }
 }
 
@@ -125,7 +137,7 @@ export class LoadingDatesList extends React.Component
         root.addEventListener('resize', (e) => this.scroll());
 
         while (this.functions.condition(root, parseInt(this.props["offset"]))) {
-            let old = this.copyScrollPosition(root);
+            const old = this.copyScrollPosition(root);
             const count = await this.load();
             root.scroll(this.functions.scroll(old, root));
             if (count == 0)
@@ -140,10 +152,17 @@ export class LoadingDatesList extends React.Component
 
         const loadingData = await this.#data.load();
         
-        this.setState({ dates: this.functions.append(this.state["dates"], loadingData) });
+        this.setState({ dates: this.functions.append(this.state["dates"], loadingData), loading: false });
 
-        this.setState({ loading: false });
         return loadingData.length;
+    }
+
+    push(dates) {
+        const root = this.rootdiv.current;
+        const old = this.copyScrollPosition(root);
+        this.setState({ dates: this.functions.push(this.state["dates"], dates) });
+        
+        root.scroll(this.functions.scroll(old, root));
     }
 
     //Возвращает набор действий для направления
@@ -173,7 +192,7 @@ export class LoadingDatesList extends React.Component
     }
     
     render() {
-        const divClassNames = `${this.functions.style} scrollDiv`;
+        const divClassNames = `${this.functions.style} scrollDiv ${this.props.className}`;
         return <div className={divClassNames} ref={this.rootdiv} onScroll={ ()=>this.scroll() }>
             {this.state["dates"].map((o, e) => this.props["builder"](o))}
             {this.state["loading"] && <img src="/images/load.gif" className="middleicon loadingimage" />}

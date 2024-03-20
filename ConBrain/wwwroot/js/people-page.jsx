@@ -12,6 +12,6 @@ let builder = (o)=>
     </div>;
 
 ReactDOM.render(
-    <LoadingDatesList url="/peopleList?" step="5" offset="1" direction="Down" builder={ builder }></LoadingDatesList>,
+    <LoadingDatesList className="fullSize" url="/peopleList?" step="5" offset="1" direction="Down" builder={ builder }></LoadingDatesList>,
     document.getElementById("content")
 );

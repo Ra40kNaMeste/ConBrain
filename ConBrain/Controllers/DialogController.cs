@@ -105,51 +105,25 @@ namespace ConBrain.Controllers
         /// <summary>
         /// Диапазон сообщений из диалога
         /// </summary>
-        /// <param name="name">Название диалога</param>
-        /// <param name="start">Начальное сообщение (с более новых)</param>
-        /// <param name="count">Колчество сообщений после начальных</param>
+        /// <param name="ignores">id шптщрируемых сообщений</param>
+        /// <param name="size">количество сообщений</param>
+        /// <param name="pattern">Паттерн поиска</param>
         /// <returns></returns>
         [HttpGet]
         [Route("dialog/{name}/messages")]
-        public IActionResult Messages(string name, int start, int count)
+        public IActionResult Messages(string name, int[] ignores, int size, string? pattern)
         {
             var person = GetPersonByAuthWithMessages();
             if (person == null)
                 return new StatusCodeResult(StatusCodes.Status401Unauthorized);
-            var messages = person.Dialogs.Where(i => i.Name == name).FirstOrDefault()?.Messages;
+
+            var messages = person.Dialogs.Where(i => i.Name == name).FirstOrDefault()?.Messages.Select(i=> new MessageSavedMementor(i));
             if (messages == null)
                 return new StatusCodeResult(StatusCodes.Status400BadRequest);
-            return new MessagesResult(messages
-                .Select(i=>new MessageSavedMementor(i))
-                .Reverse()
-                .Skip(start)
-                .Take(count));
+
+            return new MessagesResult(ignores, size, pattern, messages);
         }
 
-        /// <summary>
-        /// Диапазон старых сообщений из диалога (после указанного)
-        /// </summary>
-        /// <param name="name">Название диалога</param>
-        /// <param name="id">Ид последнего сообщение (самого нового)</param>
-        /// <param name="count">Количество сообщений</param>
-        /// <returns></returns>
-        [HttpGet]
-        [Route("dialog/{name}/oldmessages")]
-        public IActionResult OldMessages(string name, int id, int count)
-        {
-            var person = GetPersonByAuthWithMessages();
-
-            if (person == null)
-                return new StatusCodeResult(StatusCodes.Status401Unauthorized);
-            var messages = person.Dialogs.Where(i => i.Name == name).FirstOrDefault()?.Messages;
-            if (messages == null)
-                return new StatusCodeResult(StatusCodes.Status400BadRequest);
-            return new MessagesResult(messages.Select(i => new MessageSavedMementor(i))
-                .Reverse()
-                .SkipWhile(i => i.Id != id)
-                .Skip(1)
-                .Take(count));
-        }
         #endregion //Messagemethods
 
         #region PrivateMethods

@@ -3,17 +3,7 @@
     ViewBag.Title = Model.Dialog.Name;
 }
 
-<div id="messagesBody">
-
-</div>
-@{
-    string pathAvatar = "../" + Model.person.Data.Nick + "/image?key=" + Model.person.Data.AvatarPath;
-}
-<div class ="downfixed rowstackpanel">
-    <img class="smallavatar" src="@pathAvatar"/>
-    <input class="valueForm" id="text" type="text" />
-    <img class="smallicon sendbutton" id="send" src="/images/arrow.svg"></img>
-    <img id="settings" src="/images/settings.svg" class="middleicon"></img>
-    <img id="addPerson" src="/images/add_person.svg" class="middleicon"></img>
-</div>
-<script type="module" asp-append-version="true" src="~/js/personPage/dialog.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/16.11.0/umd/react.development.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.11.0/umd/react-dom.development.js"></script>
+<script asp-append-version="true" type="module" src="@Url.Content("../../js/dialog/dialog.jsx")"></script>
+@Html.ReactInitJavaScript()

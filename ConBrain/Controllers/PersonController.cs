@@ -4,6 +4,7 @@ using ConBrain.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Configuration;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
@@ -132,6 +133,16 @@ namespace ConBrain.Controllers
         }
 
         [HttpGet]
+        [Route("authperson")]
+        public IActionResult Person()
+        {
+            var person = GetPersonByAuth();
+            if (person == null)
+                return new StatusCodeResult(StatusCodes.Status400BadRequest);
+            return new PersonActionResult(person.Data);
+        }
+
+        [HttpGet]
         [Route("{id}/friends")]
         public IActionResult Friends(string id)
         {
@@ -198,18 +209,17 @@ namespace ConBrain.Controllers
             var person = GetPerson(nick);
             if (person == null)
                 return new StatusCodeResult(StatusCodes.Status400BadRequest);
-            var path = Path.Combine(Directory.GetCurrentDirectory(), _avatarPath, nick);
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-                //Копируем дефолтный файл
-                System.IO.File.Copy(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", _defaultAvatarName), Path.Combine(path, _defaultAvatarName));
-            }
-            path = Path.Combine(path, key);
-            if (!System.IO.File.Exists(path))
+            return GetImage(nick, key);
+        }
+
+        [HttpGet]
+        [Route("image")]
+        public IActionResult Image(string key)
+        {
+            var person = GetPersonByAuth();
+            if(person == null)
                 return new StatusCodeResult(StatusCodes.Status401Unauthorized);
-            var bytes = System.IO.File.ReadAllBytes(path);
-            return File(bytes, "image/jpeg");
+            return GetImage(person.Data.Nick, key);
         }
 
         //Метод для добавления изображения авторизированного пользователя
@@ -250,7 +260,21 @@ namespace ConBrain.Controllers
             return new StatusCodeResult(StatusCodes.Status200OK);
         }
 
-
+        private IActionResult GetImage(string nick, string key)
+        {
+            var path = Path.Combine(Directory.GetCurrentDirectory(), _avatarPath, nick);
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+                //Копируем дефолтный файл
+                System.IO.File.Copy(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", _defaultAvatarName), Path.Combine(path, _defaultAvatarName));
+            }
+            path = Path.Combine(path, key);
+            if (!System.IO.File.Exists(path))
+                return new StatusCodeResult(StatusCodes.Status401Unauthorized);
+            var bytes = System.IO.File.ReadAllBytes(path);
+            return File(bytes, "image/jpeg");
+        }
 
         private Person? GetPersonByAuth()
         {

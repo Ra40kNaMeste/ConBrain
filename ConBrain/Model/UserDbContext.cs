@@ -152,23 +152,16 @@ namespace ConBrain.Model
 
     public class MessageSavedMementor
     {
-        public MessageSavedMementor(int id, DateTime dateTime, string body, string? sender = null) 
-        {
-            Id = id;
-            DateTime = dateTime;
-            Body = body;
-            Sender = sender;
-        }
         public MessageSavedMementor(Message message)
         {
             Id = message.Id;
             DateTime = message.DateTime;
             Body = message.Body;
-            Sender = message.Sender?.Data.Nick;
+            Sender = message.Sender?.Data;
         }
         public int Id { get; set; }
         public DateTime DateTime { get; set; }
         public string Body { get; set; }
-        public string? Sender { get; set; }
+        public PersonData? Sender { get; set; }
     }
 }

@@ -46,3 +46,11 @@
     border-radius: 20px;
     background-color: #00000044;
 }
+
+.dialogcommandsdiv {
+    height:40px;
+}
+
+.dialogdiv{
+    height: calc(100% - 40px);
+}

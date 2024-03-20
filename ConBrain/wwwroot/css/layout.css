@@ -30,7 +30,6 @@
     overflow-y: auto;
     scroll-behavior: smooth;
     scroll-padding: 20px;
-    height: 100%;
     scroll-behavior: auto;
 }
 .scrollDiv::-webkit-scrollbar {
