@@ -32,6 +32,19 @@ namespace ConBrain.Controllers
         }
 
         /// <summary>
+        /// Список всех доступных диалогов
+        /// </summary>
+        /// <returns></returns>
+        [Route("dialogs/get")]
+        public IActionResult Dialog(int[] ignores, int size, string? pattern)
+        {
+            var person = GetPersonByAuthWithMessages();
+            if (person == null)
+                return new StatusCodeResult(StatusCodes.Status401Unauthorized);
+            return new DialogsResult(ignores, size, pattern, person.Dialogs.Select(i=> new DialogSavedMementor(i)));
+        }
+
+        /// <summary>
         /// Диалог по его имени
         /// </summary>
         /// <param name="name">Имя диалога</param>
@@ -45,10 +58,7 @@ namespace ConBrain.Controllers
                 return null;
 
             var person = _dbContext.People
-                .Include(i => i.Data)
-                .Include(i => i.Friends)
                 .Include(i => i.Dialogs)
-                    .ThenInclude(i=>i.Members)
                 .FirstOrDefault(i => i.Data.Nick == namePerson);
 
             if (person == null)
@@ -56,7 +66,7 @@ namespace ConBrain.Controllers
             var dialog = person.Dialogs.Where(i => i.Name == name).FirstOrDefault();
             if (dialog == null)
                 return new StatusCodeResult(StatusCodes.Status400BadRequest);
-            return View(new DialogData(person, dialog));
+            return View(new DialogData(name));
         }
 
         /// <summary>
@@ -158,6 +168,6 @@ namespace ConBrain.Controllers
         #endregion //PrivateMethods
         private UserDbContext _dbContext;
     }
-    public record class DialogData(Person person, Dialog Dialog);
+    public record class DialogData(string Name);
 
 }

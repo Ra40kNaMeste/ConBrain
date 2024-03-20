@@ -86,6 +86,7 @@ namespace ConBrain.Model
         [MaxLength(50)]
         [StringLength(50, MinimumLength = 5)]
         public string Name { get; set; }
+
         public List<Person> Members { get; set; } = new();
         public List<Message> Messages { get; set; } = new();
     }
@@ -150,6 +151,16 @@ namespace ConBrain.Model
         public int PersonId { get; set; }
     }
 
+    public class DialogSavedMementor
+    {
+        public DialogSavedMementor(Dialog dialog)
+        {
+            Id = dialog.Id;
+            Name = dialog.Name;
+        }
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
     public class MessageSavedMementor
     {
         public MessageSavedMementor(Message message)

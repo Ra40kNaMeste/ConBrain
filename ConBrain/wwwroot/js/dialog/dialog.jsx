@@ -4,38 +4,6 @@ import { LoadingDatesList } from "./../components/loading-dates-list.jsx"
 //определение внешних элементов упрвления
 const dialogName = document.getElementById("title").textContent;
 
-class PersonManager {
-    constructor() {
-        this.#personData = new Map();
-    }
-    #personData;
-    async loadpersonfromserver(nick) {
-        const response = await fetch(`/person?nick=${nick}`, {
-            method: "GET"
-        });
-        if (response.ok === true) {
-
-            const person = await response.json();
-            console.log(person)
-            let path = `../${person.nick}/image?key=${person.avatarPath}`;
-            this.#personData.set(nick, path);
-            return path;
-        }   
-        return null;
-    }
-
-    async getPerson(nick) {
-        const res = this.#personData.get(nick);
-        if (res == null)
-            return await this.loadpersonfromserver(nick);
-        return res;
-    }
-}
-
-////Менеджер пользователей
-//const personManager = new PersonManager();
-
-
 class Dialog extends React.Component {
     constructor(props) {
         super(props);
@@ -44,7 +12,6 @@ class Dialog extends React.Component {
         this.textInput = React.createRef();
 
         this.#hubConnection = this.buildHubConnection();
-        this.#personManager = new PersonManager();
 
         this.state = {
             avatarPath: ""
@@ -56,7 +23,6 @@ class Dialog extends React.Component {
     }
 
     #hubConnection;
-    #personManager;
 
     buildHubConnection(){
         return new signalR.HubConnectionBuilder()
@@ -67,7 +33,7 @@ class Dialog extends React.Component {
     async startHub(hubConnection) {
         //Подключение к диалогу
         await hubConnection.start();
-        await hubConnection.invoke("Subscribe", dialogName);
+        await hubConnection.invoke("Subscribe", this.props.dialogName);
     }
 
     async setCurrentPerson() {
@@ -86,7 +52,7 @@ class Dialog extends React.Component {
         if (this.textInput.current.value === "")
             return;
 
-        await this.#hubConnection.invoke("Send", this.textInput.current.value, dialogName);
+        await this.#hubConnection.invoke("Send", this.textInput.current.value, this.props.dialogName);
         this.textInput.current.value = "";
     }
 

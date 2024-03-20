@@ -2,7 +2,12 @@
     ViewBag.Title = "My dialogs";
 }
 
-<div>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/16.11.0/umd/react.development.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.11.0/umd/react-dom.development.js"></script>
+<script asp-append-version="true" type="module" src="@Url.Content("../../js/dialog/dialogs.jsx")"></script>
+@Html.ReactInitJavaScript()
+
+@* <div>
     <a class="stretchbutton" asp-controller="Dialog" asp-action="BuildDialog">Create dialog</a>
 
     @{
@@ -12,4 +17,4 @@
         }
     }
 </div>
-<script asp-append-version="true" src="~/js/personPage/dialogs.js"></script>
+<script asp-append-version="true" src="~/js/personPage/dialogs.js"></script> *@
