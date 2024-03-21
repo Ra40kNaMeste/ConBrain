@@ -59,7 +59,7 @@ namespace ConBrain.Controllers
                 return new StatusCodeResult(StatusCodes.Status401Unauthorized);
             if(person.Password != data.OldPassword)
                 return new StatusCodeResult(StatusCodes.Status400BadRequest);
-            person.Password = data.Pass;
+            person.Password = data.Password;
 
             List<ValidationResult> results = new();
             if(!Validator.TryValidateObject(person, new(person), results, true))
@@ -303,7 +303,7 @@ namespace ConBrain.Controllers
         private readonly AuthorizationSettings settings;
         private readonly ImageSettings _imageSettings;
     }
-    public record class ChangePasswordData(string OldPassword, string Pass);
+    public record class ChangePasswordData(string OldPassword, string Password);
 
     public record class PathSetting(string Avatar, string DefaultAvatarName);
     public record class ImageSettings(int MaxHeight, int MaxWidth);

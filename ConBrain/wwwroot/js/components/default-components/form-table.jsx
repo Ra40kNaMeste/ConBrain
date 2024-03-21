@@ -30,8 +30,6 @@ export class FormTable extends React.Component {
                     return;
 
             const values = [].slice.call(document.getElementsByClassName("sendInput"));
-            console.log("values");
-            console.log(values);
             const response = await fetchWithAddressString(e.target, values);
             if (await saveToken(response) == false) {
                 const data = await response.json();
