@@ -63,9 +63,10 @@ class Dialog extends React.Component {
         });
     }
     render() {
+
         const builder = o => <div className="rootmessageblock">
                 <div className="rownowrapstackpanel">
-                    <img className="smallavatar" src={`./../image?key=${o.sender.avatarPath}&person=${o.sender.nick}`} />
+                <img className="smallavatar" src={`./../image?key=${o.sender.avatarPath}&person=${o.sender.nick}`} onClick={() => window.location.href = `./../id=${o.sender.nick}`}/>
                     <p>{o.nick}</p>
                 </div>
                     <div>{o.body}</div>
@@ -75,6 +76,8 @@ class Dialog extends React.Component {
             if (e.key == "Enter" && !e.shiftKey && !e.altKey)
                 this.sendMessage();
         } 
+
+
 
         return <div className="fullSize">
             <LoadingDatesList className="dialogdiv" ref={this.messageList} url={`./../dialog/${this.props.dialogName}/messages?`} step={this.props.step} offset={this.props.offset} builder={builder} direction="Top" >
