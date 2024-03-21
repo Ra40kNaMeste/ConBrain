@@ -71,13 +71,18 @@ class Dialog extends React.Component {
                     <div>{o.body}</div>
             </div>
 
+        const keyPressHandler = e => {
+            if (e.key == "Enter" && !e.shiftKey && !e.altKey)
+                this.sendMessage();
+        } 
+
         return <div className="fullSize">
             <LoadingDatesList className="dialogdiv" ref={this.messageList} url={`./../dialog/${this.props.dialogName}/messages?`} step={this.props.step} offset={this.props.offset} builder={builder} direction="Top" >
             </LoadingDatesList>
 
             <div className="dialogcommandsdiv rownowrapstackpanel">
                 <img className="smallavatar" src={`./../image?key=${this.state.avatarPath}`}/>
-                <input ref={this.textInput} className="valueForm" id="text" type="text" />
+                <input ref={this.textInput} className="valueForm" id="text" type="text" onKeyDown={keyPressHandler} />
                 <img className="smallicon sendbutton" onClick={()=>this.sendMessage()} id="send" src="/images/arrow.svg"></img>
                 <img id="settings" src="/images/settings.svg" className="middleicon"></img>
                 <img id="addPerson" src="/images/add_person.svg" className="middleicon"></img>
