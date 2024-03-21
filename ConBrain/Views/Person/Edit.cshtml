@@ -1,22 +1,8 @@
-﻿@model PersonData
-@{
+﻿@{
     ViewBag.Title = "Edit";
 }
-@{
-    string pathAvatar = Model.Nick + "/image?key=" + Model.AvatarPath;
-}
-<div class="stackpanel">
-    <div class="rowstretchstackpanel">
-        <img src="@pathAvatar" class="bigavatar" />
-        <input ng-model="image" type="file" id="fileInput" />
-    </div>
-    <table-form class="form" asp-controller="Person" asp-action="Edit" target="@Model" table-name="self information"
-                row-class-name="rowForm" property-class-name="nameForm" value-class-name="valueFormTd" request-button-content="save changed"></table-form>
-    <div class="stackpanel">
-        <a class="removeButton" asp-controller="Person" asp-action="ChangePassword">change password</a>
-        <button class="removeButton" id="accountExit">exit from the account</button>
-    </div>
-    
-</div>
-<script asp-append-version="true" src="~/js/personPage/edit.js"></script>
-<script asp-append-version="true" type="module" src="~/js/authorizations/inputPhone.js"></script>
+
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/16.11.0/umd/react.development.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.11.0/umd/react-dom.development.js"></script>
+<script asp-append-version="true" type="module" src="@Url.Content("js/person/edit.jsx")"></script>
+@Html.ReactInitJavaScript()

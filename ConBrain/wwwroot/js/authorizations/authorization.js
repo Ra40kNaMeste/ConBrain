@@ -2,8 +2,6 @@
     //Собираем тело для отправки
     var formBody = [];
     for (var value of values) {
-        console.log(value.name);
-        console.log(value.value);
         var encodedKey = encodeURIComponent(value.name);
         var encodedValue = encodeURIComponent(value.value);
         formBody.push(encodedKey + "=" + encodedValue);

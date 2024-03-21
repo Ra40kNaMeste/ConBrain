@@ -1,0 +1,21 @@
+﻿.removeButton {
+    display: block;
+    background-color: var(--poorly-color);
+    padding: 10px;
+    margin: 5px 0px;
+    height: auto;
+    width: 100%;
+    text-align: center;
+    font-size: medium;
+    border-radius: var(--border-radius);
+}
+.dangerousZone {
+    background-color: var(--poorly-zone-color);
+    border-block-color: black;
+    padding: 5px 10px;
+    border-radius: var(--border-radius);
+    margin: 10px 0px;
+}
+.changeImageButton {
+    background-color: var(--good-color)
+}

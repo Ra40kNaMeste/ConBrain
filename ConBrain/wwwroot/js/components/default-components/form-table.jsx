@@ -102,7 +102,7 @@ export function FormTableItem(props) {
     return <tr className="rowForm">
         <td className="nameForm">{props.name}</td>
         <td className="valueFormTd">
-            <input autoComplete="on" className={classes} name={props.property} value={props.value} type={props.type} maxLength={props.maxLength} minLength={props.minLength} />
+            <input autoComplete="on" className={classes} value={props.value} name={props.property} value={props.value} type={props.type} maxLength={props.maxLength} minLength={props.minLength} />
         </td>
     </tr>
 }

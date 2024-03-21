@@ -84,7 +84,7 @@ namespace ConBrain.Controllers
             var person = GetPersonByAuth();
             if(person == null)
                 return new StatusCodeResult(StatusCodes.Status401Unauthorized);
-            return View(person.Data);
+            return View();
         }
         [Route("edit")]
         [HttpPost]
@@ -252,6 +252,8 @@ namespace ConBrain.Controllers
                 using var img = await file.From64bitToImageAsync();
                 using var resizeImg = img.Resize(_imageSettings.MaxWidth, _imageSettings.MaxHeight);
                 resizeImg.Save(path);
+                person.Data.AvatarPath = key;
+                await _dbContext.SaveChangesAsync();
             }
             catch (Exception)
             {
