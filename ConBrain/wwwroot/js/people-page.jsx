@@ -1,7 +1,7 @@
 ﻿import { LoadingDatesList } from "../../../js/components/loading-dates-list.jsx";
 
 function redirectToPerson(nick){
-    window.location.href = `../id=${nick}`;
+    window.location.href = `../${nick}`;
 }
 
 let builder = (o)=>

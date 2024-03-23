@@ -112,13 +112,14 @@ namespace ConBrain.Controllers
         }
 
         [AllowAnonymous]
-        [Route("id={id}")]
-        public IActionResult PersonPage(string id)
+        [HttpGet]
+        [Route("{id}")]
+        public IActionResult OtherPerson(string id)
         {
             var person = GetPerson(id);
             if (person == null)
                 return new StatusCodeResult(StatusCodes.Status401Unauthorized);
-            return View("Person", person);
+            return View(person.Data);
         }
 
         [AllowAnonymous]
@@ -143,21 +144,33 @@ namespace ConBrain.Controllers
         }
 
         [HttpGet]
-        [Route("{id}/friends")]
-        public IActionResult Friends(string id)
+        [Route("{nick}/friends")]
+        public IActionResult Friends(string nick)
         {
-            var person = GetPerson(id);
+            var person = GetPerson(nick);
             if (person == null)
                 return new StatusCodeResult(StatusCodes.Status400BadRequest);
             return View(person);
         }
 
         #region person/friends
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("friends/{nick}")]
+        public IActionResult GetFriend(string nick)
+        {
+            var person = GetPerson(nick);
+            if (person == null)
+                return new StatusCodeResult(StatusCodes.Status401Unauthorized);
+            return new PeopleActionResult(person.Friends.Select(i => i.Friend.Data));
+        }
+
         [HttpGet]
         [Route("friends")]
-        public IActionResult GetFriend(int[] ignores, int size, string? pattern)
+        public IActionResult GetFriend(string nick, int[] ignores, int size, string? pattern)
         {
-            var person = GetPersonByAuth();
+            var person = GetPerson(nick);
             if (person == null)
                 return new StatusCodeResult(StatusCodes.Status401Unauthorized);
             return new PeopleActionResult(ignores, size, pattern, person.Friends.Select(i => i.Friend.Data));

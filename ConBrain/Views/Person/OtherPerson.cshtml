@@ -1,9 +1,10 @@
-﻿@using System.Security.Claims;
+﻿@model PersonData
+@using System.Security.Claims;
 @{
-    ViewBag.Title = "Home";
+    ViewBag.Title = Model.Nick;
 }
 
 <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/16.11.0/umd/react.development.js"></script>
 <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.11.0/umd/react-dom.development.js"></script>
-<script asp-append-version="true" type="module" src="@Url.Content("js/person/person.jsx")"></script>
+<script asp-append-version="true" type="module" src="@Url.Content("js/person/other-person.jsx")"></script>
 @Html.ReactInitJavaScript()

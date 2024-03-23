@@ -14,6 +14,10 @@ namespace ConBrain.Controllers.ActionResults
                 _people = _people.Where(i => i.Nick.Contains(pattern) || i.Name.Contains(pattern) || i.Family.Contains(pattern));
             _people = _people.Take(size);            
         }
+        public PeopleActionResult(IEnumerable<PersonData> people)
+        {
+            _people = people;
+        }
 
         public async Task ExecuteResultAsync(ActionContext context)
         {

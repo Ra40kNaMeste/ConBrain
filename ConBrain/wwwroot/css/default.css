@@ -130,3 +130,20 @@
 .textBlock{
     padding: 0px 10px;
 }
+.content {
+    background-color: var(--dark-background-color);
+    border-radius: var(--big-border-radius);
+    padding: 5px;
+    width:100%;
+}
+
+.goodButton {
+    background-color: var(--good-color);
+    padding: 5px;
+    border-radius: var(--border-radius);
+}
+.poorlyButton {
+    background-color: var(--poorly-color);
+    padding: 5px;
+    border-radius: var(--border-radius);
+}
