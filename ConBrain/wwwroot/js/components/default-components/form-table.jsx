@@ -110,7 +110,20 @@ export function FormTableItem(props) {
 export class FormTableAppendFriendItem extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { values: [], isSelected: false };
+        this.state = {
+            values: [],
+            isSelected: false
+        };
+        this.loadPerson();
+    }
+
+    async loadPerson() {
+
+        const authresponse = await fetch("./../authperson");
+        if (authresponse.ok === true) {
+            const authPerson = await authresponse.json();
+            this.setState({person: authPerson});
+        }
     }
 
     render() {
@@ -118,12 +131,9 @@ export class FormTableAppendFriendItem extends React.Component {
         if (this.props.isSend)
             classes += " sendInput";
 
-        const value = this.state.values.map(i => i.id).join(`&${this.props.name}=`)
-
         let selectBox;
-        if (this.state.isSelected) {
-            
-            const url = `/friends?${this.state.values.map(i => "ignores=" + i.id).join('&')}&`
+        if (this.state.isSelected && this.state.person) {
+            const url = `/friends?nick=${this.state.person.nick}&${this.state.values.map(i => "ignores=" + i.id).join('&')}&`
 
             selectBox = <SelectItemListByUrl className="fullSize" x="" url={url} selected={(child) => {
                 this.state.values.push(child);

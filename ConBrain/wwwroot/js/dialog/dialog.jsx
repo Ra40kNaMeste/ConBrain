@@ -66,7 +66,7 @@ class Dialog extends React.Component {
 
         const builder = o => <div className="rootmessageblock">
                 <div className="rownowrapstackpanel">
-                <img className="smallavatar" src={`./../image?key=${o.sender.avatarPath}&person=${o.sender.nick}`} onClick={() => window.location.href = `./../id=${o.sender.nick}`}/>
+                <img className="smallavatar" src={`./../${o.sender.nick}/image?key=${o.sender.avatarPath}`} onClick={() => window.location.href = `./../id=${o.sender.nick}`}/>
                     <p>{o.nick}</p>
                 </div>
                     <div>{o.body}</div>
@@ -85,7 +85,7 @@ class Dialog extends React.Component {
 
             <div className="dialogcommandsdiv rownowrapstackpanel">
                 <img className="smallavatar" src={`./../image?key=${this.state.avatarPath}`}/>
-                <input ref={this.textInput} className="valueForm" id="text" type="text" onKeyDown={keyPressHandler} />
+                <input ref={this.textInput} autoFocus className="inputTextBox" id="text" type="text" onKeyDown={keyPressHandler} />
                 <img className="smallicon sendbutton" onClick={()=>this.sendMessage()} id="send" src="/images/arrow.svg"></img>
                 <img id="settings" src="/images/settings.svg" className="middleicon"></img>
                 <img id="addPerson" src="/images/add_person.svg" className="middleicon"></img>
