@@ -1,19 +1,21 @@
 ﻿class DataStore {
-    constructor(url, step) {
+    constructor(url, step, searchStr) {
         this.#url = url;
         this.#step = step;
         this.#ignores = [];
+        this.#searchStr = searchStr;
     }
     #ignores;
     #url;
     #step;
+    #searchStr;
     #flag = false;
     async load() {
         const res = [];
         if (this.#flag)
             return res;
         this.#flag = true;
-        const response = await fetch(this.#url + `size=${this.#step}&${this.#ignores.map(i => "ignores=" + i).join('&')}`);
+        const response = await fetch(this.#url + `size=${this.#step}&pattern=${this.#searchStr}&${this.#ignores.map(i => "ignores=" + i).join('&')}`);
         if (response.ok === true) {
             const loadingData = await response.json();
             for (const data of loadingData) {
@@ -103,7 +105,7 @@ export class LoadingDatesList extends React.Component
     constructor(props) {
         super(props);
 
-        this.#data = new DataStore(this.props["url"], this.props["step"]);
+        this.#data = new DataStore(this.props["url"], this.props["step"], "");
 
         this.rootdiv = React.createRef();
 
@@ -120,7 +122,7 @@ export class LoadingDatesList extends React.Component
         this.functions = this.getFunctions(this.props["direction"]);
     }
 
-    //Подгружает элементы, если дожли до конца
+    //Подгружает элементы, если дошли до конца
     async scroll() {
         const root = this.rootdiv.current;
 
@@ -133,8 +135,12 @@ export class LoadingDatesList extends React.Component
 
     //Проверяет нужно ли добавлять элементы после визуализирования
     async componentDidMount() {
+        await this.fillView()
+    }
+
+    async fillView() {
         const root = this.rootdiv.current;
-        root.addEventListener('resize', (e) => this.scroll());
+        root.addEventListener('resize', () => this.scroll());
 
         while (this.functions.condition(root, parseInt(this.props["offset"]))) {
             const old = this.copyScrollPosition(root);
@@ -144,6 +150,7 @@ export class LoadingDatesList extends React.Component
                 return;
         }
     }
+
 
 
     //Загружает данные с сервера
@@ -190,12 +197,29 @@ export class LoadingDatesList extends React.Component
             scrollClientWidth: root.scrollClientWidth
         }
     }
+
+    async handleChangeSearch(searchStr) {
+        this.#data = new DataStore(this.props["url"], this.props["step"], searchStr);
+        this.setState({ dates: [] });
+        await this.load();
+        await this.fillView();
+    }
     
     render() {
         const divClassNames = `${this.functions.style} scrollDiv ${this.props.className}`;
-        return <div className={divClassNames} ref={this.rootdiv} onScroll={ ()=>this.scroll() }>
-            {this.state["dates"].map((o, e) => this.props["builder"](o))}
-            {this.state["loading"] && <img src="/images/load.gif" className="middleicon loadingimage" />}
+        return <div className={this.props.className}>
+            {
+                this.props.isShowSearch ? <div className="rowstretchstackpanel">
+                    <input ref={this.search} className="inputTextBox" onChange={e => this.handleChangeSearch(e.target.value)} />
+                    <img src="./../../images/search.svg" className="smallicon" />
+
+                </div> : undefined
+            }
+            <div className={divClassNames} ref={this.rootdiv} onScroll={() => this.scroll()}>
+                {this.state["dates"].map((o, e) => this.props["builder"](o))}
+                {this.state["loading"] && <img src="/images/load.gif" className="middleicon loadingimage" />}
+            </div>
         </div>
+
     }
 }

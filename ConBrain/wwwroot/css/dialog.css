@@ -54,9 +54,3 @@
 .dialogdiv{
     height: calc(100% - 40px);
 }
-.inputTextBox {
-    padding: 10px;
-    border-radius:var(--border-radius);
-    width:100%;
-    border: 1px solid black;
-}
