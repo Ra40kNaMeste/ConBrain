@@ -1,20 +1,7 @@
 ﻿@{
     ViewBag.Title = Model.Data.Nick + " friends";
 }
-
-
-<table class="peopleBody">
-    <caption>Friends</caption>
-    @{
-        foreach (var friend  in Model.Friends)
-        {
-            string pathAvatar = "../" + friend.Friend.Data.Nick + "/image?key=" + friend.Friend.Data.AvatarPath;
-            <tr>
-                <td><img class="middleavatar" src=@pathAvatar /></td>
-                <td>@friend.Friend.Data.Nick</td>
-                <td>@string.Format("{0} {1}", friend.Friend.Data.Family, friend.Friend.Data.Name)</td>
-            </tr>
-        }
-    }
-</table>
-<script asp-append-version="true" src="~/js/personPage/setLinkInPeopleBody.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/16.11.0/umd/react.development.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.11.0/umd/react-dom.development.js"></script>
+<script asp-append-version="true" type="module" src="@Url.Content("./../js/person/friends.jsx")"></script>
+@Html.ReactInitJavaScript()

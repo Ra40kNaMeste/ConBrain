@@ -144,7 +144,7 @@ namespace ConBrain.Controllers
         }
 
         [HttpGet]
-        [Route("{nick}/friends")]
+        [Route("friends/{nick}")]
         public IActionResult Friends(string nick)
         {
             var person = GetPerson(nick);
@@ -157,7 +157,7 @@ namespace ConBrain.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        [Route("friends/{nick}")]
+        [Route("{nick}/friends")]
         public IActionResult GetFriend(string nick)
         {
             var person = GetPerson(nick);

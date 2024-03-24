@@ -53,7 +53,7 @@
     async loadFriends(person, friend) {
         if (!person)
             return;
-        const response = await fetch(`./../friends/${person.nick}`, {
+        const response = await fetch(`./../${person.nick}/friends`, {
             method:"GET"
         });
         if (response.ok === true) {
@@ -116,7 +116,7 @@
                         <div className="rownowrapstackpanel">
                             <p>{`${this.state.friends.length} ${this.getFrinedsString()}: `}</p>
                             {this.state.friends.slice(0, 3).map(i => <img className="smallavatar" src={`./${i.nick}/image?key=${i.avatarPath}`}></img>)}
-                            <button onClick={() => window.location.href = `./${this.state.person.nick}/friends`}>more</button>
+                            <button onClick={() => window.location.href = `./friends/${this.state.person.nick}`}>more</button>
                         </div>
                     </div>
                 </div>
