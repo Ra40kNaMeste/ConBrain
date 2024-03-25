@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Numerics;
+using System.Text.Json.Serialization;
 
 namespace ConBrain.Model
 {
@@ -54,15 +55,20 @@ namespace ConBrain.Model
         [Key]
         public int Id { get; set; }
 
+        [JsonIgnore]
         [Required]
         [DataType(DataType.Password)]
         [MinLength(5)]
         [MaxLength(50)]
         [StringLength(50, MinimumLength = 5)]
         public string Password { get; set; } = "";
+        [JsonIgnore]
         public List<FriendPerson> Friends { get; set; } = new();
+        [JsonIgnore]
         public List<FriendPerson> Subscribers { get; set; } = new();
+        [JsonIgnore]
         public List<Dialog> Dialogs { get; set; } = new();
+        [JsonIgnore]
         public List<Image> Images { get; set; } = new();
         public PersonData Data { get; set; }
 
@@ -72,7 +78,9 @@ namespace ConBrain.Model
     {
         public Person Friend { get; set; }
         public int FriendId { get; set; }
+        [JsonIgnore]
         public Person Target { get; set; }
+        [JsonIgnore]
         public int TargetId { get; set; }
 
     }
@@ -86,8 +94,9 @@ namespace ConBrain.Model
         [MaxLength(50)]
         [StringLength(50, MinimumLength = 5)]
         public string Name { get; set; }
-
+        [JsonIgnore]
         public List<Person> Members { get; set; } = new();
+        [JsonIgnore]
         public List<Message> Messages { get; set; } = new();
     }
 
@@ -98,9 +107,13 @@ namespace ConBrain.Model
         public DateTime DateTime { get; set; }
 
         public string Body { get; set; }
+
+        public int? SenderId { get; set; }
         public Person? Sender { get; set; }
 
+        [JsonIgnore]
         public int DialogId { get; set; }
+        [JsonIgnore]
         public Dialog Dialog { get; set; }
     }
 
@@ -111,12 +124,16 @@ namespace ConBrain.Model
         public string? Description { get; set; }
         public DateTime? Date { get; set; }
         public string FileExtension { get; set; }
+        
+        [JsonIgnore]
         public byte[] Data { get; set; }
         public decimal Size { get; set; }
 
         public SecurityLevel SecurityLevel { get; set; }
 
+        [JsonIgnore]
         public int OwnerId { get; set; }
+        [JsonIgnore]
         public Person Owner { get; set; }
     }
 
@@ -134,8 +151,9 @@ namespace ConBrain.Model
         [StringLength(50, MinimumLength = 5)]
         public string Nick { get; set; } = "";
 
+        public int? AvatarId { get; set; }
         [NonCopy]
-        public string? AvatarPath { get; set; }
+        public Image? Avatar { get; set; }
 
         [Required]
         [MinLength(1)]
@@ -164,30 +182,5 @@ namespace ConBrain.Model
 
         [NonCopy]
         public int PersonId { get; set; }
-    }
-
-    public class DialogSavedMementor
-    {
-        public DialogSavedMementor(Dialog dialog)
-        {
-            Id = dialog.Id;
-            Name = dialog.Name;
-        }
-        public int Id { get; set; }
-        public string Name { get; set; }
-    }
-    public class MessageSavedMementor
-    {
-        public MessageSavedMementor(Message message)
-        {
-            Id = message.Id;
-            DateTime = message.DateTime;
-            Body = message.Body;
-            Sender = message.Sender?.Data;
-        }
-        public int Id { get; set; }
-        public DateTime DateTime { get; set; }
-        public string Body { get; set; }
-        public PersonData? Sender { get; set; }
     }
 }

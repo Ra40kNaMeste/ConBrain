@@ -92,7 +92,7 @@ namespace ConBrain.Controllers.Hubs
                 WriteStatusCode(StatusCodes.Status400BadRequest);
                 return;
             }
-            await Clients.Group(dialog.Id.ToString()).SendAsync("Message", new MessageSavedMementor(mess));
+            await Clients.Group(dialog.Id.ToString()).SendAsync("Message", mess);
         }
 
         /// <summary>

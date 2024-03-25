@@ -41,7 +41,7 @@ namespace ConBrain.Controllers
             var person = GetPersonByAuthWithMessages();
             if (person == null)
                 return new StatusCodeResult(StatusCodes.Status401Unauthorized);
-            return new DialogsResult(ignores, size, pattern, person.Dialogs.Select(i=> new DialogSavedMementor(i)));
+            return new DialogsResult(ignores, size, pattern, person.Dialogs);
         }
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace ConBrain.Controllers
             if (person == null)
                 return new StatusCodeResult(StatusCodes.Status401Unauthorized);
 
-            var messages = person.Dialogs.Where(i => i.Name == name).FirstOrDefault()?.Messages.Select(i=> new MessageSavedMementor(i));
+            var messages = person.Dialogs.Where(i => i.Name == name).FirstOrDefault()?.Messages;
             if (messages == null)
                 return new StatusCodeResult(StatusCodes.Status400BadRequest);
 

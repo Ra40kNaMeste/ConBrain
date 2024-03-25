@@ -5,7 +5,7 @@ namespace ConBrain.Controllers.ActionResults
 {
     public class DialogsResult : IActionResult
     {
-        public DialogsResult(int[] ignores, int size, string? pattern, IEnumerable<DialogSavedMementor> dialog)
+        public DialogsResult(int[] ignores, int size, string? pattern, IEnumerable<Dialog> dialog)
         {
             _dialogs = dialog
                 .Where(i => !ignores.Contains(i.Id));
@@ -17,6 +17,6 @@ namespace ConBrain.Controllers.ActionResults
         {
             await context.HttpContext.Response.WriteAsJsonAsync(_dialogs);
         }
-        private readonly IEnumerable<DialogSavedMementor> _dialogs;
+        private readonly IEnumerable<Dialog> _dialogs;
     }
 }
