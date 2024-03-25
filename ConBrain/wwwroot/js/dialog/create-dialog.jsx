@@ -6,8 +6,6 @@ ReactDOM.render(
             <FormTableItem name="Name" property="name" type="text" min-length="5" isSend="true" />
             <FormTableAppendFriendItem name="Members" property="people" isSend="true" />
         </FormTable>
-        <a href="/register" className="registerBtn">register</a>
-    </div>
-    ,
+    </div>,
     document.getElementById("content")
 );

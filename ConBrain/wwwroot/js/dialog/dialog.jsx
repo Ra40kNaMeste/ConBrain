@@ -1,5 +1,6 @@
 ﻿import "../../../node_modules/@microsoft/signalr/dist/browser/signalr.js";
 import { LoadingDatesList } from "./../components/loading-dates-list.jsx"
+import { Avatar } from "./../components/default-components/avatar.jsx"
 
 //определение внешних элементов упрвления
 const dialogName = document.getElementById("title").textContent;
@@ -14,7 +15,9 @@ class Dialog extends React.Component {
         this.#hubConnection = this.buildHubConnection();
 
         this.state = {
-            avatarPath: ""
+            person: {
+                avatarId:""
+            }
         };
 
         this.bindDialogHub();
@@ -43,7 +46,7 @@ class Dialog extends React.Component {
         if (response.ok === true) {
             const person = await response.json();
             this.setState({
-                avatarPath: person.avatarPath
+                person: person
             });
         }
     }
@@ -63,10 +66,9 @@ class Dialog extends React.Component {
         });
     }
     render() {
-
         const builder = o => <div className="rootmessageblock">
                 <div className="rownowrapstackpanel">
-                <img className="smallavatar" src={`./../${o.sender.nick}/image?key=${o.sender.avatarPath}`} onClick={() => window.location.href = `./../id=${o.sender.nick}`}/>
+                <Avatar className="smallavatar" avatar={o.sender.data.avatarId} onClick={() => window.location.href = `./../id=${o.sender.nick}`}/>
                     <p>{o.nick}</p>
                 </div>
                     <div>{o.body}</div>
@@ -77,14 +79,12 @@ class Dialog extends React.Component {
                 this.sendMessage();
         } 
 
-
-
         return <div className="fullSize">
             <LoadingDatesList className="dialogdiv" ref={this.messageList} url={`./../dialog/${this.props.dialogName}/messages?`} step={this.props.step} offset={this.props.offset} builder={builder} direction="Top" >
             </LoadingDatesList>
 
             <div className="dialogcommandsdiv rownowrapstackpanel">
-                <img className="smallavatar" src={`./../image?key=${this.state.avatarPath}`}/>
+                <Avatar className="smallavatar" avatar={this.state.person.avatarId}/>
                 <input ref={this.textInput} autoFocus className="inputTextBox" id="text" type="text" onKeyDown={keyPressHandler} />
                 <img className="smallicon sendbutton" onClick={()=>this.sendMessage()} id="send" src="/images/arrow.svg"></img>
                 <img id="settings" src="/images/settings.svg" className="middleicon"></img>

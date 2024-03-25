@@ -1,9 +1,14 @@
 ﻿import { FormTable, FormTableItem } from "./../../../js/components/default-components/form-table.jsx"
 import { deleteCookie } from "./../../../js/extensions/cookie-extensions.jsx"
+import {Avatar } from "./../components/default-components/avatar.jsx"
 class AvatarInput extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {person:null}
+        this.state = {
+            person: {
+                avatar: ""
+            }
+        }
         this.loadPerson();
         this.setLoadedImageSize();
         this.createCanvas();
@@ -24,6 +29,7 @@ class AvatarInput extends React.Component {
         const response = await fetch("./../authperson");
         if (response.ok === true) {
             const person = await response.json();
+            console.log(person);
             this.setState({ person: person });
         }
     }
@@ -43,7 +49,7 @@ class AvatarInput extends React.Component {
 
                 formData.append("file", blobImg, "avatar.jpg");
                 formData.append("key", "avatar.jpg");
-                const response = await fetch("./image", {
+                const response = await fetch("/edit/avatar", {
                     method: "POST",
                     body: formData
                 });
@@ -62,7 +68,7 @@ class AvatarInput extends React.Component {
                         default:
                             message = "Unknown error. Report to us please";
                     }
-                    document.location.href = `./error?message=${message}`;
+                    document.location.href = `/error?message=${message}`;
                 }
 
             }
@@ -81,11 +87,9 @@ class AvatarInput extends React.Component {
     }
 
     render() {
-        let source = "";
-        if (this.state.person != null)
-            source = `./../image?key=${this.state.person.avatarPath}&person=${this.state.person.nick}`;
+        const avatar = this.state.person.avatarId == null ? "" : this.state.person.avatarId;
         return <div className="rowstretchstackpanel">
-            <img src={source} className="bigavatar" />
+            <Avatar avatar={avatar} className="bigavatar" />
             <input style={{ display: "none" }} ng-model="image" type="file" id="fileInput" ref={this.fileInput} onChange={() => this.loadImg()} />
             <button className="" onClick={()=>this.fileInput.current.click()}>Change avatar</button>
         </div>

@@ -31,7 +31,10 @@ export class FormTable extends React.Component {
 
             const values = [].slice.call(document.getElementsByClassName("sendInput"));
             const response = await fetchWithAddressString(e.target, values);
-            if (await saveToken(response) == false) {
+            if (response.redirected) {
+                window.location.href = response.url;
+            }
+            else if (await saveToken(response) == false) {
                 const data = await response.json();
                 if (data != null) {
                     for (const result of data) {

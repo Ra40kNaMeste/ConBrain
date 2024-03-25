@@ -1,4 +1,5 @@
 ﻿import { LoadingDatesList } from "../../../js/components/loading-dates-list.jsx";
+import { Avatar } from "./../components/default-components/avatar.jsx"
 
 const re = new RegExp("[^/]+$");
 const person = window.location.href.match(re);
@@ -9,7 +10,7 @@ function redirectToPerson(nick) {
 
 let builder = (o) =>
     <div onClick={() => redirectToPerson(`${o.nick}`)} className="rowwrapstackpanel">
-        <img className="middleavatar" src={`/${o.nick}/image?key=${o.avatarPath}`} />
+        <Avatar className="middleavatar" avatar={o.avatarId} />
         <p className="textBlock">{o.nick}</p>
         <p className="textBlock">{`${o.family} ${o.name}`}</p>
     </div>;

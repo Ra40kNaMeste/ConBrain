@@ -106,7 +106,7 @@ namespace ConBrain.Controllers
             dialog.Members.Add(person);
             _dbContext.Dialogs.Add(dialog);
             await _dbContext.SaveChangesAsync();
-            return new StatusCodeResult(StatusCodes.Status200OK);
+            return new RedirectResult($"/dialog/{dialog.Name}");
         }
 
         #endregion //Dialogs

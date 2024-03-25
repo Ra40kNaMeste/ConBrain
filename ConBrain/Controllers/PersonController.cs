@@ -14,6 +14,7 @@ using System.Net.Mime;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using System.Xml.Linq;
 
 namespace ConBrain.Controllers
 {
@@ -104,6 +105,22 @@ namespace ConBrain.Controllers
                 return new DbValidationErrorResult(ex);
             }
             return Redirect("/home");
+        }
+
+        [Route("edit/avatar")]
+        [HttpPost]
+        public async Task<IActionResult> EditAvatar(IFormFile file)
+        {
+            //Авторизированный пользователь
+            var person = GetPersonByAuth();
+            if (person == null)
+                return new StatusCodeResult(StatusCodes.Status401Unauthorized);
+            var image = await SaveImageAsync(person, file, "avatar", "");
+            if (image == null)
+                return new StatusCodeResult(StatusCodes.Status400BadRequest);
+            person.Data.Avatar = image;
+            await _dbContext.SaveChangesAsync();
+            return new StatusCodeResult(StatusCodes.Status200OK);
         }
 
         [AllowAnonymous]
@@ -232,10 +249,17 @@ namespace ConBrain.Controllers
             var person = GetPersonByAuth();
             if (person == null)
                 return new StatusCodeResult(StatusCodes.Status401Unauthorized);
+            if(await SaveImageAsync(person, file, name, description, level)==null)
+                return new StatusCodeResult(StatusCodes.Status400BadRequest);
+            return new StatusCodeResult(StatusCodes.Status200OK);
+        }
+
+        private async Task<Image?> SaveImageAsync(Person person, IFormFile file, string name, string description, SecurityLevel level = 0)
+        {
 
             //Создание файла записи
             if (file == null || !file.CanImage())
-                return new StatusCodeResult(StatusCodes.Status400BadRequest);
+                return null;
 
             //Создание изображение, его обрезка и сохранение на сервере
             try
@@ -244,7 +268,7 @@ namespace ConBrain.Controllers
                 using var resizeImg = img.Resize(_imageSettings.MaxWidth, _imageSettings.MaxHeight);
                 System.Drawing.ImageConverter converter = new();
                 var bytes = (byte[])converter.ConvertTo(resizeImg, typeof(byte[]));
-                await _dbContext.Images.AddAsync(new Image()
+                var image = new Image()
                 {
                     FileExtension = "image/jpeg",
                     Data = bytes,
@@ -254,14 +278,15 @@ namespace ConBrain.Controllers
                     Owner = person,
                     Size = bytes.Length,
                     SecurityLevel = level
-                });
+                };
+                await _dbContext.Images.AddAsync(image);
                 await _dbContext.SaveChangesAsync();
+                return image;
             }
             catch (Exception)
             {
-                return new StatusCodeResult(StatusCodes.Status400BadRequest);
+                return null;
             }
-            return new StatusCodeResult(StatusCodes.Status200OK);
         }
 
         private Person? GetPersonByAuth()

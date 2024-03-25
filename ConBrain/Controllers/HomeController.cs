@@ -1,6 +1,7 @@
 ﻿using ConBrain.Controllers.ActionResults;
 using ConBrain.Model;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ConBrain.Controllers
 {

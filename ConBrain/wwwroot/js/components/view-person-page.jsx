@@ -1,4 +1,5 @@
-﻿export class PersonHeader extends React.Component {
+﻿import { Avatar } from "./default-components/avatar.jsx"
+export class PersonHeader extends React.Component {
     constructor(props) {
         super(props);
 
@@ -9,7 +10,7 @@
                 "family": "",
                 "secondName": "",
                 "phone": "",
-                "avatarPath": ""
+                "avatar": ""
             },
             friends: []
         }
@@ -106,7 +107,7 @@
         return <div className="fullSize">
             <div className="columnnowrappanel scrollDiv content">
                 <div className="rownowrapstackpanel">
-                    <img src={`./${this.state.person.nick}/image?key=${this.state.person.avatarPath}`} className="bigavatar"></img>
+                    <Avatar avatar={this.state.person.avatarId} className="bigavatar"></Avatar>
                     <div className="columnnowrappanel">
                         <div className="rowstretchstackpanel">
                             <p>{this.state.person.nick}</p>
@@ -115,7 +116,7 @@
                         <h2>{`${this.state.person.family} ${this.state.person.name} ${this.state.person.secondName}`}</h2>
                         <div className="rownowrapstackpanel">
                             <p>{`${this.state.friends.length} ${this.getFrinedsString()}: `}</p>
-                            {this.state.friends.slice(0, 3).map(i => <img className="smallavatar" src={`./${i.nick}/image?key=${i.avatarPath}`}></img>)}
+                            {this.state.friends.slice(0, 3).map(i => <Avatar className="smallavatar" avatar={i.avatarId}></Avatar>)}
                             <button onClick={() => window.location.href = `./friends/${this.state.person.nick}`}>more</button>
                         </div>
                     </div>
