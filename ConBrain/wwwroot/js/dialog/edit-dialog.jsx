@@ -43,7 +43,26 @@ class DialogEditor extends React.Component {
     }
 }
 
+function DangerousZone() {
+
+    const removeDialog = async () => {
+        const response = await fetch("./edit", {
+            method: "DELETE"
+        });
+        if (response.ok === true && response.redirected) {
+            window.location.href = response.url;
+        }
+    }
+
+    return <div className="stackpanel dangerousZone">
+        <h3>Dangerous zone</h3>
+        <button className="removeButton" onClick={removeDialog}>remove dialog</button>
+    </div>
+}
 ReactDOM.render(
-    <DialogEditor/>,
+    <div className = "columnnowrappanel scrollDiv fullSize">
+        <DialogEditor />,
+        <DangerousZone />
+    </div>,
     document.getElementById("content")
 );

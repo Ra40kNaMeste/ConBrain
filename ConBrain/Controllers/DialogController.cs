@@ -116,6 +116,22 @@ namespace ConBrain.Controllers
             return new RedirectResult($"/dialog/{ HttpUtility.UrlPathEncode(dialog.Name)}");
         }
 
+        [HttpDelete]
+        [Route("dialog/{dialogName}/edit")]
+        public async Task<IActionResult> DeleteDialog(string dialogName)
+        {
+            var person = GetPersonByAuth();
+
+            var dialog = await _dbContext.Dialogs.Where(i => i.Name == dialogName).FirstOrDefaultAsync();
+            if (dialog == null)
+                return new StatusCodeResult(StatusCodes.Status400BadRequest);
+
+            _dbContext.Dialogs.Remove(dialog);
+
+            await _dbContext.SaveChangesAsync();
+            return new RedirectResult($"/dialogs");
+        }
+
         /// <summary>
         /// Вызывает конструктор нового диалога
         /// </summary>
