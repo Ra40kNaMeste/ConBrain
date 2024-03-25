@@ -23,9 +23,6 @@ namespace ConBrain.Controllers
         public PersonController(IConfiguration configuration, UserDbContext dbContext)
         {
             settings = configuration.GetSection("Authorization").Get<AuthorizationSettings>() ?? throw new FormatException();
-            var pathSettings = configuration.GetSection("Paths").Get<PathSetting>();
-            _avatarPath = pathSettings?.Avatar ?? "avatars";
-            _defaultAvatarName = pathSettings?.DefaultAvatarName ?? "default.svg";
             _dbContext = dbContext;
             _imageSettings = configuration.GetSection("ImageSettings").Get<ImageSettings>() ?? throw new FormatException();
         }
@@ -237,7 +234,7 @@ namespace ConBrain.Controllers
                 return new StatusCodeResult(StatusCodes.Status401Unauthorized);
 
             //Создание файла записи
-            if(file == null || !file.CanImage())
+            if (file == null || !file.CanImage())
                 return new StatusCodeResult(StatusCodes.Status400BadRequest);
 
             //Создание изображение, его обрезка и сохранение на сервере
@@ -253,9 +250,9 @@ namespace ConBrain.Controllers
                     Data = bytes,
                     Date = DateTime.Now,
                     Name = name,
-                    Description = description, 
-                    Owner = person, 
-                    Size = bytes.Length, 
+                    Description = description,
+                    Owner = person,
+                    Size = bytes.Length,
                     SecurityLevel = level
                 });
                 await _dbContext.SaveChangesAsync();
@@ -266,6 +263,7 @@ namespace ConBrain.Controllers
             }
             return new StatusCodeResult(StatusCodes.Status200OK);
         }
+
         private Person? GetPersonByAuth()
         {
             string? namePerson = ControllerContext.HttpContext.User.FindFirst(ClaimTypes.Name)?.Value;
@@ -286,15 +284,10 @@ namespace ConBrain.Controllers
             return person;
         }
 
-        private readonly string _avatarPath;
-        private readonly string _defaultAvatarName;
-
         private readonly UserDbContext _dbContext;
         private readonly AuthorizationSettings settings;
         private readonly ImageSettings _imageSettings;
     }
     public record class ChangePasswordData(string OldPassword, string Password);
-
-    public record class PathSetting(string Avatar, string DefaultAvatarName);
     public record class ImageSettings(int MaxHeight, int MaxWidth);
 }

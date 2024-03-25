@@ -58,6 +58,7 @@ namespace ConBrain.Controllers
                     Nick = data.Nick,
                     Phone = data.Phone
                 },
+                
                 Password = data.Password
             };
 
