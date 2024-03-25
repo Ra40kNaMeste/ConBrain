@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
+using System.Text;
+using System.Web;
 
 namespace ConBrain.Controllers
 {
@@ -17,6 +19,19 @@ namespace ConBrain.Controllers
     {
         #region Dialogs
         public DialogController(UserDbContext context) { _dbContext = context; }
+
+        [Route("dialog/{name}/get")]
+        [HttpGet]
+        public async Task<IActionResult> GetDialog(string name)
+        {
+            var person = GetPersonByAuth();
+            if (person == null)
+                return new StatusCodeResult(StatusCodes.Status401Unauthorized);
+            var dialog = person.Dialogs.Where(i=>i.Name == name).FirstOrDefault();
+            if (dialog == null)
+                return new StatusCodeResult(StatusCodes.Status400BadRequest);
+            return new DialogResult(dialog);
+        }
 
         /// <summary>
         /// Список всех доступных диалогов
@@ -67,6 +82,38 @@ namespace ConBrain.Controllers
             if (dialog == null)
                 return new StatusCodeResult(StatusCodes.Status400BadRequest);
             return View(new DialogData(name));
+        }
+
+        [HttpGet]
+        [Route("dialog/{dialogName}/edit")]
+        public async Task<IActionResult> Edit(string dialogName)
+        {
+            var person = GetPersonByAuth();
+            if (person == null)
+                return new StatusCodeResult(StatusCodes.Status401Unauthorized);
+            var dialog = await _dbContext.Dialogs.Where(i => i.Name == dialogName).FirstOrDefaultAsync();
+            if (dialog == null)
+                return new StatusCodeResult(StatusCodes.Status400BadRequest);
+            return View(new DialogData(dialogName));
+        }
+
+        [HttpPost]
+        [Route("dialog/{dialogName}/edit")]
+        public async Task<IActionResult> Edit(string dialogName, string name, string[] people)
+        {
+            var person = GetPersonByAuth();
+            if (person == null)
+                return new StatusCodeResult(StatusCodes.Status401Unauthorized);
+            var dialog = await _dbContext.Dialogs.Where(i => i.Name == dialogName).FirstOrDefaultAsync();
+            if (dialog == null)
+                return new StatusCodeResult(StatusCodes.Status400BadRequest);
+
+            dialog.Name = name;
+            dialog.Members = _dbContext.People.Where(i => people.Contains(i.Data.Nick)).ToList();
+            dialog.Members.Add(person);
+
+            await _dbContext.SaveChangesAsync();
+            return new RedirectResult($"/dialog/{ HttpUtility.UrlPathEncode(dialog.Name)}");
         }
 
         /// <summary>
@@ -147,6 +194,8 @@ namespace ConBrain.Controllers
                 .Include(i=>i.Data)
                 .Include(i => i.Friends)
                 .Include(i => i.Dialogs)
+                    .ThenInclude(i=>i.Members)
+                        .ThenInclude(i=>i.Data)
                 .FirstOrDefault(i => i.Data.Nick == namePerson);
             return person;
         }

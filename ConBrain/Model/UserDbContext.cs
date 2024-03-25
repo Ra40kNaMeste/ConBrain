@@ -94,7 +94,6 @@ namespace ConBrain.Model
         [MaxLength(50)]
         [StringLength(50, MinimumLength = 5)]
         public string Name { get; set; }
-        [JsonIgnore]
         public List<Person> Members { get; set; } = new();
         [JsonIgnore]
         public List<Message> Messages { get; set; } = new();

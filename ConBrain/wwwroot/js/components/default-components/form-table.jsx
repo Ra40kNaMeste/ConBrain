@@ -105,7 +105,7 @@ export function FormTableItem(props) {
     return <tr className="rowForm">
         <td className="nameForm">{props.name}</td>
         <td className="valueFormTd">
-            <input autoComplete="on" className={classes} value={props.value} name={props.property} value={props.value} type={props.type} maxLength={props.maxLength} minLength={props.minLength} />
+            <input autoComplete="on" className={classes} defaultValue={props.value} name={props.property} type={props.type} maxLength={props.maxLength} minLength={props.minLength} />
         </td>
     </tr>
 }
@@ -113,16 +113,17 @@ export function FormTableItem(props) {
 export class FormTableAppendFriendItem extends React.Component {
     constructor(props) {
         super(props);
+
         this.state = {
-            values: [],
+                values: props.value ? props.value : [],
             isSelected: false
         };
         this.loadPerson();
     }
-
+    #oldValue;
     async loadPerson() {
 
-        const authresponse = await fetch("./../authperson");
+        const authresponse = await fetch("/authperson");
         if (authresponse.ok === true) {
             const authPerson = await authresponse.json();
             this.setState({person: authPerson});
@@ -134,10 +135,14 @@ export class FormTableAppendFriendItem extends React.Component {
         if (this.props.isSend)
             classes += " sendInput";
 
+        if (this.props.value && this.props.value != this.#oldValue) {
+            this.#oldValue = this.props.value;
+            this.setState({ values: this.props.value });
+        }
+
         let selectBox;
         if (this.state.isSelected && this.state.person) {
             const url = `/friends?nick=${this.state.person.nick}&${this.state.values.map(i => "ignores=" + i.id).join('&')}&`
-
             selectBox = <SelectItemListByUrl className="fullSize" x="" url={url} selected={(child) => {
                 this.state.values.push(child);
                 this.setState({ values: this.state.values, isSelected: false });

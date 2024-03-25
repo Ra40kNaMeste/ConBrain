@@ -87,7 +87,7 @@ class Dialog extends React.Component {
                 <Avatar className="smallavatar" avatar={this.state.person.avatarId}/>
                 <input ref={this.textInput} autoFocus className="inputTextBox" id="text" type="text" onKeyDown={keyPressHandler} />
                 <img className="smallicon sendbutton" onClick={()=>this.sendMessage()} id="send" src="/images/arrow.svg"></img>
-                <img id="settings" src="/images/settings.svg" className="middleicon"></img>
+                <img id="settings" src="/images/settings.svg" className="middleicon" onClick={()=>window.location.href+="/edit"}></img>
                 <img id="addPerson" src="/images/add_person.svg" className="middleicon"></img>
             </div>
         </div>
