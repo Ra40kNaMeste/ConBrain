@@ -8,8 +8,6 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Configuration;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Net;
 using System.Net.Mime;
@@ -216,29 +214,22 @@ namespace ConBrain.Controllers
         /// <returns>Изображение</returns>
         [HttpGet]
         [AllowAnonymous]
-        [Route("{nick}/image")]
-        public IActionResult Image(string nick, string key)
-        {
-            var person = GetPerson(nick);
-            if (person == null)
-                return new StatusCodeResult(StatusCodes.Status400BadRequest);
-            return GetImage(nick, key);
-        }
-
-        [HttpGet]
         [Route("image")]
-        public IActionResult Image(string key)
+        async public Task<IActionResult> Image(int id)
         {
             var person = GetPersonByAuth();
-            if(person == null)
-                return new StatusCodeResult(StatusCodes.Status401Unauthorized);
-            return GetImage(person.Data.Nick, key);
+            var image = await _dbContext.Images.Where(i=>i.Id == id).FirstOrDefaultAsync();
+            if (image == null)
+                return new StatusCodeResult(StatusCodes.Status400BadRequest);
+            if (!image.CanGet(person))
+                return new StatusCodeResult(StatusCodes.Status403Forbidden);
+            return File(image.Data, image.FileExtension);
         }
 
         //Метод для добавления изображения авторизированного пользователя
         [HttpPost]
         [Route("image")]
-        public async Task<IActionResult> Image(IFormFile file, string key)
+        public async Task<IActionResult> Image(IFormFile file, string name, string description, SecurityLevel level = 0)
         {
             //Авторизированный пользователь
             var person = GetPersonByAuth();
@@ -249,23 +240,24 @@ namespace ConBrain.Controllers
             if(file == null || !file.CanImage())
                 return new StatusCodeResult(StatusCodes.Status400BadRequest);
 
-            var path = Path.Combine(Directory.GetCurrentDirectory(), _avatarPath, person.Data.Nick);
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-                //Копируем дефолтный файл
-                System.IO.File.Copy(Path.Combine(Directory.GetCurrentDirectory(), _avatarPath, _defaultAvatarName), Path.Combine(path, _defaultAvatarName));
-            }
-                
-            path = Path.Combine(path, key);
-
             //Создание изображение, его обрезка и сохранение на сервере
             try
             {
                 using var img = await file.From64bitToImageAsync();
                 using var resizeImg = img.Resize(_imageSettings.MaxWidth, _imageSettings.MaxHeight);
-                resizeImg.Save(path);
-                person.Data.AvatarPath = key;
+                System.Drawing.ImageConverter converter = new();
+                var bytes = (byte[])converter.ConvertTo(resizeImg, typeof(byte[]));
+                await _dbContext.Images.AddAsync(new Image()
+                {
+                    FileExtension = "image/jpeg",
+                    Data = bytes,
+                    Date = DateTime.Now,
+                    Name = name,
+                    Description = description, 
+                    Owner = person, 
+                    Size = bytes.Length, 
+                    SecurityLevel = level
+                });
                 await _dbContext.SaveChangesAsync();
             }
             catch (Exception)
@@ -274,23 +266,6 @@ namespace ConBrain.Controllers
             }
             return new StatusCodeResult(StatusCodes.Status200OK);
         }
-
-        private IActionResult GetImage(string nick, string key)
-        {
-            var path = Path.Combine(Directory.GetCurrentDirectory(), _avatarPath, nick);
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-                //Копируем дефолтный файл
-                System.IO.File.Copy(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", _defaultAvatarName), Path.Combine(path, _defaultAvatarName));
-            }
-            path = Path.Combine(path, key);
-            if (!System.IO.File.Exists(path))
-                return new StatusCodeResult(StatusCodes.Status401Unauthorized);
-            var bytes = System.IO.File.ReadAllBytes(path);
-            return File(bytes, "image/jpeg");
-        }
-
         private Person? GetPersonByAuth()
         {
             string? namePerson = ControllerContext.HttpContext.User.FindFirst(ClaimTypes.Name)?.Value;

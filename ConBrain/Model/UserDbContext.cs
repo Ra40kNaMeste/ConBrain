@@ -23,6 +23,7 @@ namespace ConBrain.Model
         public DbSet<FriendPerson> FreindsList { get; set; } = null!;
         public DbSet<Dialog> Dialogs { get; set; } = null!;
         public DbSet<Message> Messages { get; set; } = null!;
+        public DbSet<Image> Images { get; set; } = null!;
 
         public DbSet<PersonData> PersonData { get; set; } = null!;
 
@@ -44,8 +45,6 @@ namespace ConBrain.Model
                 .HasForeignKey(p => p.FriendId);
             builder.Entity<FriendPerson>().HasKey(p => new{p.TargetId, p.FriendId});
 
-            builder.Entity<PersonData>().Property(i => i.AvatarPath).HasDefaultValue("default.jpg");
-
             builder.Entity<Dialog>().Property(i=>i.Name).IsUnicode(true);
         }
     }
@@ -63,7 +62,8 @@ namespace ConBrain.Model
         public string Password { get; set; } = "";
         public List<FriendPerson> Friends { get; set; } = new();
         public List<FriendPerson> Subscribers { get; set; } = new();
-        public List<Dialog> Dialogs { get; set; }
+        public List<Dialog> Dialogs { get; set; } = new();
+        public List<Image> Images { get; set; } = new();
         public PersonData Data { get; set; }
 
     }
@@ -104,6 +104,21 @@ namespace ConBrain.Model
         public Dialog Dialog { get; set; }
     }
 
+    public class Image: SecurityLevelObject
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string? Description { get; set; }
+        public DateTime? Date { get; set; }
+        public string FileExtension { get; set; }
+        public byte[] Data { get; set; }
+        public decimal Size { get; set; }
+
+        public SecurityLevel SecurityLevel { get; set; }
+
+        public int OwnerId { get; set; }
+        public Person Owner { get; set; }
+    }
 
     public class PersonData
     {
