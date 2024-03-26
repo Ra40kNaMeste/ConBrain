@@ -25,7 +25,6 @@ namespace ConBrain.Controllers
         {
             settings = configuration.GetSection("Authorization").Get<AuthorizationSettings>() ?? throw new FormatException();
             _dbContext = dbContext;
-            _imageSettings = configuration.GetSection("ImageSettings").Get<ImageSettings>() ?? throw new FormatException();
         }
         [Route("home")]
         public IActionResult Dates()
@@ -105,22 +104,6 @@ namespace ConBrain.Controllers
                 return new DbValidationErrorResult(ex);
             }
             return Redirect("/home");
-        }
-
-        [Route("edit/avatar")]
-        [HttpPost]
-        public async Task<IActionResult> EditAvatar(IFormFile file)
-        {
-            //Авторизированный пользователь
-            var person = GetPersonByAuth();
-            if (person == null)
-                return new StatusCodeResult(StatusCodes.Status401Unauthorized);
-            var image = await SaveImageAsync(person, file, "avatar", "");
-            if (image == null)
-                return new StatusCodeResult(StatusCodes.Status400BadRequest);
-            person.Data.Avatar = image;
-            await _dbContext.SaveChangesAsync();
-            return new StatusCodeResult(StatusCodes.Status200OK);
         }
 
         [AllowAnonymous]
@@ -220,74 +203,7 @@ namespace ConBrain.Controllers
 
         #endregion //person/friends
 
-        /// <summary>
-        ///Метод отправки изображения пользователя
-        /// </summary>
-        /// <param name="nick">Ник пользователя</param>
-        /// <param name="key">Ключ изображения</param>
-        /// <returns>Изображение</returns>
-        [HttpGet]
-        [AllowAnonymous]
-        [Route("image")]
-        async public Task<IActionResult> Image(int id)
-        {
-            var person = GetPersonByAuth();
-            var image = await _dbContext.Images.Where(i=>i.Id == id).FirstOrDefaultAsync();
-            if (image == null)
-                return new StatusCodeResult(StatusCodes.Status400BadRequest);
-            if (!image.CanGet(person))
-                return new StatusCodeResult(StatusCodes.Status403Forbidden);
-            return File(image.Data, image.FileExtension);
-        }
 
-        //Метод для добавления изображения авторизированного пользователя
-        [HttpPost]
-        [Route("image")]
-        public async Task<IActionResult> Image(IFormFile file, string name, string description, SecurityLevel level = 0)
-        {
-            //Авторизированный пользователь
-            var person = GetPersonByAuth();
-            if (person == null)
-                return new StatusCodeResult(StatusCodes.Status401Unauthorized);
-            if(await SaveImageAsync(person, file, name, description, level)==null)
-                return new StatusCodeResult(StatusCodes.Status400BadRequest);
-            return new StatusCodeResult(StatusCodes.Status200OK);
-        }
-
-        private async Task<Image?> SaveImageAsync(Person person, IFormFile file, string name, string description, SecurityLevel level = 0)
-        {
-
-            //Создание файла записи
-            if (file == null || !file.CanImage())
-                return null;
-
-            //Создание изображение, его обрезка и сохранение на сервере
-            try
-            {
-                using var img = await file.From64bitToImageAsync();
-                using var resizeImg = img.Resize(_imageSettings.MaxWidth, _imageSettings.MaxHeight);
-                System.Drawing.ImageConverter converter = new();
-                var bytes = (byte[])converter.ConvertTo(resizeImg, typeof(byte[]));
-                var image = new Image()
-                {
-                    FileExtension = "image/jpeg",
-                    Data = bytes,
-                    Date = DateTime.Now,
-                    Name = name,
-                    Description = description,
-                    Owner = person,
-                    Size = bytes.Length,
-                    SecurityLevel = level
-                };
-                await _dbContext.Images.AddAsync(image);
-                await _dbContext.SaveChangesAsync();
-                return image;
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-        }
 
         private Person? GetPersonByAuth()
         {
@@ -311,7 +227,6 @@ namespace ConBrain.Controllers
 
         private readonly UserDbContext _dbContext;
         private readonly AuthorizationSettings settings;
-        private readonly ImageSettings _imageSettings;
     }
     public record class ChangePasswordData(string OldPassword, string Password);
     public record class ImageSettings(int MaxHeight, int MaxWidth);

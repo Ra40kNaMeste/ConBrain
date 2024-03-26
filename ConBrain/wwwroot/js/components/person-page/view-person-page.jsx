@@ -1,4 +1,4 @@
-﻿import { Avatar } from "./default-components/avatar.jsx"
+﻿import { Avatar } from "./../default-components/avatar.jsx"
 export class PersonHeader extends React.Component {
     constructor(props) {
         super(props);
@@ -104,8 +104,8 @@ export class PersonHeader extends React.Component {
                 <button className="poorlyButton" onClick={() => this.poorlyButtonOnClick()}>remove from friends</button>}
         </div> : undefined;
 
-        return <div className="fullSize">
-            <div className="columnnowrappanel scrollDiv content">
+        return <div className="content">
+            <div className="columnnowrappanel scrollDiv">
                 <div className="rownowrapstackpanel">
                     <Avatar avatar={this.state.person.avatarId} className="bigavatar"></Avatar>
                     <div className="columnnowrappanel">
@@ -123,8 +123,6 @@ export class PersonHeader extends React.Component {
                 </div>
             </div>
             {friendControl}
-            <div className="rowstretchstackpanel">
-            </div>
         </div>
 
     }
