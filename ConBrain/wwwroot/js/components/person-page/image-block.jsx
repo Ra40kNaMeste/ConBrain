@@ -9,7 +9,7 @@ export function ImageBlock({ target, step = 5, offset = 0 }) {
 
     return <div className="content scrollDiv columnnowrappanel">
         <h3>Images</h3>
-        <LoadingDatesList url={url} step={step} offset={offset} builder={builder} direction="Left" />
+        <LoadingDatesList url={url} step={step} offset={offset} builder={builder} direction="TopWrap" className="imagecontainer" />
         <div className="rowstretchstackpanel">
             <button>more images</button>
             <button>add image</button>

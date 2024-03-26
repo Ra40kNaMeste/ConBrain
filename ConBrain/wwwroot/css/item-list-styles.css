@@ -6,21 +6,20 @@
     flex-wrap:nowrap;
 }
 
-.rightstackpanel {
+.downstackpanel {
     display: flex;
-    flex-direction: row;
-    justify-content: right;
+    flex-direction: column;
     margin: 5px;
     flex-wrap: nowrap;
 }
 
-.downstackpanel {
+.downwrapstackpanel {
     display: flex;
-    flex-direction: column;
-    justify-content: start;
+    flex-direction: row;
     margin: 5px;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
 }
+
 .loadingimage{
     align-self:center;
 }

@@ -44,6 +44,10 @@ class DownLoaidingDatesListFunctions {
     }
 }
 
+class DownWrapLoaidingDatesListFunctions extends DownLoaidingDatesListFunctions {
+    style = "downwrapstackpanel";
+}
+
 class TopLoaidingDatesListFunctions {
     style = "downstackpanel";
     condition(root, offset) {
@@ -58,6 +62,10 @@ class TopLoaidingDatesListFunctions {
     push(old, pushed) {
         return [...old, ...pushed]
     }
+}
+
+class TopWrapLoaidingDatesListFunctions extends TopLoaidingDatesListFunctions {
+    style = "downwrapstackpanel";
 }
 
 class LeftLoaidingDatesListFunctions {
@@ -177,10 +185,14 @@ export class LoadingDatesList extends React.Component
         switch (direction) {
             case "Down":
                 return new DownLoaidingDatesListFunctions();
+            case "DownWrap":
+                return new DownWrapLoaidingDatesListFunctions();
             case "Left":
                 return new LeftLoaidingDatesListFunctions();
             case "Right":
                 return new RightLoaidingDatesListFunctions();
+            case "TopWrap":
+                return new TopWrapLoaidingDatesListFunctions();
             default:
                 return new TopLoaidingDatesListFunctions();
         }
