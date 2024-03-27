@@ -16,19 +16,22 @@
 }
 .smallavatar {
     margin: 0px 5px;
-    height: 40px;
-    border-radius:30%;
+    max-height: 40px;
+    max-width: 40px;
+    border-radius: 30%;
 }
 
 .middleavatar {
     margin: 5px 10px;
-    height: 60px;
+    max-height: 60px;
+    max-width: 60px;
     border-radius: 30%;
 }
 
 .bigavatar {
     margin: 5px;
-    height: 120px;
+    max-height: 120px;
+    max-width: 120px;
     border-radius: 30%;
 }
 
@@ -153,4 +156,17 @@
     border-radius: var(--border-radius);
     width: 100%;
     border: 1px solid black;
+}
+
+.addItemButton {
+    position: absolute;
+    display: block;
+    border-radius: 50%;
+    height: 10%;
+    width: 10%;
+    max-height: 100px;
+    max-width: 100px;
+    background: var(--good-color);
+    right: 20px;
+    bottom: 20px;
 }

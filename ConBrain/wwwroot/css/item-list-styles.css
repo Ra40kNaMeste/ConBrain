@@ -6,6 +6,14 @@
     flex-wrap:nowrap;
 }
 
+.leftwrapstackpanel {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    margin: 5px;
+    flex-wrap: wrap;
+}
+
 .downstackpanel {
     display: flex;
     flex-direction: column;

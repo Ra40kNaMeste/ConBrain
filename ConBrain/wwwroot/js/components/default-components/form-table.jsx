@@ -34,7 +34,7 @@ export class FormTable extends React.Component {
             if (response.redirected) {
                 window.location.href = response.url;
             }
-            else if (await saveToken(response) == false) {
+            else if (this.props.isSaveToken && await saveToken(response) == false) {
                 const data = await response.json();
                 if (data != null) {
                     for (const result of data) {
@@ -55,7 +55,9 @@ export class FormTable extends React.Component {
                     alert("Unknow error log in");
                 }
             }
-            
+            console.log(this.props.onSend);
+            if (this.props.onSend)
+                this.props.onSend();
         })
     }
 
@@ -106,6 +108,19 @@ export function FormTableItem(props) {
         <td className="nameForm">{props.name}</td>
         <td className="valueFormTd">
             <input autoComplete="on" className={classes} defaultValue={props.value} name={props.property} type={props.type} maxLength={props.maxLength} minLength={props.minLength} />
+        </td>
+    </tr>
+}
+
+export function FormTableSelectionItem({ isSend, name, value, property, values }) {
+    let classes = isSend ? "sendInput" : "";
+    classes += " valueForm";
+    return <tr className="rowForm">
+        <td className="nameForm">{name}</td>
+        <td className="valueFormTd">
+            <select className={classes} defaultValue={value} name={property}>
+                {values.map(i => <option value={i.key}>{i.value}</option>) }
+            </select>
         </td>
     </tr>
 }

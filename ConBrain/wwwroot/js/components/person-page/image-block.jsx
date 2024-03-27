@@ -1,18 +1,14 @@
 ﻿import { LoadingDatesList } from "./../loading-dates-list.jsx"
 export function ImageBlock({ target, step = 5, offset = 0 }) {
     const builder = (img) => {
-        console.log(img);
         return <img className="bigavatar" src={`image?id=${img.id}`}></img>
     }
 
-    const url = target ? `/images?nick=${target}&` : "/images?";
-
     return <div className="content scrollDiv columnnowrappanel">
         <h3>Images</h3>
-        <LoadingDatesList url={url} step={step} offset={offset} builder={builder} direction="TopWrap" className="imagecontainer" />
+        <LoadingDatesList url={`/images/get?nick=${target}&`} step={step} offset={offset} builder={builder} direction="TopWrap" className="imagecontainer" />
         <div className="rowstretchstackpanel">
-            <button>more images</button>
-            <button>add image</button>
+            <button onClick={() => window.location.href = `/${target}/images`}>more images</button>
         </div>
     </div>
 }

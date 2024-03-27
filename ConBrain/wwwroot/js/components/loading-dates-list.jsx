@@ -45,7 +45,7 @@ class DownLoaidingDatesListFunctions {
 }
 
 class DownWrapLoaidingDatesListFunctions extends DownLoaidingDatesListFunctions {
-    style = "downwrapstackpanel";
+    style = "leftwrapstackpanel";
 }
 
 class TopLoaidingDatesListFunctions {
@@ -65,7 +65,7 @@ class TopLoaidingDatesListFunctions {
 }
 
 class TopWrapLoaidingDatesListFunctions extends TopLoaidingDatesListFunctions {
-    style = "downwrapstackpanel";
+    style = "leftwrapstackpanel";
 }
 
 class LeftLoaidingDatesListFunctions {
@@ -84,6 +84,10 @@ class LeftLoaidingDatesListFunctions {
     }
 }
 
+class LeftWrapLoaidingDatesListFunctions extends LeftLoaidingDatesListFunctions {
+    style = "topwrapstackpanel";
+}
+
 class RightLoaidingDatesListFunctions {
     style = "leftstackpanel";
     condition(root, offset) {
@@ -98,6 +102,10 @@ class RightLoaidingDatesListFunctions {
     push(old, pushed) {
         return[...old, ...pushed]
     }
+}
+
+class RightWrapLoaidingDatesListFunctions extends RightLoaidingDatesListFunctions {
+    style = "topwrapstackpanel";
 }
 
 ///Компонент для создания подгружаемых данных в зависимости от прокрутки. Обязательные свойства:
@@ -149,7 +157,6 @@ export class LoadingDatesList extends React.Component
     async fillView() {
         const root = this.rootdiv.current;
         root.addEventListener('resize', () => this.scroll());
-
         while (this.functions.condition(root, parseInt(this.props["offset"]))) {
             const old = this.copyScrollPosition(root);
             const count = await this.load();
@@ -158,8 +165,6 @@ export class LoadingDatesList extends React.Component
                 return;
         }
     }
-
-
 
     //Загружает данные с сервера
     async load() {
@@ -189,8 +194,12 @@ export class LoadingDatesList extends React.Component
                 return new DownWrapLoaidingDatesListFunctions();
             case "Left":
                 return new LeftLoaidingDatesListFunctions();
+            case "LeftWrap":
+                return new LeftWrapLoaidingDatesListFunctions();
             case "Right":
                 return new RightLoaidingDatesListFunctions();
+            case "RightWrap":
+                return new RightWrapLoaidingDatesListFunctions();
             case "TopWrap":
                 return new TopWrapLoaidingDatesListFunctions();
             default:

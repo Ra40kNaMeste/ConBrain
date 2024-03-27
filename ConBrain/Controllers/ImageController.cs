@@ -4,13 +4,15 @@ using ConBrain.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using NuGet.Configuration;
+using System.Linq.Expressions;
 using System.Security.Claims;
 
 namespace ConBrain.Controllers
 {
     [Authorize]
-    public class ImageController:Controller
+    public class ImageController : Controller
     {
         public ImageController(IConfiguration configuration, UserDbContext dbContext)
         {
@@ -56,31 +58,58 @@ namespace ConBrain.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        [Route("images")]
+        [Route("images/get")]
         public IActionResult GetImages(string? nick, int[] ignores, int size, string? pattern)
         {
             var authPerson = GetPersonByAuth();
-            var target = nick == null || nick == ""? authPerson : GetPerson(nick);
+            var target = nick == null || nick == "" ? authPerson : GetPerson(nick);
 
             if (target == null)
                 return new StatusCodeResult(StatusCodes.Status400BadRequest);
 
-            return new ImagesResult(ignores, size, pattern, target.Images.Where(i=>i.CanGet(authPerson)));
+            return new ImagesResult(ignores, size, pattern, target.Images.Where(i => i.CanGet(authPerson)));
         }
 
 
         //Метод для добавления изображения авторизированного пользователя
         [HttpPost]
         [Route("image")]
-        public async Task<IActionResult> Image(IFormFile file, string name, string description, SecurityLevel level = 0)
+        public async Task<IActionResult> Image(IFormFile file)
         {
             //Авторизированный пользователь
             var person = GetPersonByAuth();
             if (person == null)
                 return new StatusCodeResult(StatusCodes.Status401Unauthorized);
-            if (await SaveImageAsync(person, file, name, description, level) == null)
+            var image = await SaveImageAsync(person, file, string.Empty, string.Empty, SecurityLevel.Private);
+            if (image == null)
                 return new StatusCodeResult(StatusCodes.Status400BadRequest);
+            return new ImageResult(image);
+        }
+
+        [HttpPost]
+        [Route("image/edit")]
+        async public Task<IActionResult> ImageEdit(int id, string name, string description, SecurityLevel level)
+        {
+            var person = GetPersonByAuth();
+            var image = person?.Images.Where(i => i.Id == id).FirstOrDefault();
+            if (image == null)
+                return new StatusCodeResult(StatusCodes.Status400BadRequest);
+            image.Name = name;
+            image.Description = description;
+            image.SecurityLevel = level;
+            await _dbContext.SaveChangesAsync();
             return new StatusCodeResult(StatusCodes.Status200OK);
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("{nick}/images")]
+        public IActionResult Images(string nick)
+        {
+            var person = GetPerson(nick);
+            if (person == null)
+                return new StatusCodeResult(StatusCodes.Status400BadRequest);
+            return View(person);
         }
 
         private async Task<Image?> SaveImageAsync(Person person, IFormFile file, string name, string description, SecurityLevel level = 0)

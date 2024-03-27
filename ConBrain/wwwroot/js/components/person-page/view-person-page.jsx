@@ -47,8 +47,6 @@ export class PersonHeader extends React.Component {
             isFriendControl: authFriends && person && authPerson.nick != person.nick ? authFriends.find(i => i.nick == person.nick) != undefined : undefined,
             isEdit: isEdit
         });
-
-        
     }
 
     async loadFriends(person, friend) {

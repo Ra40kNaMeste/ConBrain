@@ -27,12 +27,12 @@ namespace ConBrain.Controllers
             _dbContext = dbContext;
         }
         [Route("home")]
-        public IActionResult Dates()
+        public IActionResult Home()
         {
             var person = GetPersonByAuth();
             if (person == null)
                 return new StatusCodeResult(StatusCodes.Status401Unauthorized);
-            return View("Person", person);
+            return Redirect($"/{person.Data.Nick}");
         }
 
         [Route("changepassword")]
@@ -109,7 +109,7 @@ namespace ConBrain.Controllers
         [AllowAnonymous]
         [HttpGet]
         [Route("{id}")]
-        public IActionResult OtherPerson(string id)
+        public IActionResult Person(string id)
         {
             var person = GetPerson(id);
             if (person == null)
@@ -120,7 +120,7 @@ namespace ConBrain.Controllers
         [AllowAnonymous]
         [HttpGet]
         [Route("person")]
-        public IActionResult Person(string nick)
+        public IActionResult PersonData(string nick)
         {
             var person = GetPerson(nick);
             if (person == null)
