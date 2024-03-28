@@ -12,7 +12,7 @@ namespace ConBrain.Controllers.ActionResults
                 .Where(i => !ignores.Contains(i.Id));
             if (pattern != null && pattern != "")
                 _images = _images.Where(i => i.Name.Contains(pattern));
-            _images = _images.Reverse().Take(size);
+            _images = _images.Take(size);
         }
         public async Task ExecuteResultAsync(ActionContext context)
         {

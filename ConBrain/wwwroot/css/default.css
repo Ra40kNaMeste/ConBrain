@@ -177,7 +177,7 @@
 
 .backgroundPresentContent {
     background: #00000022;
-    padding: 50px;
+    padding: 10%;
     border-radius: var(--border-radius);
     height: 100%;
     width: 100%;
@@ -190,6 +190,4 @@
     border-radius:var(--border-radius);
     padding: 5px;
     background: white;
-    width:auto;
-    height:auto;
 }

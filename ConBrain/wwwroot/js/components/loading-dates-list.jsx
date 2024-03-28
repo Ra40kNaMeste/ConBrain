@@ -120,22 +120,29 @@ export class LoadingDatesList extends React.Component
 {
     constructor(props) {
         super(props);
-
-        this.#data = new DataStore(this.props["url"], this.props["step"], "");
-
         this.rootdiv = React.createRef();
 
         this.state = {
             loading: false,
             dates: []
         };
-        this.init();
+        this.update();
     }
     functions;
     #data;
 
-    async init() {
+    init() {
+        this.#data = new DataStore(this.props["url"], this.props["step"], "");
+        this.setState({
+            loading: false,
+            dates: []
+        });
         this.functions = this.getFunctions(this.props["direction"]);
+    }
+    
+    async update() {
+        this.init();
+        await this.fillView();
     }
 
     //Подгружает элементы, если дошли до конца

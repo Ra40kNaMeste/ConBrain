@@ -58,6 +58,20 @@ namespace ConBrain.Controllers
 
         [HttpGet]
         [AllowAnonymous]
+        [Route("image/data")]
+        async public Task<IActionResult> GetImageData(int id)
+        {
+            var person = GetPersonByAuth();
+            var image = await _dbContext.Images.Where(i => i.Id == id).FirstOrDefaultAsync();
+            if (image == null)
+                return new StatusCodeResult(StatusCodes.Status400BadRequest);
+            if (!image.CanGet(person))
+                return new StatusCodeResult(StatusCodes.Status403Forbidden);
+            return new ImageResult(image);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
         [Route("images/get")]
         public IActionResult GetImages(string? nick, int[] ignores, int size, string? pattern)
         {

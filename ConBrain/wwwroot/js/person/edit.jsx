@@ -1,6 +1,8 @@
 ﻿import { FormTable, FormTableItem } from "./../../../js/components/default-components/form-table.jsx"
 import { deleteCookie } from "./../../../js/extensions/cookie-extensions.jsx"
-import {Avatar } from "./../components/default-components/avatar.jsx"
+import { Avatar } from "./../components/default-components/avatar.jsx"
+import { convertImageToJpg } from "./../authorizations/image-converter.js"
+
 class AvatarInput extends React.Component {
     constructor(props) {
         super(props);
@@ -10,20 +12,9 @@ class AvatarInput extends React.Component {
             }
         }
         this.loadPerson();
-        this.setLoadedImageSize();
-        this.createCanvas();
         this.fileInput = React.createRef();
     }
 
-    createCanvas() {
-        this.#canvas = document.createElement("canvas");
-        this.#canvas.width = this.#loadedImageSize.width;
-        this.#canvas.height = this.#loadedImageSize.height;
-    }
-
-    setLoadedImageSize() {
-        this.#loadedImageSize = { height: 200, width: 200 };
-    }
 
     async loadPerson() {
         const response = await fetch("./../authperson");
@@ -44,7 +35,7 @@ class AvatarInput extends React.Component {
             const img = document.createElement("img");
             img.onload = async () => {
                 const formData = new FormData();
-                const targetimg = this.convertImageToJpg(img);
+                const targetimg = convertImageToJpg(img);
                 let blobImg = new Blob([targetimg], { type: "image/jpg" });
 
                 formData.append("file", blobImg, "avatar.jpg");
@@ -75,15 +66,6 @@ class AvatarInput extends React.Component {
             img.src = rev.target.result;
         }
         reader.readAsDataURL(this.fileInput.current.files[0])
-    }
-
-    #canvas;
-    #loadedImageSize;
-
-    convertImageToJpg(image) {
-        const context = this.#canvas.getContext("2d");
-        context.drawImage(image, 0, 0, image.width, image.height, 0, 0, this.#canvas.width, this.#canvas.height);
-        return this.#canvas.toDataURL("image/jpeg").replace(/^data:image\/jpeg;base64,/, "");
     }
 
     render() {

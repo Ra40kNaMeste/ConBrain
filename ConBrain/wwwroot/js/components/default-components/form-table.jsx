@@ -55,7 +55,6 @@ export class FormTable extends React.Component {
                     alert("Unknow error log in");
                 }
             }
-            console.log(this.props.onSend);
             if (this.props.onSend)
                 this.props.onSend();
         })
