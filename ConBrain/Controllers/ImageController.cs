@@ -56,6 +56,30 @@ namespace ConBrain.Controllers
             return File(image.Data, image.FileExtension);
         }
 
+        [HttpDelete]
+        [AllowAnonymous]
+        [Route("image")]
+        async public Task<IActionResult> DeleteImage(int id)
+        {
+            var person = GetPersonByAuth();
+            var image = await _dbContext.Images.Where(i => i.Id == id).FirstOrDefaultAsync();
+            if (image == null)
+                return new StatusCodeResult(StatusCodes.Status400BadRequest);
+            if (!image.CanGet(person))
+                return new StatusCodeResult(StatusCodes.Status403Forbidden);
+            try
+            {
+                _dbContext.Images.Remove(image);
+            }
+            catch (Exception)
+            {
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
+
+            await _dbContext.SaveChangesAsync();
+            return new StatusCodeResult(StatusCodes.Status200OK);
+        }
+
         [HttpGet]
         [AllowAnonymous]
         [Route("image/data")]

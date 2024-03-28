@@ -4,6 +4,13 @@ export class ImageEdit extends React.Component {
         super(props);
     }
 
+    async deleteImage() {
+        const response = await fetch(`/image?id=${this.props.image.id}`, {method: "DELETE"});
+        if (response.ok === true) {
+            this.props.onChange();
+        }
+    }
+
     render() {
         const securityValues = [
             { key: 0, value: "public" },
@@ -19,6 +26,7 @@ export class ImageEdit extends React.Component {
                     <FormTableItem name="Description" value={this.props.image.description} property="description" type="text" min-length="5" isSend />
                     <FormTableSelectionItem name="Security" value={this.props.image.securityLevel} property="level" values={securityValues} isSend />
                 </FormTable>
+                <button className="removeButton" onClick={()=>this.deleteImage()}>Delete</button>
             </div>
         </div>
 
