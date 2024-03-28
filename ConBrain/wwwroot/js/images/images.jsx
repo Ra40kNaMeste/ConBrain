@@ -14,7 +14,7 @@ class ImageView extends React.Component {
 
     async loadPerson() {
 
-        const authresponse = await fetch("/authperson");
+        const authresponse = await fetch("/ ");
         if (authresponse.ok === true) {
             const authPerson = await authresponse.json();
             this.setState({ person: authPerson });
@@ -50,23 +50,29 @@ class ImageView extends React.Component {
 
 
     render() {
+        const isEdit = this.state.person && this.props.nick == this.state.person.nick;
+
         const builder = (o) => {
             const date = new Date(Date.parse(o.date));
-            return <div className="viewImageItem" onClick={() => this.setState({ image: o })}>
+            return <div className="viewImageItem" onClick={() => {
+                if (isEdit)
+                    this.setState({ image: o })
+            }}>
                 <img className="bigAvatar" src={`/image?id=${o.id}`}></img>
                 <p>{o.name}</p>
                 <p>{date.toISOString().split('T')[0]}</p>
             </div>
         }
-        console.log(`/images?nick=${this.props.nick}&`)
+
+
 
         const content = this.state.image ? <ImageEdit image={this.state.image} onExit={() => this.setState({ image: undefined })} />
             : <div className="fullSize">
                 <LoadingDatesList isSearch className="" url={`/images/get?nick=${this.props.nick}&`} step={this.props.step} offset={this.props.offset} builder={builder} direction="TopWrap" >
                 </LoadingDatesList>
                 <input style={{ display: "none" }} ng-model="image" type="file" id="fileInput" ref={this.fileInput} onChange={() => this.loadImg()} />
-                <button className="addItemButton" >+</button>
-
+                { isEdit === true ? <button className="addItemButton" >+</button>:undefined }
+                
             </div>;
 
         return content;
