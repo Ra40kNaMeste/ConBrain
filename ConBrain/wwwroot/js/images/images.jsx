@@ -14,7 +14,7 @@ class ImageView extends React.Component {
 
     async loadPerson() {
 
-        const authresponse = await fetch("/ ");
+        const authresponse = await fetch("/authperson");
         if (authresponse.ok === true) {
             const authPerson = await authresponse.json();
             this.setState({ person: authPerson });
@@ -66,13 +66,13 @@ class ImageView extends React.Component {
 
 
 
-        const content = this.state.image ? <ImageEdit image={this.state.image} onExit={() => this.setState({ image: undefined })} />
-            : <div className="fullSize">
+        const content = 
+            <div className="fullSize">
                 <LoadingDatesList isSearch className="" url={`/images/get?nick=${this.props.nick}&`} step={this.props.step} offset={this.props.offset} builder={builder} direction="TopWrap" >
                 </LoadingDatesList>
                 <input style={{ display: "none" }} ng-model="image" type="file" id="fileInput" ref={this.fileInput} onChange={() => this.loadImg()} />
                 { isEdit === true ? <button className="addItemButton" >+</button>:undefined }
-                
+                {this.state.image ? <ImageEdit image={this.state.image} onExit={() => this.setState({ image: undefined })} /> : undefined}
             </div>;
 
         return content;
