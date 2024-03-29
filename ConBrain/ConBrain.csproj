@@ -24,7 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="avatars\default-100.jpg" />
     <None Remove="html\.html" />
   </ItemGroup>
 
