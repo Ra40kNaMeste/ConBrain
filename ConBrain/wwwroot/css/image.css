@@ -6,3 +6,15 @@
     padding: 2px;
     border: 2px solid var(--background-color);
 }
+.collegeImage {
+    width: calc(97%/3);
+    height: calc(97%/3);    
+    padding: 5px;
+    border: 2px solid var(--background-color);
+    margin: 0.4%
+}
+.collegeContainer{
+    display:flex;
+    flex-wrap:wrap;
+    padding: 5px;
+}

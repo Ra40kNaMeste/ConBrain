@@ -1,5 +1,3 @@
-
-
 export function convertImageToJpg(image) {
     const canvas = document.createElement("canvas");
     canvas.width = 200;

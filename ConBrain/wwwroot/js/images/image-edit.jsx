@@ -17,7 +17,6 @@ export class ImageEdit extends React.Component {
             { key: 1, value: "only friends" },
             { key: 2, value: "private" },
         ];
-        console.log(this.props.image.id);
         return <div className="backgroundPresentContent" onClick={() => this.props.onExit()}>
             <div className="presentContent scrollDiv" onClick={e=>e.stopPropagation()}>
                 <img className="fullimage" src={`/image?id=${this.props.image.id}`}></img>
@@ -29,6 +28,5 @@ export class ImageEdit extends React.Component {
                 <button className="removeButton" onClick={()=>this.deleteImage()}>Delete</button>
             </div>
         </div>
-
     }
 }
