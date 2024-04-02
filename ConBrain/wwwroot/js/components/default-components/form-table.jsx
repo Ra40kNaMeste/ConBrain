@@ -165,7 +165,7 @@ export class FormTableAppendFriendItem extends React.Component {
         }
         else {
             selectBox = <div className="addItemDiv">
-                <button className="addItemButton" onClick={() => this.setState({ isSelected: true })}>+</button>
+                <button className="addFriendButton" onClick={() => this.setState({ isSelected: true })}>+</button>
             </div>;
         }
 
